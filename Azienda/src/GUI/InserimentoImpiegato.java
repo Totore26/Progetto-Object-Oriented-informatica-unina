@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class InserimentoImpiegato extends JDialog {
-    private Controller controller = new Controller();
     private JTextField matricolaField;
     private JTextField nomeField;
     private JTextField cognomeField;
@@ -24,10 +23,10 @@ public class InserimentoImpiegato extends JDialog {
     private JSpinner dataLicenziamentoSpinner;
     private JSpinner stipendioSpinner;
 
-    public InserimentoImpiegato(JFrame parent) {
-        super(parent, "Inserimento Impiegato", true);
+    public InserimentoImpiegato(JFrame framePadre,Controller controller) {
+        super(framePadre, "Inserimento Impiegato", true);
 
-        // Creiamo un pannello per contenere i campi di input
+        // Creiamo un pannello per contenere i campi d'input
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 5, 5));
 
         // Aggiungiamo il campo "Matricola"
@@ -94,10 +93,14 @@ public class InserimentoImpiegato extends JDialog {
         dirigenteCheckBox = new JCheckBox("Dirigente");
         inputPanel.add(dirigenteCheckBox);
 
+
+
         // Creiamo un pannello per contenere i bottoni "OK" e "Annulla"
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton okButton = new JButton("OK");
-        okButton.addActionListener(new ActionListener() {
+
+        // Implementazione bottone Salva
+        JButton bottoneSalva = new JButton("Salva");
+        bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -123,21 +126,25 @@ public class InserimentoImpiegato extends JDialog {
                 }
                 Impiegato imp = new Impiegato(matricola,nome,cognome,codiceFiscale,curriculum,dirigente,tipoImpiegato,dataAssunzione,dataLicenziamento,stipendio,sesso);
 
-                //dopo aver salvato in modo adeguato l'impiegato,Controllo che l'inserimento vada a buon fine...
+                //dopo aver salvato in modo adeguato l'impiegato, controllo che l'inserimento vada a buon fine...
                 controller.InserimentoImpiegato(imp);
                 setVisible(false);
             }
         });
-        buttonPanel.add(okButton);
+        buttonPanel.add(bottoneSalva);
 
-        JButton cancelButton = new JButton("Annulla");
-        cancelButton.addActionListener(new ActionListener() {
+        // Implementazione bottone Annulla
+        JButton bottoneAnnulla = new JButton("Annulla");
+        bottoneAnnulla.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
             }
         });
-        buttonPanel.add(cancelButton);
+        buttonPanel.add(bottoneAnnulla);
+
+
+
 
         // Aggiungiamo i pannelli alla finestra
         add(inputPanel, BorderLayout.CENTER);
@@ -145,34 +152,15 @@ public class InserimentoImpiegato extends JDialog {
 
         // Impostiamo le dimensioni della finestra
         setSize(500, 500);
+        setLocationRelativeTo(null);
 
         // Impostiamo la posizione della finestra al centro della finestra padre
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(framePadre);
     }
 
-    public static void main(String[] args) {
-        // Creiamo una finestra di esempio per testare la finestra di inserimento impiegato
-        JFrame mainFrame = new JFrame("Finestra Impiegati");
-        mainFrame.setSize(800, 600);
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Creiamo il pulsante per aprire la finestra di inserimento impiegato
-        JButton inserisciButton = new JButton("Inserisci");
-        inserisciButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                InserimentoImpiegato dialog = new InserimentoImpiegato(mainFrame);
-                dialog.setVisible(true);
-            }
-        });
 
-        // Aggiungiamo il pulsante alla finestra
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(inserisciButton);
-        mainFrame.add(buttonPanel, BorderLayout.SOUTH);
+    //todo da fare il caricamento della lista impiegati e creare la tabella impiegati(tutte le matricole)
 
-        // Mostraimo la finestra
-        mainFrame.setVisible(true);
-    }
 
 }
