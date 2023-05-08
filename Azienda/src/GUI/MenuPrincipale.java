@@ -1,56 +1,68 @@
 package GUI;
 
+
+
+
+
 import javax.swing.*;
 import java.awt.*;
 
-public class MenuPrincipale extends JFrame {
-    JButton employeeButton;
-    JButton projectButton;
-    JButton labButton;
+public class MenuPrincipale {
+    private JFrame frame;
+    private JLabel labelBenvenuto;
+    private JButton bottoneImpiegati;
+    private JButton bottoneLaboratori;
+    private JButton bottoneProgetti;
 
     public MenuPrincipale() {
-        super("Finestra con tre bottoni");
+        frame = new JFrame("Menu Principale");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Crea la JLabel di benvenuto
+        labelBenvenuto = new JLabel("Benvenuto nell'app Aziendale!");
+        labelBenvenuto.setFont(new Font("Arial",Font.PLAIN,18));
 
-        // Imposta il layout del frame come BorderLayout
-        setLayout(new BorderLayout());
+        // Crea i bottoni
+        bottoneImpiegati = new JButton("Impiegati");
+        bottoneLaboratori = new JButton("Laboratori");
+        bottoneProgetti = new JButton("Progetti");
 
-        // Aggiungi un pannello al centro del frame con il layout GridLayout
-        JPanel centerPanel = new JPanel(new GridLayout(1, 3));
+        // Imposta il font dei bottoni
+        bottoneImpiegati.setFont(new Font("Arial", Font.PLAIN, 16));
+        bottoneLaboratori.setFont(new Font("Arial", Font.PLAIN, 16));
+        bottoneProgetti.setFont(new Font("Arial", Font.PLAIN, 16));
 
-        // Aggiungi i tre bottoni al pannello centrale
-        employeeButton = new JButton("Impiegato");
-        projectButton = new JButton("Progetto");
-        labButton = new JButton("Laboratorio");
+        // Imposta il layout del frame come BoxLayout
+        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 
-        // Personalizza lo stile dei bottoni
-        employeeButton.setFont(new Font("Arial", Font.BOLD, 24));
-        projectButton.setFont(new Font("Arial", Font.BOLD, 24));
-        labButton.setFont(new Font("Arial", Font.BOLD, 24));
+        // Imposta l'allineamento orizzontale dei componenti al centro
+        labelBenvenuto.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottoneImpiegati.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottoneLaboratori.setAlignmentX(Component.CENTER_ALIGNMENT);
+        bottoneProgetti.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        employeeButton.setForeground(Color.WHITE);
-        projectButton.setForeground(Color.WHITE);
-        labButton.setForeground(Color.WHITE);
+        // Aggiungi la JLabel e i bottoni al frame
+        frame.add(Box.createVerticalStrut(50));
+        frame.add(labelBenvenuto);
+        frame.add(Box.createVerticalStrut(20));
+        frame.add(bottoneImpiegati);
+        frame.add(Box.createVerticalStrut(10));
+        frame.add(bottoneLaboratori);
+        frame.add(Box.createVerticalStrut(10));
+        frame.add(bottoneProgetti);
 
-        employeeButton.setBackground(Color.BLUE);
-        projectButton.setBackground(Color.GREEN);
-        labButton.setBackground(Color.RED);
+        Dimension buttonSize = new Dimension(200, 50);
+        bottoneImpiegati.setMaximumSize(buttonSize);
+        bottoneLaboratori.setMaximumSize(buttonSize);
+        bottoneProgetti.setMaximumSize(buttonSize);
 
-        // Aggiungi i bottoni al pannello centrale
-        centerPanel.add(employeeButton);
-        centerPanel.add(projectButton);
-        centerPanel.add(labButton);
-
-        // Aggiungi il pannello centrale al frame
-        add(centerPanel, BorderLayout.CENTER);
-
-        setSize(500, 200);
-        setVisible(true);
+        // Imposta le dimensioni del frame, la posizione al centro e rendilo visibile
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
     public static void main(String[] args) {
         new MenuPrincipale();
     }
 }
-
