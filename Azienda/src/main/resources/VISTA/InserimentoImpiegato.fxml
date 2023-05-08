@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane alignment="CENTER" hgap="20.0" prefHeight="600.0" prefWidth="800.0" style="-fx-font-size: 18;" vgap="10.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.InserimentoImpiegato">
+    <Label text="Matricola:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <TextField fx:id="matricolaField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+    <Label text="Nome:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+    <TextField fx:id="nomeField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+    <Label text="Cognome:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+    <TextField fx:id="cognomeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+    <Label text="Codice Fiscale:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+    <TextField fx:id="codiceFiscaleField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+    <Label text="Curriculum:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+
+    <Label text="Dirigente:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <CheckBox fx:id="checkBoxDirigente" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+    <Label text="Data Assunzione:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+
+    <Label text="Data Licenziamento:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+
+    <Label text="Stipendio:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+    <TextField fx:id="stipendioField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+
+    <Label text="Sesso:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+
+    <Button fx:id="bottoneSalvaDati" onAction="#touchBottoneSalvaDati" prefHeight="25.0" prefWidth="113.0" text="Salva" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+    <Button fx:id="bottoneAnnulla" onAction="#touchBottoneAnnulla" prefHeight="25.0" prefWidth="162.0" text="Annulla" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+   <ChoiceBox fx:id="choicheBoxSesso" prefHeight="35.0" prefWidth="222.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+   <DatePicker fx:id="DatePickerDataAssunzione" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+   <DatePicker fx:id="DatePickerDataLicenziamento" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+   <TextArea fx:id="textAreaCurriculum" prefHeight="128.0" prefWidth="260.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+</GridPane>
