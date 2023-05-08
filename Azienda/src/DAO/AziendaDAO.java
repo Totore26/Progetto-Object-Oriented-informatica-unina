@@ -20,11 +20,11 @@ public interface AziendaDAO {
     /*
         Le seguente funzioni servono a Gestire l'aggiunta o eliminazione di impiegati laboratori e progetti[...]
     */
-    public boolean removeImpiegato(String matricola);
-    public boolean addImpiegato(Impiegato imp);
-    public boolean addProgetto();
-    public boolean removeProgetto();
-    public boolean addLaboratorio();
-    public boolean removeLaboratorio();
+    public boolean removeImpiegatoDAO(String matricola);
+    public boolean addImpiegatoDAO(Impiegato imp);
+    public boolean addProgettoDAO();
+    public boolean removeProgettoDAO();
+    public boolean addLaboratorioDAO();
+    public boolean removeLaboratorioDAO();
 
 }

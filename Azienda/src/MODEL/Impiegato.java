@@ -8,26 +8,28 @@ import java.util.List;
 public class Impiegato {
 
     //Questi rappresentano tutti gli attributi di un impiegato.
-    private String matricola;
-    private String nome;
-    private String cognome;
-    private String codiceFiscale;
-    private String curriculum;
-    private boolean dirigente;
-    private String dataAssunzione;
-    private String dataLicenziamento;
-    private float stipendio;
-    private char sesso;
+    public String matricola;
+    public String nome;
+    public String cognome;
+    public String codiceFiscale;
+    public String curriculum;
+    public boolean dirigente;
+    public String dataAssunzione;
+
+    public String tipoImpiegato;
+    public String dataLicenziamento;
+    public float stipendio;
+    public String sesso;
 
     //il seguente attributo ha la lista degli storici di un impiegato.
-    private List<Storico> listaStorico= new ArrayList<>();
+    public List<Storico> listaStorico= new ArrayList<>();
     //il seguente attributo considera a quanti laboratori è associato un impiegato
-    private List<Laboratorio> ListaAfferenza = new ArrayList<>();
+    public List<Laboratorio> ListaAfferenza = new ArrayList<>();
 
 
 
 
-    public Impiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String dataAssunzione, String dataLicenziamento, float stipendio, char sesso) {
+    public Impiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, String dataAssunzione, String dataLicenziamento, float stipendio, String sesso) {
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;

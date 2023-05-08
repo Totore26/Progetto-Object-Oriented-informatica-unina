@@ -76,14 +76,15 @@ public class AziendaPostgresDAO implements AziendaDAO {
                 String codiceFiscale = rs.getString("codice_fiscale");
                 String curriculum = rs.getString("curriculum");
                 boolean dirigente = rs.getBoolean("dirigente");
+                String tipoImpiegato = rs.getString("tipo_impiegato");
                 String dataAssunzione =rs.getString("data_assunzione");
                 String dataLicenziamento = rs.getString("data_licenziamento");
                 float stipendio = rs.getFloat("stipendio");
-                char sesso = rs.getString("sesso").charAt(0);
+                String sesso = rs.getString("sesso");
 
                 //TODO ricorda di gestire le date e formattarle in modo coerente.
                 //todo anche di inizializzare i laboratori a cui afferisce prendendoli da AFFERENZA
-                Impiegato imp = new Impiegato(matricola, nome, cognome, codiceFiscale, curriculum, dirigente, dataAssunzione ,dataLicenziamento, stipendio, sesso);
+                Impiegato imp = new Impiegato(matricola, nome, cognome, codiceFiscale, curriculum, dirigente,tipoImpiegato, dataAssunzione ,dataLicenziamento, stipendio, sesso);
                 listaImpiegati.add(imp);
             }
 
@@ -156,16 +157,40 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
 
     //todo AGGIUNGERE UN IMPIEGATO SIA NEL MODEL CHE NEL DATABASE.
-    @Override //si suppone l'impiegato viene compilato nella GUI
-    public boolean addImpiegato(Impiegato imp) {
-        return false;
+    @Override
+    // Aggiunge un impiegato nel database
+    public boolean addImpiegatoDAO(Impiegato imp) {
+        try {
+            PreparedStatement insertImp;
+            insertImp = connection.prepareStatement("INSERT INTO IMPIEGATO (matricola, nome, cognome, codice_fiscale, curriculum, dirigente, tipo_impiegato, data_assunzione, data_licenziamento, stipendio, sesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            insertImp.setString(1, imp.matricola);
+            insertImp.setString(2, imp.nome);
+            insertImp.setString(3, imp.cognome);
+            insertImp.setString(4, imp.codiceFiscale);
+            insertImp.setString(5, imp.curriculum);
+            insertImp.setBoolean(6, imp.dirigente);
+            insertImp.setString(7, imp.tipoImpiegato);
+            insertImp.setString(8, imp.dataAssunzione);
+            insertImp.setString(9, imp.dataLicenziamento);
+            insertImp.setFloat(10, imp.stipendio);
+            insertImp.setString(11, imp.sesso);
+            int result = insertImp.executeUpdate();
+            if (result == 1) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
 
 
 
     //todo ELIMINARE UN IMPIEGATO NEL MODEL E NEL DATABASE
     @Override //supongo che data la matricola elimino l'impiegato.
-    public boolean removeImpiegato(String matricola) {
+    public boolean removeImpiegatoDAO(String matricola) {
         return false;
     }
 
@@ -173,7 +198,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
     //Todo AGGIUNGERE UN NUOVO PROGETTO
     @Override
-    public boolean addProgetto() {
+    public boolean addProgettoDAO() {
         return false;
     }
 
@@ -181,7 +206,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
     //Todo ELIMINARE UN PROGETTO
     @Override
-    public boolean removeProgetto() {
+    public boolean removeProgettoDAO() {
         return false;
     }
 
@@ -189,7 +214,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
     //Todo AGGIUNGERE UN NUOVO LABORATORIO
     @Override
-    public boolean addLaboratorio() {
+    public boolean addLaboratorioDAO() {
         return false;
     }
 
@@ -197,7 +222,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
     //Todo ELIMINARE UN LABORATORIO
     @Override
-    public boolean removeLaboratorio() {
+    public boolean removeLaboratorioDAO() {
         return false;
     }
 
