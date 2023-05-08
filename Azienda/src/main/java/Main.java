@@ -16,7 +16,14 @@ public class Main extends Application
         launch(args);
 
         Controller c = new Controller();
+
     }
+
+
+
+
+
+
 
 
     @Override//METODO START CHE APRE LA PRIMA FINESTRA(MENU PRINCIPALE)
@@ -30,8 +37,6 @@ public class Main extends Application
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-
 }
 
 
