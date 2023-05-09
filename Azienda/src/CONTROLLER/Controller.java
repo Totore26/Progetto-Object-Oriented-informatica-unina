@@ -13,13 +13,12 @@ import java.util.List;
 
 public class Controller
 {
-
     public List<Impiegato> listaImpiegato = new ArrayList<>();
     public List<Progetto> listaProgetto = new ArrayList<>();
     public List<Laboratorio> listaLaboratorio = new ArrayList<>();
     public List<Storico> listaStorico = new ArrayList<>();
 
-
+    //todo implementare il singleton del controller in modo tale da restituire sempre lo stesso oggetto
     public Controller() {
         dumpDati();
     }
@@ -48,11 +47,6 @@ public class Controller
              return false;
         }
     }
-
-
-
-
-
 
 
 }

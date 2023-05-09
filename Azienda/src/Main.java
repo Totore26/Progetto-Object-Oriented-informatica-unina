@@ -1,4 +1,5 @@
 import CONTROLLER.Controller;
+import GUI.MenuPrincipale;
 
 public class Main
 {
@@ -6,8 +7,7 @@ public class Main
     {
         System.out.println("GRANDE RAIMONDO!");
 
-        Controller c = new Controller();
-        c.dumpDati();
+        new MenuPrincipale();
 
     }
 

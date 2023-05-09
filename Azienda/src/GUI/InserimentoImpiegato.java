@@ -144,8 +144,6 @@ public class InserimentoImpiegato extends JDialog {
         buttonPanel.add(bottoneAnnulla);
 
 
-
-
         // Aggiungiamo i pannelli alla finestra
         add(inputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -160,7 +158,7 @@ public class InserimentoImpiegato extends JDialog {
 
 
 
-    //todo da fare il caricamento della lista impiegati e creare la tabella impiegati(tutte le matricole)
+
 
 
 }

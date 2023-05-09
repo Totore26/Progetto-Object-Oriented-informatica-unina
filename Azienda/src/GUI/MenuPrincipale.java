@@ -1,13 +1,14 @@
 package GUI;
 
-
-
-
+import CONTROLLER.Controller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MenuPrincipale {
+    Controller controller = new Controller();
     private JFrame frame;
     private JLabel labelBenvenuto;
     private JButton bottoneImpiegati;
@@ -56,6 +57,18 @@ public class MenuPrincipale {
         bottoneLaboratori.setMaximumSize(buttonSize);
         bottoneProgetti.setMaximumSize(buttonSize);
 
+        bottoneImpiegati.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // chiudo la finestra corrente
+                frame.setVisible(false);
+                // apro la finestra VistaImpiegati
+                VistaImpiegati vistaImpiegati=new VistaImpiegati(controller,frame);
+
+            }
+        });
+
+
         // Imposta le dimensioni del frame, la posizione al centro e rendilo visibile
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
@@ -65,4 +78,5 @@ public class MenuPrincipale {
     public static void main(String[] args) {
         new MenuPrincipale();
     }
+
 }
