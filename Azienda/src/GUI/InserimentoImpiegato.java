@@ -131,7 +131,7 @@ public class InserimentoImpiegato extends JDialog {
                 setVisible(false);
             }
         });
-        buttonPanel.add(bottoneSalva);
+
 
         // Implementazione bottone Annulla
         JButton bottoneAnnulla = new JButton("Annulla");
@@ -141,6 +141,9 @@ public class InserimentoImpiegato extends JDialog {
                 setVisible(false);
             }
         });
+
+
+        buttonPanel.add(bottoneSalva);
         buttonPanel.add(bottoneAnnulla);
 
 
