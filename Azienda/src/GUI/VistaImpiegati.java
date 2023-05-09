@@ -38,12 +38,12 @@ import java.util.ArrayList;
              */
             // Creiamo la tabella impiegati
             String[] columns = {"Matricola", "Nome", "Cognome"};
-            ArrayList<Impiegato> listaImpiegati = (ArrayList<Impiegato>) controller.listaImpiegato;
+            ArrayList<Impiegato> listaImpiegati = (ArrayList<Impiegato>) controller.getListaImpiegato();
             Object[][] data = new Object[listaImpiegati.size()][3];
             for (int i = 0; i < listaImpiegati.size(); i++) {
-                data[i][0] = listaImpiegati.get(i).matricola;
-                data[i][1] = listaImpiegati.get(i).nome;
-                data[i][2] = listaImpiegati.get(i).cognome;
+                data[i][0] = listaImpiegati.get(i).getMatricola();
+                data[i][1] = listaImpiegati.get(i).getNome();
+                data[i][2] = listaImpiegati.get(i).getCognome();
             }
             table = new JTable(data, columns);
             scrollPane = new JScrollPane(table);
