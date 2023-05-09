@@ -15,7 +15,7 @@ public class Laboratorio {
     private String RScientifico;
 
     //il seguente attributo considera la lista di afferenti per un laboratorio
-    private List<Impiegato> ListaAfferenti = new ArrayList<>();
+    private List<Impiegato> listaAfferenti = new ArrayList<>();
 
     public Laboratorio(String idLab, String topic, String indirizzo, int numeroTelefonico, int numAfferenti, String RScientifico) {
         this.idLab = idLab;
@@ -27,6 +27,10 @@ public class Laboratorio {
     }
 
 
+    //aggiunge un afferente ad un dato laboratorio
+    public void aggiungiAfferente(Impiegato imp){
+        this.listaAfferenti.add(imp);
+    }
 
     //getter di Laboratorio
     public String getIdLab() {
@@ -54,7 +58,7 @@ public class Laboratorio {
     }
 
     public List<Impiegato> getListaAfferenti() {
-        return ListaAfferenti;
+        return listaAfferenti;
     }
 
 
@@ -85,6 +89,6 @@ public class Laboratorio {
     }
 
     public void setListaAfferenti(List<Impiegato> listaAfferenti) {
-        ListaAfferenti = listaAfferenti;
+        listaAfferenti = listaAfferenti;
     }
 }

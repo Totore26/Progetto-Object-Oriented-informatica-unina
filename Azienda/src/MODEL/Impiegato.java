@@ -1,6 +1,5 @@
 package MODEL;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,20 +14,16 @@ public class Impiegato {
     private String curriculum;
     private boolean dirigente;
     private String dataAssunzione;
-
     private String tipoImpiegato;
     private String dataLicenziamento;
     private float stipendio;
     private String sesso;
 
-    //il seguente attributo ha la lista degli storici di un impiegato.
-    private List<Storico> listaStorico= new ArrayList<>();
-    //il seguente attributo considera a quanti laboratori è associato un impiegato
-    private List<Laboratorio> ListaAfferenza = new ArrayList<>();
+    private List<Storico> listaStorico = new ArrayList<>();
+    private List<Laboratorio> listaAfferenza = new ArrayList<>();
 
 
-
-
+    //Crea il riferimento ad un Impiegato
     public Impiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, String dataAssunzione, String dataLicenziamento, float stipendio, String sesso) {
         this.matricola = matricola;
         this.nome = nome;
@@ -42,11 +37,23 @@ public class Impiegato {
         this.sesso = sesso;
     }
 
-    public String getNome(){return nome;}
+
+    //aggiunge alla listaAfferenza il laboratorio in cui lavora
+    public void aggiungiLaboratorio(Laboratorio lab){
+        this.listaAfferenza.add(lab);
+    }
+
+    //aggiunge allo storico
+    public void aggiungiStorico(Storico storico){
+        this.listaStorico.add(storico);
+    }
+
 
 
 
     //funzioni che ritornano gli attributi privati
+    public String getNome(){return nome;}
+
     public String getMatricola() {
         return matricola;
     }
@@ -92,7 +99,7 @@ public class Impiegato {
     }
 
     public List<Laboratorio> getListaAfferenza() {
-        return ListaAfferenza;
+        return listaAfferenza;
     }
 
 
@@ -147,6 +154,8 @@ public class Impiegato {
     }
 
     public void setListaAfferenza(List<Laboratorio> listaAfferenza) {
-        ListaAfferenza = listaAfferenza;
+        this.listaAfferenza = listaAfferenza;
     }
+
+
 }
