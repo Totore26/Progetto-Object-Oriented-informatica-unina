@@ -31,6 +31,34 @@ public class Progetto {
         this.responsabile=responsabile;
     }
 
+    //funzioni che ritornano gli attributi privati
     public String getNome(){return nome;}
 
+    public String getCup() {
+        return cup;
+    }
+
+    public float getBudget() {
+        return budget;
+    }
+
+    public String getDataInizio() {
+        return dataInizio;
+    }
+
+    public String getDataFine() {
+        return dataFine;
+    }
+
+    public String getResponsabile() {
+        return responsabile;
+    }
+
+    public String getReferente() {
+        return referente;
+    }
+
+    public List<Laboratorio> getListaLaboratori() {
+        return listaLaboratori;
+    }
 }

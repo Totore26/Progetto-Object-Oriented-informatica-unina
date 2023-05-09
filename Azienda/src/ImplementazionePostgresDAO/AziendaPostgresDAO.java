@@ -30,6 +30,8 @@ public class AziendaPostgresDAO implements AziendaDAO {
             }
     };
 
+
+
     @Override
     public List<Laboratorio> getListLaboratorioDAO(){
         {
@@ -163,17 +165,17 @@ public class AziendaPostgresDAO implements AziendaDAO {
         try {
             PreparedStatement insertImp;
             insertImp = connection.prepareStatement("INSERT INTO IMPIEGATO (matricola, nome, cognome, codice_fiscale, curriculum, dirigente, tipo_impiegato, data_assunzione, data_licenziamento, stipendio, sesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            insertImp.setString(1, imp.matricola);
-            insertImp.setString(2, imp.nome);
-            insertImp.setString(3, imp.cognome);
-            insertImp.setString(4, imp.codiceFiscale);
-            insertImp.setString(5, imp.curriculum);
-            insertImp.setBoolean(6, imp.dirigente);
-            insertImp.setString(7, imp.tipoImpiegato);
-            insertImp.setString(8, imp.dataAssunzione);
-            insertImp.setString(9, imp.dataLicenziamento);
-            insertImp.setFloat(10, imp.stipendio);
-            insertImp.setString(11, imp.sesso);
+            insertImp.setString(1, imp.getMatricola());
+            insertImp.setString(2, imp.getNome());
+            insertImp.setString(3, imp.getCognome());
+            insertImp.setString(4, imp.getCodiceFiscale());
+            insertImp.setString(5, imp.getCurriculum());
+            insertImp.setBoolean(6, imp.isDirigente());
+            insertImp.setString(7, imp.getTipoImpiegato());
+            insertImp.setString(8, imp.getDataAssunzione());
+            insertImp.setString(9, imp.getDataLicenziamento());
+            insertImp.setFloat(10, imp.getStipendio());
+            insertImp.setString(11, imp.getSesso());
             int result = insertImp.executeUpdate();
             if (result == 1) {
                 return true;
@@ -184,8 +186,6 @@ public class AziendaPostgresDAO implements AziendaDAO {
             return false;
         }
     }
-
-
 
 
     //todo ELIMINARE UN IMPIEGATO NEL MODEL E NEL DATABASE

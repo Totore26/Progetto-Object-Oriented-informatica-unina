@@ -13,12 +13,13 @@ import java.util.List;
 
 public class Controller
 {
-    public List<Impiegato> listaImpiegato = new ArrayList<>();
-    public List<Progetto> listaProgetto = new ArrayList<>();
-    public List<Laboratorio> listaLaboratorio = new ArrayList<>();
-    public List<Storico> listaStorico = new ArrayList<>();
 
-    //todo implementare il singleton del controller in modo tale da restituire sempre lo stesso oggetto
+    private List<Impiegato> listaImpiegato = new ArrayList<>();
+    private List<Progetto> listaProgetto = new ArrayList<>();
+    private List<Laboratorio> listaLaboratorio = new ArrayList<>();
+    private List<Storico> listaStorico = new ArrayList<>();
+
+
     public Controller() {
         dumpDati();
     }
@@ -49,4 +50,20 @@ public class Controller
     }
 
 
+    //funzioni che ritornano i Model
+    public List<Impiegato> getListaImpiegato() {
+        return listaImpiegato;
+    }
+
+    public List<Progetto> getListaProgetto() {
+        return listaProgetto;
+    }
+
+    public List<Laboratorio> getListaLaboratorio() {
+        return listaLaboratorio;
+    }
+
+    public List<Storico> getListaStorico() {
+        return listaStorico;
+    }
 }
