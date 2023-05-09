@@ -38,7 +38,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
             try {
                 PreparedStatement selectListaLaboratori;
                 List<Laboratorio> listaLaboratorio = new ArrayList<>();
-                selectListaLaboratori = connection.prepareStatement("SELECT * FROM laboratorio ORDER BY nome");
+                selectListaLaboratori = connection.prepareStatement("SELECT * FROM laboratorio ORDER BY id_lab");
                 ResultSet rs = selectListaLaboratori.executeQuery();
                 while (rs.next() ) {
                     String IdLab = rs.getString("id_lab");
@@ -69,7 +69,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
         try {
             PreparedStatement selectListaImpiegati;
             List<Impiegato> listaImpiegati = new ArrayList<>();
-            selectListaImpiegati = connection.prepareStatement("SELECT * FROM impiegato ORDER BY nome");
+            selectListaImpiegati = connection.prepareStatement("SELECT * FROM impiegato ORDER BY matricola");
             ResultSet rs = selectListaImpiegati.executeQuery();
             while (rs.next() ) {
                 String matricola = rs.getString("matricola");
@@ -86,6 +86,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
                 //TODO ricorda di gestire le date e formattarle in modo coerente.
                 //todo anche di inizializzare i laboratori a cui afferisce prendendoli da AFFERENZA
+
                 Impiegato imp = new Impiegato(matricola, nome, cognome, codiceFiscale, curriculum, dirigente,tipoImpiegato, dataAssunzione ,dataLicenziamento, stipendio, sesso);
                 listaImpiegati.add(imp);
             }
