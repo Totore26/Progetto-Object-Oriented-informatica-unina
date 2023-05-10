@@ -7,12 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-    public class VistaImpiegati
+    public class FinestraImpiegati
     {
         private JTable tabella;
         private JScrollPane scrollPane;
 
-        public VistaImpiegati(Controller controller, Frame frameMenuPrincipale) {
+        public FinestraImpiegati(Controller controller, Frame frameMenuPrincipale) {
             // Creiamo una finestra di esempio per testare la finestra d'inserimento impiegato
             JFrame frameVistaImpiegato = new JFrame("Finestra Impiegati");
             frameVistaImpiegato.setSize(800, 600);
@@ -31,8 +31,16 @@ import java.util.ArrayList;
                 data[i][2] = listaImpiegati.get(i).getCognome();
             }
             tabella = new JTable(data, columns);
-
             tabella.setDefaultEditor(Object.class, null);
+            tabella.setDefaultEditor(Object.class, null);
+            tabella.setShowGrid(true);
+            //COLORI TABELLA
+            tabella.setGridColor(Color.BLACK);
+            tabella.setBackground(Color.DARK_GRAY);
+            tabella.getTableHeader().setBackground(Color.BLACK);
+            tabella.getTableHeader().setForeground(Color.WHITE);
+
+            tabella.getTableHeader().setReorderingAllowed(false);
             scrollPane = new JScrollPane(tabella);
             frameVistaImpiegato.add(scrollPane, BorderLayout.CENTER);
 
@@ -87,15 +95,15 @@ import java.util.ArrayList;
 
 
             //DA IMPLEMENTARE IL CODICE PER SALVARE LE MODIFICHE
-            JButton bottoneProfiloImpiegato = new JButton();
+            JButton bottoneProfiloImpiegato = new JButton("Profilo Impiegato");
             bottoneProfiloImpiegato.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     int selectedRow = tabella.getSelectedRow();
                     int selectedColumn = tabella.getSelectedColumn();
-                    // L'utente ha selezionato una cella valida
+                    // L'utente ha selezionato una cella
                     if (selectedRow != -1 && selectedColumn != -1) {
-                        // La cella selezionata è nella prima colonna (quella contenente la matricola)
+                        // la matricola è nella prima colonna della tabella
                         String matricolaSelezionata = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
 
                         // Creao un'istanza della finestra di dialogo ProfiloImpiegato
@@ -118,8 +126,10 @@ import java.util.ArrayList;
             JPanel panelBottoniRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
             panelBottoniLeft.add(bottoneMenuPrincipale);
+            panelBottoniRight.add(bottoneProfiloImpiegato);
             panelBottoniRight.add(bottoneInserisci);
             panelBottoniRight.add(bottoneElimina);
+
 
             panelBottoni.add(panelBottoniLeft, BorderLayout.WEST);
             panelBottoni.add(panelBottoniRight, BorderLayout.EAST);

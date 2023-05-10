@@ -1,7 +1,6 @@
 package GUI;
 
 import CONTROLLER.Controller;
-import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +63,7 @@ public class MenuPrincipale {
                 // chiudo la finestra corrente
                 frame.setVisible(false);
                 // apro la finestra VistaImpiegati
-                VistaImpiegati vistaImpiegati=new VistaImpiegati(controller,frame);
+                FinestraImpiegati finestraImpiegati =new FinestraImpiegati(controller,frame);
 
             }
         });
