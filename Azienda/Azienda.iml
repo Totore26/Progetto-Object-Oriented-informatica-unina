@@ -17,5 +17,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="IntelliJ IDEA GridLayout" level="project" />
+    <orderEntry type="library" name="intellij_forms_rt" level="project" />
   </component>
 </module>
