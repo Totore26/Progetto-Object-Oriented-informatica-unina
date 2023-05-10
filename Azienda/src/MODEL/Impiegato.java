@@ -1,6 +1,8 @@
 package MODEL;
 
+import java.sql.SQLData;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 //TODO
@@ -13,9 +15,9 @@ public class Impiegato {
     private String codiceFiscale;
     private String curriculum;
     private boolean dirigente;
-    private String dataAssunzione;
     private String tipoImpiegato;
-    private String dataLicenziamento;
+    private Date dataAssunzione;
+    private Date dataLicenziamento;
     private float stipendio;
     private String sesso;
 
@@ -24,7 +26,7 @@ public class Impiegato {
 
 
     //Crea il riferimento ad un Impiegato
-    public Impiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, String dataAssunzione, String dataLicenziamento, float stipendio, String sesso) {
+    public Impiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;
@@ -74,7 +76,7 @@ public class Impiegato {
         return dirigente;
     }
 
-    public String getDataAssunzione() {
+    public Date getDataAssunzione() {
         return dataAssunzione;
     }
 
@@ -82,7 +84,7 @@ public class Impiegato {
         return tipoImpiegato;
     }
 
-    public String getDataLicenziamento() {
+    public Date getDataLicenziamento() {
         return dataLicenziamento;
     }
 
@@ -129,7 +131,7 @@ public class Impiegato {
         this.dirigente = dirigente;
     }
 
-    public void setDataAssunzione(String dataAssunzione) {
+    public void setDataAssunzione(Date dataAssunzione) {
         this.dataAssunzione = dataAssunzione;
     }
 
@@ -137,7 +139,7 @@ public class Impiegato {
         this.tipoImpiegato = tipoImpiegato;
     }
 
-    public void setDataLicenziamento(String dataLicenziamento) {
+    public void setDataLicenziamento(Date dataLicenziamento) {
         this.dataLicenziamento = dataLicenziamento;
     }
 

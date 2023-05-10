@@ -1,7 +1,9 @@
 package MODEL;
 
 
+import java.sql.SQLData;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -10,18 +12,16 @@ public class Progetto {
     private String nome;
     private String cup;
     private float budget;
-    private String dataInizio;
-    private String dataFine;
-
-    //todo cambiare gli attributi seguenti con gli oggetti Impiegato.
-    private String responsabile;
-    private String referente;
+    private Date dataInizio;
+    private Date dataFine;
+    private Impiegato responsabile;
+    private Impiegato referente;
 
     //ogni Progetto ha la lista dei laboratori associati[...]
     private List<Laboratorio> listaLaboratori = new ArrayList<Laboratorio>();
 
 
-    public Progetto(String nome, String cup, float budget, String dataInizio, String dataFine, String responsabile, String referente){
+    public Progetto(String nome, String cup, float budget, Date dataInizio, Date dataFine, Impiegato responsabile, Impiegato referente){
         this.nome = nome;
         this.cup=cup;
         this.budget=budget;
@@ -42,19 +42,19 @@ public class Progetto {
         return budget;
     }
 
-    public String getDataInizio() {
+    public Date getDataInizio() {
         return dataInizio;
     }
 
-    public String getDataFine() {
+    public Date getDataFine() {
         return dataFine;
     }
 
-    public String getResponsabile() {
+    public Impiegato getResponsabile() {
         return responsabile;
     }
 
-    public String getReferente() {
+    public Impiegato getReferente() {
         return referente;
     }
 

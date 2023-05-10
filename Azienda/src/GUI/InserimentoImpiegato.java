@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -111,8 +112,8 @@ public class InserimentoImpiegato extends JDialog {
                 String curriculum = curriculumTextArea.getText();
                 String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
                 boolean dirigente = dirigenteCheckBox.isSelected();
-                String dataAssunzione = (String) dataAssunzioneSpinner.getValue();
-                String dataLicenziamento = (String) dataAssunzioneSpinner.getValue();
+                Date dataAssunzione = (Date) dataAssunzioneSpinner.getValue();
+                Date dataLicenziamento = (Date) dataAssunzioneSpinner.getValue();
                 float stipendio = (float) stipendioSpinner.getValue();
                 // Recupero il sesso selezionato
                 String sesso;
@@ -127,7 +128,6 @@ public class InserimentoImpiegato extends JDialog {
                 Impiegato imp = new Impiegato(matricola,nome,cognome,codiceFiscale,curriculum,dirigente,tipoImpiegato,dataAssunzione,dataLicenziamento,stipendio,sesso);
 
                 //dopo aver salvato in modo adeguato l'impiegato, controllo che l'inserimento vada a buon fine...
-                controller.InserimentoImpiegato(imp);
                 setVisible(false);
             }
         });

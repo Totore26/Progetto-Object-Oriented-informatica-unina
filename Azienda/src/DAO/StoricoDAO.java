@@ -2,6 +2,7 @@ package DAO;
 
 public interface StoricoDAO {
 
-    public boolean updateStorico();
-    public boolean updateDirigente();
+    //todo
+    public boolean updateStoricoDAO();
+    public boolean updateDirigenteDAO();
 }

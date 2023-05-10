@@ -9,10 +9,7 @@ import MODEL.Laboratorio;
 import MODEL.Progetto;
 import MODEL.Storico;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,43 +29,40 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
 
 
+
     @Override
-    public List<Laboratorio> getListLaboratorioDAO(){
-        {
-            try {
-                PreparedStatement selectListaLaboratori;
-                List<Laboratorio> listaLaboratorio = new ArrayList<>();
-                selectListaLaboratori = connection.prepareStatement("SELECT * FROM laboratorio ORDER BY id_lab");
-                ResultSet rs = selectListaLaboratori.executeQuery();
-                while (rs.next() ) {
-                    String IdLab = rs.getString("id_lab");
-                    String topic = rs.getString("topic");
-                    String indirizzo = rs.getString("indirizzo");
-                    int numeroTelefonico = rs.getInt("numero_telefonico");
-                    int numAfferenti = rs.getInt("numero_afferenti");
-                    String RScientifico = rs.getString("r_scientifico");
+    public void getListLaboratorioDAO(ArrayList<String> idLablist, ArrayList<String> topiclist, ArrayList<String> indirizzolist, ArrayList<String> numeroTelefonicoList, ArrayList<Integer> numAfferentilist, ArrayList<String> matricolaResponsabileScientifico){
+        try {
+            PreparedStatement selectListaLaboratori;
+            selectListaLaboratori = connection.prepareStatement("SELECT * FROM laboratorio ORDER BY id_lab");
+            ResultSet rs = selectListaLaboratori.executeQuery();
+            while (rs.next() ) {
+                String idLab = rs.getString("id_lab");
+                String topic = rs.getString("topic");
+                String indirizzo = rs.getString("indirizzo");
+                String numeroTelefonico = rs.getString("numero_telefono");
+                int numAfferenti = rs.getInt("numero_afferenti");
+                String RScientifico = rs.getString("r_scientifico");
 
-                    Laboratorio lab = new Laboratorio(IdLab, topic, indirizzo, numeroTelefonico, numAfferenti, RScientifico);
+                idLablist.add(idLab);
+                topiclist.add(topic);
+                indirizzolist.add(indirizzo);
+                numeroTelefonicoList.add(numeroTelefonico);
+                numAfferentilist.add(numAfferenti);
+                matricolaResponsabileScientifico.add(RScientifico);
 
-                    //todo prendi da afferenza tutti gli impiegati che afferiscono ad un Laboratorio.
-                    listaLaboratorio.add(lab);
-                }
-                //ritorno la lista dei progetti.
-                return listaLaboratorio;
-
-            } catch (SQLException e) {
-                return null;
             }
 
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
     @Override
-    public List<Impiegato> getListImpiegatiDAO() {
+    public void getListImpiegatiDAO(ArrayList<String> matricolalist, ArrayList<String>nomelist, ArrayList<String> cognomelist, ArrayList<String> codiceFiscalelist, ArrayList<String> curriculumlist, ArrayList<Boolean> dirigentelist, ArrayList<String> tipoImpiegatolist, ArrayList<Date> dataAssunzionelist, ArrayList<Date> dataLicenziamentolist, ArrayList<Float> stipendiolist, ArrayList<String> sessolist) {
 
         try {
             PreparedStatement selectListaImpiegati;
-            List<Impiegato> listaImpiegati = new ArrayList<>();
             selectListaImpiegati = connection.prepareStatement("SELECT * FROM impiegato ORDER BY matricola");
             ResultSet rs = selectListaImpiegati.executeQuery();
             while (rs.next() ) {
@@ -79,153 +73,91 @@ public class AziendaPostgresDAO implements AziendaDAO {
                 String curriculum = rs.getString("curriculum");
                 boolean dirigente = rs.getBoolean("dirigente");
                 String tipoImpiegato = rs.getString("tipo_impiegato");
-                String dataAssunzione =rs.getString("data_assunzione");
-                String dataLicenziamento = rs.getString("data_licenziamento");
+                Date dataAssunzione = rs.getDate("data_assunzione");
+                Date dataLicenziamento = rs.getDate("data_licenziamento");
                 float stipendio = rs.getFloat("stipendio");
                 String sesso = rs.getString("sesso");
 
-                //TODO ricorda di gestire le date e formattarle in modo coerente.
-                //todo anche di inizializzare i laboratori a cui afferisce prendendoli da AFFERENZA
-
-                Impiegato imp = new Impiegato(matricola, nome, cognome, codiceFiscale, curriculum, dirigente,tipoImpiegato, dataAssunzione ,dataLicenziamento, stipendio, sesso);
-                listaImpiegati.add(imp);
+                //riempio i vettori che saranno usati per istanziare oggetti nel controller[...]
+                matricolalist.add(matricola);
+                nomelist.add(nome);
+                cognomelist.add(cognome);
+                codiceFiscalelist.add(codiceFiscale);
+                curriculumlist.add(curriculum);
+                dirigentelist.add(dirigente);
+                tipoImpiegatolist.add(tipoImpiegato);
+                dataAssunzionelist.add(dataAssunzione);
+                dataLicenziamentolist.add(dataLicenziamento);
+                stipendiolist.add(stipendio);
+                sessolist.add(sesso);
             }
 
-            //ritorno la lista degli impiegati.
-            return listaImpiegati;
+            connection.close();
 
         } catch (SQLException e) {
-            return null;
+            System.out.println("Errore nel dump dei dati Impiegato...");
         }
 
     }
     @Override
-    public List<Progetto> getListProgettoDAO(){
+    public void getListProgettoDAO(ArrayList<String> nomelist, ArrayList<String> cuplist,  ArrayList<Float> budgetlist, ArrayList<Date> dataIniziolist, ArrayList<Date> dataFinelist, ArrayList<String> matricolaResponsabile, ArrayList<String> matricolaReferente){
 
         try {
             PreparedStatement selectListaProgetti;
-            List<Progetto> listaProgetto = new ArrayList<>();
             selectListaProgetti = connection.prepareStatement("SELECT * FROM progetto ORDER BY nome_progetto");
             ResultSet rs = selectListaProgetti.executeQuery();
             while (rs.next() ) {
                 String cup = rs.getString("cup");
                 String nome = rs.getString("nome_progetto");
-                int budget = rs.getInt("budget");
-                String dataInizio = rs.getString("data_inizio");
-                String dataFine = rs.getString("data_fine");
+                float budget = rs.getInt("budget");
+                Date dataInizio =(Date) rs.getDate("data_inizio");
+                Date dataFine =(Date) rs.getDate("data_fine");
                 String responsabile = rs.getString("responsabile");
                 String referente = rs.getString("referente");
 
+                cuplist.add(cup);
+                nomelist.add(nome);
+                budgetlist.add(budget);
+                dataIniziolist.add(dataInizio);
+                dataFinelist.add(dataFine);
+                matricolaResponsabile.add(responsabile);
+                matricolaReferente.add(referente);
 
-                //todo ricorda di inizializzare anche i laboratori a cui è associato il progetto.
-                Progetto pro = new Progetto(nome,cup,budget,dataInizio,dataFine,responsabile,referente);
 
-                listaProgetto.add(pro);
             }
-            //ritorno la lista dei progetti.
-            return listaProgetto;
 
         } catch (SQLException e) {
-            return null;
+            e.printStackTrace();
         }
 
     }
     @Override
-    public List<Storico> getListStoricoDAO(){
+    public void getListStoricoDAO(ArrayList<String> ruoloPrecedentelist, ArrayList<String> nuovoRuololist, ArrayList<SQLData> dataScattolist, ArrayList<String> impiegatoMatricolalist){
         try {
             PreparedStatement selectListaStorici;
-            List<Storico> listaStorico = new ArrayList<>();
             selectListaStorici = connection.prepareStatement("SELECT * FROM storico ORDER BY matricola");
             ResultSet rs = selectListaStorici.executeQuery();
             while (rs.next() ) {
                 String ruoloPrecedente = rs.getString("ruolo_prec");
                 String nuovoRuolo = rs.getString("nuovo_ruolo");
-                String datascatto = rs.getString("data_scatto");
+                SQLData dataScatto =(SQLData) rs.getDate("data_scatto");
                 String matricola = rs.getString("matricola");
 
-                //todo creare i vari storici che poi vanno inseriti all'interno della listaStorici di impiegato.
-                Storico sto = new Storico(ruoloPrecedente,nuovoRuolo,datascatto,matricola);
-                listaStorico.add(sto);
+
+                ruoloPrecedentelist.add(ruoloPrecedente);
+                nuovoRuololist.add(nuovoRuolo);
+                dataScattolist.add(dataScatto);
+                impiegatoMatricolalist.add(matricola);
+
+
             }
             //ritorno la lista dei progetti.
-            return listaStorico;
 
         } catch (SQLException e) {
-            return null;
+            System.out.println("Errore nel dump di storico...");
         }
     }
 
-
-
-
-
-    //todo AGGIUNGERE UN IMPIEGATO SIA NEL MODEL CHE NEL DATABASE.
-    @Override
-    // Aggiunge un impiegato nel database
-    public boolean addImpiegatoDAO(Impiegato imp) {
-        try {
-            PreparedStatement insertImp;
-            insertImp = connection.prepareStatement("INSERT INTO IMPIEGATO (matricola, nome, cognome, codice_fiscale, curriculum, dirigente, tipo_impiegato, data_assunzione, data_licenziamento, stipendio, sesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            insertImp.setString(1, imp.getMatricola());
-            insertImp.setString(2, imp.getNome());
-            insertImp.setString(3, imp.getCognome());
-            insertImp.setString(4, imp.getCodiceFiscale());
-            insertImp.setString(5, imp.getCurriculum());
-            insertImp.setBoolean(6, imp.isDirigente());
-            insertImp.setString(7, imp.getTipoImpiegato());
-            insertImp.setString(8, imp.getDataAssunzione());
-            insertImp.setString(9, imp.getDataLicenziamento());
-            insertImp.setFloat(10, imp.getStipendio());
-            insertImp.setString(11, imp.getSesso());
-            int result = insertImp.executeUpdate();
-            if (result == 1) {
-                return true;
-            }
-            return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    //todo ELIMINARE UN IMPIEGATO NEL MODEL E NEL DATABASE
-    @Override //supongo che data la matricola elimino l'impiegato.
-    public boolean removeImpiegatoDAO(String matricola) {
-        return false;
-    }
-
-
-
-    //Todo AGGIUNGERE UN NUOVO PROGETTO
-    @Override
-    public boolean addProgettoDAO() {
-        return false;
-    }
-
-
-
-    //Todo ELIMINARE UN PROGETTO
-    @Override
-    public boolean removeProgettoDAO() {
-        return false;
-    }
-
-
-
-    //Todo AGGIUNGERE UN NUOVO LABORATORIO
-    @Override
-    public boolean addLaboratorioDAO() {
-        return false;
-    }
-
-
-
-    //Todo ELIMINARE UN LABORATORIO
-    @Override
-    public boolean removeLaboratorioDAO() {
-        return false;
-    }
 
 
 

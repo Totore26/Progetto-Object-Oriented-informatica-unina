@@ -8,16 +8,14 @@ public class Laboratorio {
     private String idLab;
     private String topic;
     private String indirizzo;
-    private int numeroTelefonico;
+    private String numeroTelefonico;
     private int numAfferenti;
-
-    //todo  cambiare il Rscientifico con l'oggetto Impiegato adeguato.
-    private String RScientifico;
+    private Impiegato RScientifico;
 
     //il seguente attributo considera la lista di afferenti per un laboratorio
     private List<Impiegato> listaAfferenti = new ArrayList<>();
 
-    public Laboratorio(String idLab, String topic, String indirizzo, int numeroTelefonico, int numAfferenti, String RScientifico) {
+    public Laboratorio(String idLab, String topic, String indirizzo, String numeroTelefonico, int numAfferenti, Impiegato RScientifico) {
         this.idLab = idLab;
         this.topic = topic;
         this.indirizzo = indirizzo;
@@ -45,7 +43,7 @@ public class Laboratorio {
         return indirizzo;
     }
 
-    public int getNumeroTelefonico() {
+    public String getNumeroTelefonico() {
         return numeroTelefonico;
     }
 
@@ -53,7 +51,7 @@ public class Laboratorio {
         return numAfferenti;
     }
 
-    public String getRScientifico() {
+    public Impiegato getRScientifico() {
         return RScientifico;
     }
 
@@ -76,7 +74,7 @@ public class Laboratorio {
         this.indirizzo = indirizzo;
     }
 
-    public void setNumeroTelefonico(int numeroTelefonico) {
+    public void setNumeroTelefonico(String numeroTelefonico) {
         this.numeroTelefonico = numeroTelefonico;
     }
 
@@ -84,7 +82,7 @@ public class Laboratorio {
         this.numAfferenti = numAfferenti;
     }
 
-    public void setRScientifico(String RScientifico) {
+    public void setRScientifico(Impiegato RScientifico) {
         this.RScientifico = RScientifico;
     }
 
