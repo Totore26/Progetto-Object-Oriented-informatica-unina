@@ -1,13 +1,13 @@
 package GUI;
 
+import com.toedter.calendar.JDateChooser;
 import MODEL.Impiegato;
 import CONTROLLER.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLData;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class InserimentoImpiegato extends JDialog {
@@ -20,9 +20,9 @@ public class InserimentoImpiegato extends JDialog {
     private JTextArea curriculumTextArea;
     private JCheckBox dirigenteCheckBox;
     private JComboBox<String> tipoImpiegatoComboBox;
-    private JSpinner dataAssunzioneSpinner;
-    private JSpinner dataLicenziamentoSpinner;
     private JSpinner stipendioSpinner;
+    private JDateChooser dataAssunzioneChooser;
+    private JDateChooser dataLicenziamentoChooser;
 
     public InserimentoImpiegato(JFrame framePadre,Controller controller) {
         super(framePadre, "Inserimento Impiegato", true);
@@ -83,12 +83,13 @@ public class InserimentoImpiegato extends JDialog {
 
         // Aggiungiamo il campo "Data Assunzione"
         inputPanel.add(new JLabel("Data Assunzione:"));
-        dataLicenziamentoSpinner = new JSpinner(new SpinnerDateModel());
-        inputPanel.add(dataLicenziamentoSpinner);
+        dataAssunzioneChooser = new JDateChooser();
+        inputPanel.add(dataAssunzioneChooser);
+
         // Aggiungiamo il campo "Data Licenziamento"
         inputPanel.add(new JLabel("Data Licenziamento:"));
-        dataLicenziamentoSpinner = new JSpinner(new SpinnerDateModel());
-        inputPanel.add(dataLicenziamentoSpinner);
+        dataLicenziamentoChooser = new JDateChooser();
+        inputPanel.add(dataLicenziamentoChooser);
 
         // Aggiungiamo il campo "Dirigente"
         dirigenteCheckBox = new JCheckBox("Dirigente");
@@ -112,8 +113,13 @@ public class InserimentoImpiegato extends JDialog {
                 String curriculum = curriculumTextArea.getText();
                 String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
                 boolean dirigente = dirigenteCheckBox.isSelected();
-                Date dataAssunzione = (Date) dataAssunzioneSpinner.getValue();
-                Date dataLicenziamento = (Date) dataAssunzioneSpinner.getValue();
+
+                Date dataAssunzione = dataAssunzioneChooser.getDate();
+                Date dataLicenziamento = dataLicenziamentoChooser.getDate();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yy/MM/dd");
+                String dataAssunzioneString = dateFormat.format(dataAssunzione);
+                String dataLicenziamentoString = dateFormat.format(dataLicenziamento);
+
                 float stipendio = (float) stipendioSpinner.getValue();
                 // Recupero il sesso selezionato
                 String sesso;
@@ -125,9 +131,11 @@ public class InserimentoImpiegato extends JDialog {
                 } else {
                     sesso = null; // Nessun sesso selezionato
                 }
-                Impiegato imp = new Impiegato(matricola,nome,cognome,codiceFiscale,curriculum,dirigente,tipoImpiegato,dataAssunzione,dataLicenziamento,stipendio,sesso);
+                //Impiegato imp = new Impiegato(matricola,nome,cognome,codiceFiscale,curriculum,dirigente,tipoImpiegato,dataAssunzioneString,dataLicenziamentoString,stipendio,sesso);
 
+                //DA AGGIUSTARE
                 //dopo aver salvato in modo adeguato l'impiegato, controllo che l'inserimento vada a buon fine...
+                //controller.InserimentoImpiegato(imp);
                 setVisible(false);
             }
         });
@@ -152,16 +160,11 @@ public class InserimentoImpiegato extends JDialog {
         add(buttonPanel, BorderLayout.SOUTH);
 
         // Impostiamo le dimensioni della finestra
-        setSize(500, 500);
+        setSize(800, 600);
         setLocationRelativeTo(null);
 
         // Impostiamo la posizione della finestra al centro della finestra padre
         setLocationRelativeTo(framePadre);
     }
-
-
-
-
-
 
 }

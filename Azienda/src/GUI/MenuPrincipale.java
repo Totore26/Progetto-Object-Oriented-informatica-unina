@@ -1,6 +1,7 @@
 package GUI;
 
 import CONTROLLER.Controller;
+import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +46,7 @@ public class MenuPrincipale {
         // Aggiungi la JLabel e i bottoni al frame
         frame.add(Box.createVerticalStrut(50));
         frame.add(labelBenvenuto);
-        frame.add(Box.createVerticalStrut(20));
+        frame.add(Box.createVerticalStrut(50));
         frame.add(bottoneImpiegati);
         frame.add(Box.createVerticalStrut(10));
         frame.add(bottoneLaboratori);

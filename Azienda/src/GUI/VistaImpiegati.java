@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
     public class VistaImpiegati
     {
-        private JTable table;
+        private JTable tabella;
         private JScrollPane scrollPane;
 
         public VistaImpiegati(Controller controller, Frame frameMenuPrincipale) {
@@ -30,10 +30,10 @@ import java.util.ArrayList;
                 data[i][1] = listaImpiegati.get(i).getNome();
                 data[i][2] = listaImpiegati.get(i).getCognome();
             }
-            table = new JTable(data, columns);
+            tabella = new JTable(data, columns);
 
-            table.setDefaultEditor(Object.class, null);
-            scrollPane = new JScrollPane(table);
+            tabella.setDefaultEditor(Object.class, null);
+            scrollPane = new JScrollPane(tabella);
             frameVistaImpiegato.add(scrollPane, BorderLayout.CENTER);
 
 
@@ -56,27 +56,21 @@ import java.util.ArrayList;
             bottoneElimina.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    int selectedRow = table.getSelectedRow();
-                    int selectedColumn = table.getSelectedColumn();
+                    int selectedRow = tabella.getSelectedRow();
+                    int selectedColumn = tabella.getSelectedColumn();
 
                     if (selectedRow != -1 && selectedColumn != -1) {
-                        // L'utente ha selezionato una cella valida
-                        int modelColumnIndex = table.convertColumnIndexToModel(selectedColumn);
-                        if (modelColumnIndex == 0) {
-                            // La cella selezionata è nella prima colonna (quella contenente la matricola)
-                            String matricola = table.getValueAt(selectedRow, selectedColumn).toString();
-                            int response = JOptionPane.showOptionDialog(frameVistaImpiegato, "Sei sicuro di voler eliminare la matricola " + matricola + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
-                            if (response == JOptionPane.YES_OPTION) {
-                                // L'utente ha confermato l'eliminazione
-                                // ...
-                            }
-                        } else {
-                            // La cella selezionata non è nella prima colonna
-                            JOptionPane.showMessageDialog(frameVistaImpiegato, "Seleziona una matricola nella prima colonna.", "Errore", JOptionPane.ERROR_MESSAGE);
+                        // La matricola si trova nella prima colonna della tabella
+                        String matricolaSelezionata = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
+                        int response = JOptionPane.showOptionDialog(frameVistaImpiegato, "Sei sicuro di voler eliminare la matricola " + matricolaSelezionata + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+
+                        if (response == JOptionPane.YES_OPTION) {
+                            // L'utente ha confermato l'eliminazione
+                            // ...
                         }
                     } else {
-                        // L'utente non ha selezionato una cella valida
-                        JOptionPane.showMessageDialog(frameVistaImpiegato, "Seleziona una matricola nella prima colonna per eliminare l'impiegato.", "Errore", JOptionPane.ERROR_MESSAGE);
+                        // L'utente non ha selezionato una cella
+                        JOptionPane.showMessageDialog(frameVistaImpiegato, "Seleziona un impiegato per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
@@ -90,6 +84,31 @@ import java.util.ArrayList;
                     frameMenuPrincipale.setVisible(true);
                 }
             });
+
+
+            //DA IMPLEMENTARE IL CODICE PER SALVARE LE MODIFICHE
+            JButton bottoneProfiloImpiegato = new JButton();
+            bottoneProfiloImpiegato.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int selectedRow = tabella.getSelectedRow();
+                    int selectedColumn = tabella.getSelectedColumn();
+                    // L'utente ha selezionato una cella valida
+                    if (selectedRow != -1 && selectedColumn != -1) {
+                        // La cella selezionata è nella prima colonna (quella contenente la matricola)
+                        String matricolaSelezionata = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
+
+                        // Creao un'istanza della finestra di dialogo ProfiloImpiegato
+                        ProfiloImpiegato profiloImpiegato = new ProfiloImpiegato(matricolaSelezionata);
+                        // Mostro la finestra di dialogo
+                        profiloImpiegato.setVisible(true);
+                    } else {
+                        // L'utente non ha selezionato una cella
+                        JOptionPane.showMessageDialog(frameVistaImpiegato, "Seleziona un impiegato per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            });
+
 
 
 

@@ -18,5 +18,7 @@
     </orderEntry>
     <orderEntry type="library" name="IntelliJ IDEA GridLayout" level="project" />
     <orderEntry type="library" name="intellij_forms_rt" level="project" />
+    <orderEntry type="library" name="flatlaf-3.1.1(temi per jswing)" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
