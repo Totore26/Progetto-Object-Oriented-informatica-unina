@@ -1,18 +1,26 @@
 package GUI;
 import CONTROLLER.Controller;
+import org.postgresql.util.PSQLException;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-//NON ESTENTE JDIALOG PERCHE VIENE GESTITA IN MODO DIVERSO
+
+//LA CLASSE NON ESTENTE JDIALOG PERCHE VIENE GESTITA IN MODO DIVERSO
     public class FinestraImpiegati
     {
         private JTable tabella;
         private JScrollPane scrollPane;
+        private JTextField barraDiRicerca;
 
         public FinestraImpiegati(Controller controller, Frame frameMenuPrincipale) {
             // Creiamo una finestra di esempio per testare la finestra d'inserimento impiegato
@@ -30,7 +38,11 @@ import java.util.ArrayList;
             frameFinestraImpiegati.setLocationRelativeTo(null);
             frameFinestraImpiegati.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // Creiamo la tabella impiegati
+
+
+            // TABELLA IMPIEGATI
+
+
             String[] colonneTabella = {"Matricola", "Nome", "Cognome"};
             ArrayList<String> listaNomi = (ArrayList<String>) controller.getListaImpiegatoNomiGUI();
             ArrayList<String> listaCognomi = (ArrayList<String>) controller.getListaImpiegatoCognomiGUI();
@@ -41,10 +53,18 @@ import java.util.ArrayList;
                 data[i][1] = listaNomi.get(i);
                 data[i][2] = listaCognomi.get(i);
             }
+            // Creiamo il modello di tabella
+            DefaultTableModel modelloTabella = new DefaultTableModel(data, colonneTabella);
+            // Creiamo la tabella
+            tabella = new JTable(modelloTabella);
+            // Creiamo il TableRowSorter con il tipo di modello di tabella corretto
+            TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelloTabella);
+            // Impostiamo il TableRowSorter sulla tabella
+            tabella.setRowSorter(sorter);
 
-            tabella = new JTable(data, colonneTabella);
             tabella.setDefaultEditor(Object.class, null);
             tabella.setDefaultEditor(Object.class, null);
+            tabella.getTableHeader().setReorderingAllowed(false);
             tabella.setShowGrid(true);
             //COLORI TABELLA
             tabella.setGridColor(Color.BLACK);
@@ -52,17 +72,47 @@ import java.util.ArrayList;
             tabella.getTableHeader().setBackground(Color.BLACK);
             tabella.getTableHeader().setForeground(Color.WHITE);
 
-            tabella.getTableHeader().setReorderingAllowed(false);
-
-            DefaultTableModel modelloTabella = new DefaultTableModel(data, colonneTabella);
-            tabella.setModel(modelloTabella);
-
             scrollPane = new JScrollPane(tabella);
             frameFinestraImpiegati.add(scrollPane, BorderLayout.CENTER);
 
 
 
+            //BARRA DI RICERCA
+
+
+
+            // Creiamo la barra di ricerca
+            barraDiRicerca = new JTextField(20);
+            barraDiRicerca.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    search(barraDiRicerca.getText());
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    search(barraDiRicerca.getText());
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    search(barraDiRicerca.getText());
+                }
+                public void search(String searchString) {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchString, 2));
+                }
+            });
+
+            // Aggiungiamo la barra di ricerca alla finestra
+            JPanel panelSearch = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            panelSearch.add(new JLabel("Cerca per cognome: "));
+            panelSearch.add(barraDiRicerca);
+
+            frameFinestraImpiegati.add(panelSearch, BorderLayout.NORTH);
+
+
+
             // BOTTONI
+
+
 
             // Creiamo il pulsante per aprire la finestra d'inserimento impiegato
             JButton bottoneInserisci = new JButton("Inserisci");
@@ -84,7 +134,6 @@ import java.util.ArrayList;
             });
 
 
-
             //DA IMPLEMENTARE IL CODICE DI ELIMINAZIONE IMPIEGATO NELL ACTION LISTENER
             JButton bottoneElimina = new JButton("Elimina");
             bottoneElimina.addActionListener(new ActionListener() {
@@ -100,7 +149,13 @@ import java.util.ArrayList;
 
                         if (response == JOptionPane.YES_OPTION) {
                             //elimino l'impiegato con la matricola selezionata
-                            controller.eliminaImpiegato(matricolaSelezionata);
+                            try {
+                                controller.eliminaImpiegato(matricolaSelezionata);
+                            } catch (PSQLException ex) {
+                                JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Eliminazione", JOptionPane.ERROR_MESSAGE);
+                            } catch (Exception ee) {
+                                JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                            }
                             //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
                             updateTable(controller,colonneTabella);
                         }
@@ -147,7 +202,6 @@ import java.util.ArrayList;
 
 
 
-
             // Aggiungiamo i pulsanti alla finestra
             JPanel panelBottoni = new JPanel(new BorderLayout());
             JPanel panelBottoniLeft = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -158,18 +212,15 @@ import java.util.ArrayList;
             panelBottoniRight.add(bottoneInserisci);
             panelBottoniRight.add(bottoneElimina);
 
-
             panelBottoni.add(panelBottoniLeft, BorderLayout.WEST);
             panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
-
             frameFinestraImpiegati.add(panelBottoni, BorderLayout.SOUTH);
 
 
             // Mostrimo la finestra
             frameFinestraImpiegati.setVisible(true);
-
-
         }
+
 
         private void updateTable(Controller controller,String[] colonneTabella) {
 

@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -29,51 +30,123 @@ public class ProfiloImpiegato extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Inizializza i componenti
-        matricolaField = new JTextField(10);
-        nomeField = new JTextField(10);
-        cognomeField = new JTextField(10);
-        codiceFiscaleField = new JTextField(10);
-        sessoField = new JTextField(10);
-        curriculumTextArea = new JTextArea(5, 20);
-        dirigenteCheckBox = new JCheckBox("Dirigente");
-        tipoImpiegatoComboBox = new JTextField(10);
-        stipendioSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 1000000, 100));
-        dataAssunzioneChooser = new JTextField(10);
+
+
+        // Creiamo il pannello principale
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        // Creiamo il pannello per i dati anagrafici
+        JPanel datiAnagraficiPanel = new JPanel(new GridLayout(0, 2));
+        datiAnagraficiPanel.setBorder(BorderFactory.createTitledBorder("Dati anagrafici"));
+
+        // Matricola
+        JLabel matricolaLabel = new JLabel("Matricola:", SwingConstants.LEFT);
+        matricolaField = new JTextField();
+        datiAnagraficiPanel.add(matricolaLabel);
+        datiAnagraficiPanel.add(matricolaField);
+
+        // Nome
+        JLabel nomeLabel = new JLabel("Nome:", SwingConstants.LEFT);
+        nomeField = new JTextField();
+        datiAnagraficiPanel.add(nomeLabel);
+        datiAnagraficiPanel.add(nomeField);
+
+        // Cognome
+        JLabel cognomeLabel = new JLabel("Cognome:", SwingConstants.LEFT);
+        cognomeField = new JTextField();
+        datiAnagraficiPanel.add(cognomeLabel);
+        datiAnagraficiPanel.add(cognomeField);
+
+        // Codice fiscale
+        JLabel codiceFiscaleLabel = new JLabel("Codice fiscale:", SwingConstants.LEFT);
+        codiceFiscaleField = new JTextField();
+        datiAnagraficiPanel.add(codiceFiscaleLabel);
+        datiAnagraficiPanel.add(codiceFiscaleField);
+
+        // Sesso
+        JLabel sessoLabel = new JLabel("Sesso:", SwingConstants.LEFT);
+        sessoField = new JTextField();
+        datiAnagraficiPanel.add(sessoLabel);
+        datiAnagraficiPanel.add(sessoField);
+
+        // Tipo impiegato
+        JLabel tipoImpiegatoLabel = new JLabel("Tipo impiegato:", SwingConstants.LEFT);
+        tipoImpiegatoComboBox = new JTextField();
+        datiAnagraficiPanel.add(tipoImpiegatoLabel);
+        datiAnagraficiPanel.add(tipoImpiegatoComboBox);
+
+        // Stipendio
+        JLabel stipendioLabel = new JLabel("Stipendio:", SwingConstants.LEFT);
+        SpinnerNumberModel stipendioModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE, 100.0);
+        stipendioSpinner = new JSpinner(stipendioModel);
+        JFormattedTextField stipendioText = ((JSpinner.NumberEditor) stipendioSpinner.getEditor()).getTextField();
+        stipendioText.setColumns(10);
+        datiAnagraficiPanel.add(stipendioLabel);
+        datiAnagraficiPanel.add(stipendioSpinner);
+
+        // Data assunzione
+        JLabel dataAssunzioneLabel = new JLabel("Data assunzione:", SwingConstants.LEFT);
+        dataAssunzioneChooser = new JFormattedTextField("gg/mm/aaaa");
+        datiAnagraficiPanel.add(dataAssunzioneLabel);
+        datiAnagraficiPanel.add(dataAssunzioneChooser);
+
+        // Data licenziamento
+        JLabel dataLicenziamentoLabel = new JLabel("Data licenziamento:", SwingConstants.LEFT);
         dataLicenziamentoChooser = new JDateChooser();
-        tabellaStorico = new JTable(new DefaultTableModel(new String[]{"Colonna1", "Colonna2"}, 0));
-        tabellaAfferenza = new JTable(new DefaultTableModel(new String[]{"Colonna1", "Colonna2"}, 0));
+        datiAnagraficiPanel.add(dataLicenziamentoLabel);
+        datiAnagraficiPanel.add(dataLicenziamentoChooser);
 
-        // Rendi non modificabili alcuni campi
-        nomeField.setEditable(false);
-        cognomeField.setEditable(false);
-        codiceFiscaleField.setEditable(false);
-        sessoField.setEditable(false);
-        tipoImpiegatoComboBox.setEditable(false);
-        dataAssunzioneChooser.setEditable(false);
+        // Dirigente
+        JLabel dirigenteLabel = new JLabel("Dirigente:", SwingConstants.LEFT);
+        dirigenteCheckBox = new JCheckBox();
+        datiAnagraficiPanel.add(dirigenteLabel);
+        datiAnagraficiPanel.add(dirigenteCheckBox);
 
-        // Aggiungi componenti al pannello
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(5, 5, 5, 5);
-
-        // Aggiungi i campi al pannello principale
-        // Ad esempio, aggiungi il campo matricola
-        c.gridx = 0;
-        c.gridy = 0;
-        mainPanel.add(new JLabel("Matricola:"), c);
-        c.gridx = 1;
-        mainPanel.add(matricolaField, c);
-
-        // Aggiungi gli altri campi allo stesso modo
-
-        // Aggiungi il pannello principale al dialogo
-        add(mainPanel, BorderLayout.CENTER);
-
-
-
+        // Curriculum
+        JLabel curriculumLabel = new JLabel("Curriculum:", SwingConstants.LEFT);
+        curriculumTextArea = new JTextArea(10, 20);
+        JScrollPane scrollPane = new JScrollPane(curriculumTextArea);
+        datiAnagraficiPanel.add(curriculumLabel);
+        datiAnagraficiPanel.add(scrollPane);
         
+        
+        panel.add(datiAnagraficiPanel);
+
+        // Creiamo il pannello per la tabella di afferenza
+        JPanel tabellaAfferenzaPanel = new JPanel(new BorderLayout());
+        tabellaAfferenzaPanel.setBorder(BorderFactory.createTitledBorder("Tabella di afferenza"));
+
+        // Tabella di afferenza
+        DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
+        tabellaAfferenzaModel.addColumn("ID");
+        tabellaAfferenzaModel.addColumn("Nome");
+        tabellaAfferenzaModel.addColumn("Cognome");
+        tabellaAfferenzaModel.addRow(new Object[]{1, "Mario", "Rossi"});
+        tabellaAfferenzaModel.addRow(new Object[]{2, "Luigi", "Verdi"});
+        tabellaAfferenza = new JTable(tabellaAfferenzaModel);
+        tabellaAfferenzaPanel.add(new JScrollPane(tabellaAfferenza), BorderLayout.CENTER);
+
+        panel.add(tabellaAfferenzaPanel);
+
+        // Creiamo il pannello per la tabella dello storico
+        JPanel tabellaStoricoPanel = new JPanel(new BorderLayout());
+        tabellaStoricoPanel.setBorder(BorderFactory.createTitledBorder("Tabella storico"));
+
+        // Tabella dello storico
+        DefaultTableModel tabellaStoricoModel = new DefaultTableModel();
+        tabellaStoricoModel.addColumn("Data");
+        tabellaStoricoModel.addColumn("Evento");
+        tabellaStoricoModel.addRow(new Object[]{new Date(), "Assunzione"});
+        tabellaStoricoModel.addRow(new Object[]{new Date(), "Promozione"});
+        tabellaStorico = new JTable(tabellaStoricoModel);
+        tabellaStoricoPanel.add(new JScrollPane(tabellaStorico), BorderLayout.CENTER);
+
+        panel.add(tabellaStoricoPanel);
+
+        // Aggiungiamo il pannello alla finestra
+        add(panel);
+
 
         //BOTTONI
 
@@ -94,6 +167,7 @@ public class ProfiloImpiegato extends JDialog {
         panelBottoni.add(panelBottoniLeft, BorderLayout.WEST);
         panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
 
+
        // Logica per salvare le modifiche
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
@@ -106,7 +180,8 @@ public class ProfiloImpiegato extends JDialog {
         bottoneAnnulla.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+                //chiudo la finestra di dialogo
+                dispose();
             }
         });
 
@@ -129,9 +204,19 @@ public class ProfiloImpiegato extends JDialog {
         // Aggiungi il pannello dei bottoni al dialogo
         add(panelBottoni, BorderLayout.SOUTH);
 
+        // Rendi non modificabili alcuni campi
+        matricolaField.setEditable(false);
+        nomeField.setEditable(false);
+        cognomeField.setEditable(false);
+        codiceFiscaleField.setEditable(false);
+        sessoField.setEditable(false);
+        tipoImpiegatoComboBox.setEditable(false);
+        dataAssunzioneChooser.setEditable(false);
+
         // Imposta la dimensione del dialogo e lo rende visibile
         setSize(800, 600);
         setLocationRelativeTo(null);
+        setModal(true);
         setVisible(true);
     }
 }
