@@ -5,7 +5,9 @@ import DBconnection.Connessione;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
@@ -45,11 +47,6 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     }
 
     @Override
-    public boolean modifyImpiegatoDAO() {
-        return false;
-    }
-
-    @Override
     public boolean aggiungiImpiegatoDAO(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
         try {
             PreparedStatement insertImp;
@@ -77,8 +74,26 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     }
 
     @Override
-    public boolean updateAfferenze() {
-        return false;
+    public boolean leggiAfferenzeDAO(String matricolaSelezionata, ArrayList<String> laboratori){
+        try {
+            PreparedStatement leggiAfferenze;
+            leggiAfferenze = connection.prepareStatement("SELECT ID_LAB FROM AFFERENZA WHERE MATRICOLA = ?");
+            leggiAfferenze.setString(1,matricolaSelezionata);
+            ResultSet rs = leggiAfferenze.executeQuery();
+            while(rs.next())
+            {
+                laboratori.add(rs.getString("id_lab"));
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
+    @Override
+    public boolean modificaImpiegatoDAO(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
+        return false;
+    }
 }

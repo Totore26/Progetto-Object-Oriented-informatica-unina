@@ -150,18 +150,79 @@ public class Controller
 
 
 
-    //todo aggiungere ad ogni impiegato la lista di storici e la lista di lab a cui afferisce
+    /*
+    *    La seguente funzione leggiAfferenzaImpiegato fa in modo tale che se richiesto dalla GUI,
+    *    recupera dal database i laboratori in cui afferisce la matricolaSelezionata,
+    *    inizializza L'arraylist dell'impiegato in questione e ritorna alla gui la lista di laboratori a cui
+    *    è associato, in questo modo carica i dati dal database solamente quando sono richiesti dall'utente.
+    */
+    public ArrayList<String> leggiAfferenzeImpiegato(String matricolaSelezionata){
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+
+        //step 0: trovo l'impiegato a cui si riferisce la vista
+        Impiegato impDaVisualizzare = null;
+        for (Impiegato imp : listaImpiegato)
+            if(imp.getMatricola().equals(matricolaSelezionata))
+            {
+                impDaVisualizzare = imp;
+                break;
+            }
 
 
-    //todo aggiungere ad ogni laboratorio la lista degli afferenti e dei laboratori a cui lavora
+        //2 step : trovo i laboratori associati
+        ArrayList<String> laboratoriAssociati = new ArrayList<>();
+        boolean control = i.leggiAfferenzeDAO(matricolaSelezionata, laboratoriAssociati);
+
+        //2 step : inzializzo la lista di laboratori a cui afferisce l'impiegato
+       if(control)
+        {
+            for(Laboratorio lab : listaLaboratorio)
+                for(String l : laboratoriAssociati)
+                    if(lab.getIdLab().equals(l)) {
+                        assert impDaVisualizzare != null;
+                        impDaVisualizzare.aggiungiLaboratorio(lab);
+                    }
+        }
+
+        return laboratoriAssociati;
+
+    }
+
+
+
+
+    /*
+    * La seguente funzione quando l'utente nella gui richiede di vedere il profilo dell'Impiegato
+    * inizializza la sua lista di storici (attributo listaStorico) e restituisce alla gui
+    * la vista presente nel database "View_Storico", la quale mostra in che data ha fatto gli scatti
+    */
+    public ArrayList<String> leggiStoriciImpiegato(String matricolaSelezionata){
+
+        ArrayList<String> listaStoriciGUI = new ArrayList<>();
+
+        //trovo l'Impiegato a cui si riferisce
+        Impiegato impDaVisualizzare = null;
+        for (Impiegato imp : listaImpiegato)
+            if(imp.getMatricola().equals(matricolaSelezionata))
+                impDaVisualizzare = imp;
+
+        for(Storico s : listaStorico)
+            if(s.getMatricola().equals(matricolaSelezionata))
+                {
+                    impDaVisualizzare.aggiungiStorico(s);
+                }
+
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+        //todo da continuare l'implementazione
+        return listaStoriciGUI;
+    }
 
 
     //todo aggiungere ad ogni progetto la lista dei laboratori che gestisce
 
 
 
-
-    //funzione per aggiungere al Database l'impiegato
+    //funzione per aggiungere l'impiegato
     public void aggiungiImpiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso){
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
 
@@ -176,6 +237,7 @@ public class Controller
     }
 
 
+    //funzione per eliminare l'impiegato
     public void eliminaImpiegato(String matricolaSelezionata){
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
 
@@ -189,6 +251,7 @@ public class Controller
             {
                 if(matricolaSelezionata.equals(imp.getMatricola()) ){
                     listaImpiegato.remove(imp);
+                    break;
                 }
             }
         }
@@ -196,6 +259,13 @@ public class Controller
             System.out.println("Impossibile rimuovere l'Impiegato...");
         }
     }
+
+
+
+
+
+
+
 
 
 
