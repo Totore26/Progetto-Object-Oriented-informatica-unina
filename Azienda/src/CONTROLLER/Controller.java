@@ -283,10 +283,38 @@ public class Controller
 
 
 
-    //funzioni che ritornano i Model
-    public List<Impiegato> getListaImpiegato() {
-        return listaImpiegato;
+    //funzioni che ritornano nella GUI FinestraImpiegati per riempire la tabella
+    public List<String> getListaImpiegatoMatricoleGUI() {
+        ArrayList<String> stringMatricole = new ArrayList<>();
+
+        for(Impiegato imp : listaImpiegato)
+            stringMatricole.add(imp.getMatricola());
+
+        return stringMatricole;
     }
+    public List<String> getListaImpiegatoNomiGUI() {
+        ArrayList<String> stringNomi = new ArrayList<>();
+
+        for(Impiegato imp : listaImpiegato)
+            stringNomi.add(imp.getNome());
+
+        return stringNomi;
+    }
+    public List<String> getListaImpiegatoCognomiGUI() {
+        ArrayList<String> stringCognomi = new ArrayList<>();
+
+        for(Impiegato imp : listaImpiegato)
+            stringCognomi.add(imp.getCognome());
+
+        return stringCognomi;
+    }
+
+
+
+
+
+
+
 
     public List<Progetto> getListaProgetto() {
         return listaProgetto;
