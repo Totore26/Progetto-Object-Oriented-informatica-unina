@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
+
+import CONTROLLER.Controller;
 import com.toedter.calendar.JDateChooser;
 
 public class ProfiloImpiegato extends JDialog {
@@ -22,7 +24,7 @@ public class ProfiloImpiegato extends JDialog {
     private JTable tabellaStorico;
     private JTable tabellaAfferenza;
 
-    public ProfiloImpiegato(String matricolaSelezionata) {
+    public ProfiloImpiegato(String matricolaSelezionata, Controller controller) {
         setTitle("Profilo Impiegato");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());

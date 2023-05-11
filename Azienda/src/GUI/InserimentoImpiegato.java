@@ -1,14 +1,16 @@
 package GUI;
 
 import com.toedter.calendar.JDateChooser;
-import MODEL.Impiegato;
 import CONTROLLER.*;
+
+import javax.lang.model.type.NullType;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class InserimentoImpiegato extends JDialog {
     private JTextField matricolaField;
@@ -24,15 +26,18 @@ public class InserimentoImpiegato extends JDialog {
     private JDateChooser dataAssunzioneChooser;
     private JDateChooser dataLicenziamentoChooser;
 
-    public InserimentoImpiegato(JFrame framePadre,Controller controller) {
-        super(framePadre, "Inserimento Impiegato", true);
+    public InserimentoImpiegato(Controller controller) {
 
         // Creiamo un pannello per contenere i campi d'input
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 5, 5));
-
+        setTitle("Inserimento Impigato");
         // Aggiungiamo il campo "Matricola"
         inputPanel.add(new JLabel("Matricola:"));
         matricolaField = new JTextField();
+        //TODO devo fare in modo che nel campo matricola ci sia gia la prima matricola disponibile
+        //-->
+        //faccio in modo che il campo non sia modificabile
+        //matricolaField.setEditable(false);
         inputPanel.add(matricolaField);
 
         // Aggiungiamo il campo "Nome"
@@ -84,11 +89,13 @@ public class InserimentoImpiegato extends JDialog {
         // Aggiungiamo il campo "Data Assunzione"
         inputPanel.add(new JLabel("Data Assunzione:"));
         dataAssunzioneChooser = new JDateChooser();
+        dataAssunzioneChooser.setDateFormatString("yyyy-mm-dd");
         inputPanel.add(dataAssunzioneChooser);
 
         // Aggiungiamo il campo "Data Licenziamento"
         inputPanel.add(new JLabel("Data Licenziamento:"));
         dataLicenziamentoChooser = new JDateChooser();
+        dataLicenziamentoChooser.setDateFormatString("yyyy-mm-dd");
         inputPanel.add(dataLicenziamentoChooser);
 
         // Aggiungiamo il campo "Dirigente"
@@ -97,7 +104,7 @@ public class InserimentoImpiegato extends JDialog {
 
 
 
-        // Creiamo un pannello per contenere i bottoni "OK" e "Annulla"
+        // Creiamo un pannello per contenere i bottoni "Salva" e "Annulla"
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         // Implementazione bottone Salva
@@ -105,38 +112,49 @@ public class InserimentoImpiegato extends JDialog {
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String matricolaRegExp = "^MAT-[0-9]{3}$";
+                Pattern patternMatricola = Pattern.compile(matricolaRegExp);
 
-                String matricola = matricolaField.getText();
-                String nome = nomeField.getText();
-                String cognome = cognomeField.getText();
-                String codiceFiscale = codiceFiscaleField.getText();
-                String curriculum = curriculumTextArea.getText();
-                String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
-                boolean dirigente = dirigenteCheckBox.isSelected();
-
-                java.util.Date dataAssunzione = dataAssunzioneChooser.getDate();
-                java.util.Date dataLicenziamento = dataLicenziamentoChooser.getDate();
-
-                java.sql.Date sqlDataAssunzione = new java.sql.Date(dataAssunzione.getTime());
-                java.sql.Date sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
-
-
-                float stipendio = ((Number)stipendioSpinner.getValue()).floatValue();
-                // Recupero il sesso selezionato
-                String sesso;
-                ButtonModel selectedSesso = sessoGroup.getSelection();
-                if (selectedSesso == maschioRadioButton.getModel()) {
-                    sesso = "M";
-                } else if (selectedSesso == femminaRadioButton.getModel()) {
-                    sesso = "F";
+                //controllo che non ci siano dei campi vuoti
+                if (matricolaField.getText().isEmpty() || nomeField.getText().isEmpty() ||
+                        cognomeField.getText().isEmpty() || codiceFiscaleField.getText().isEmpty() ||
+                        curriculumTextArea.getText().isEmpty() || tipoImpiegatoComboBox.getSelectedItem() == null ||
+                        dataAssunzioneChooser.getDate() == null || (Double) stipendioSpinner.getValue() == 0.0 ||
+                        sessoGroup.getSelection() == null) {
+                    JOptionPane.showMessageDialog(null, "La data di licenziamento è opzionale, inserisci il resto dei dati per continuare", "Attenzione", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    sesso = null; // Nessun sesso selezionato
+                    String matricola = matricolaField.getText();
+                    String nome = nomeField.getText();
+                    String cognome = cognomeField.getText();
+                    String codiceFiscale = codiceFiscaleField.getText();
+                    String curriculum = curriculumTextArea.getText();
+                    String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
+                    boolean dirigente = dirigenteCheckBox.isSelected();
+                    float stipendio = ((Number) stipendioSpinner.getValue()).floatValue();
+                    //prendo la data in formato Date
+                    java.util.Date dataAssunzione = dataAssunzioneChooser.getDate();
+                    java.util.Date dataLicenziamento = dataLicenziamentoChooser.getDate();
+                    //converto la data in formato sql e aggiorno la variabile nel caso sia != null
+                    java.sql.Date sqlDataAssunzione = new java.sql.Date(dataAssunzione.getTime());
+                    java.sql.Date sqlDataLicenziamento = null;
+                    if(dataLicenziamentoChooser.getDate() != null) {
+                        sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
+                    }
+                    // Recupero il sesso selezionato
+                    String sesso;
+                    ButtonModel selectedSesso = sessoGroup.getSelection();
+                    if (selectedSesso == maschioRadioButton.getModel()) {
+                        sesso = "M";
+                    } else if (selectedSesso == femminaRadioButton.getModel()) {
+                        sesso = "F";
+                    } else {
+                        sesso = null; // Nessun sesso selezionato
+                    }
+
+                    controller.aggiungiImpiegato(matricola, nome, cognome, codiceFiscale, curriculum, tipoImpiegato, dirigente, sqlDataAssunzione, sqlDataLicenziamento, stipendio, sesso);
+                    JOptionPane.showMessageDialog(null, "I dati dell'impiegato sono stati salvati correttamente.", "Salvataggio Completo", JOptionPane.INFORMATION_MESSAGE);
+                    setVisible(false);
                 }
-
-                controller.aggiungiImpiegato(matricola,nome,cognome,codiceFiscale,curriculum,tipoImpiegato,dirigente, sqlDataAssunzione, sqlDataLicenziamento,stipendio,sesso);
-
-                //TODO SALVATORE FAI IN MODO CHE QUANDO AGGIUNGO L'IMPIEGATO LA GUI SI AGGIORNA...
-                setVisible(false);
             }
         });
 
@@ -164,7 +182,7 @@ public class InserimentoImpiegato extends JDialog {
         setLocationRelativeTo(null);
 
         // Impostiamo la posizione della finestra al centro della finestra padre
-        setLocationRelativeTo(framePadre);
+        setLocationRelativeTo(null);
     }
 
 }
