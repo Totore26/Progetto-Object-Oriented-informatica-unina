@@ -1,13 +1,10 @@
 
 package ImplementazionePostgresDAO;
-
-
 import DAO.AziendaDAO;
 import DBconnection.Connessione;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AziendaPostgresDAO implements AziendaDAO {
 
@@ -22,7 +19,6 @@ public class AziendaPostgresDAO implements AziendaDAO {
                 e.printStackTrace();
             }
     };
-
 
 
 
@@ -128,7 +124,7 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
     }
     @Override
-    public void getListStoricoDAO(ArrayList<String> ruoloPrecedentelist, ArrayList<String> nuovoRuololist, ArrayList<SQLData> dataScattolist, ArrayList<String> impiegatoMatricolalist){
+    public void getListStoricoDAO(ArrayList<String> ruoloPrecedentelist, ArrayList<String> nuovoRuololist, ArrayList<java.sql.Date> dataScattolist, ArrayList<String> impiegatoMatricolalist){
         try {
             PreparedStatement selectListaStorici;
             selectListaStorici = connection.prepareStatement("SELECT * FROM storico ORDER BY matricola");
@@ -136,7 +132,9 @@ public class AziendaPostgresDAO implements AziendaDAO {
             while (rs.next() ) {
                 String ruoloPrecedente = rs.getString("ruolo_prec");
                 String nuovoRuolo = rs.getString("nuovo_ruolo");
-                SQLData dataScatto =(SQLData) rs.getDate("data_scatto");
+
+                java.util.Date fdataScatto = rs.getDate("data_scatto");
+                java.sql.Date dataScatto = new java.sql.Date(fdataScatto.getTime());
                 String matricola = rs.getString("matricola");
 
 

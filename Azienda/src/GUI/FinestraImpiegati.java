@@ -18,11 +18,11 @@ import java.util.ArrayList;
             frameVistaImpiegato.setSize(800, 600);
             frameVistaImpiegato.setLocationRelativeTo(null);
             frameVistaImpiegato.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            /*
-             * PROBLEMA DEVO FARE IN MODO CHE IL TESTO NON POSSA ESSERE MODIFICATO
-             */
+
+
             // Creiamo la tabella impiegati
             String[] columns = {"Matricola", "Nome", "Cognome"};
+            //TODO AGGIUSTA QUESTA COSA POICHE' VIOLA LA BCE
             ArrayList<Impiegato> listaImpiegati = (ArrayList<Impiegato>) controller.getListaImpiegato();
             Object[][] data = new Object[listaImpiegati.size()][3];
             for (int i = 0; i < listaImpiegati.size(); i++) {

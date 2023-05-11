@@ -1,17 +1,18 @@
 package MODEL;
 
 import java.sql.SQLData;
+import java.util.Date;
 
 public class Storico {
 
     private String ruoloPrecedente;
     private String nuovoRuolo;
-    private SQLData dataScatto;
+    private Date dataScatto;
     private Impiegato impiegato;
 
 
     //todo gestisci la matricola non come stringa ma come riferimento all'impiegato a cui è associato lo storico
-    public  Storico(String ruoloPrecedente, String nuovoRuolo, SQLData dataScatto, Impiegato impiegato){
+    public  Storico(String ruoloPrecedente, String nuovoRuolo, Date dataScatto, Impiegato impiegato){
         this.dataScatto=dataScatto;
         this.impiegato=impiegato;
         this.nuovoRuolo=nuovoRuolo;
@@ -27,7 +28,7 @@ public class Storico {
         return nuovoRuolo;
     }
 
-    public SQLData getDataScatto() {
+    public Date getDataScatto() {
         return dataScatto;
     }
 
@@ -46,7 +47,7 @@ public class Storico {
         this.nuovoRuolo = nuovoRuolo;
     }
 
-    public void setDataScatto(SQLData dataScatto) {
+    public void setDataScatto(Date dataScatto) {
         this.dataScatto = dataScatto;
     }
 

@@ -9,7 +9,6 @@ import MODEL.Progetto;
 import MODEL.Storico;
 
 import java.sql.Date;
-import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public class Controller
 
 
     //il dumpDati non inizializza le relazioni di afferenza e la gestione...
-    public void dumpdati(){
+    private void dumpdati(){
         dumpDatiImpiegato();
         dumpDatiLaboratorio();
         dumpDatiStorico();
@@ -34,9 +33,7 @@ public class Controller
     }
 
 
-    //tale funzione attiva il dump dei dati dal DB, caricando i dati
 
-    //funziona!
     public void dumpDatiImpiegato() {
        AziendaDAO aziendaDAO = new AziendaPostgresDAO();
 
@@ -83,13 +80,12 @@ public class Controller
             }
     }
 
-    //funzione che istanzia gli storici
     public void dumpDatiStorico(){
         AziendaDAO aziendaDAO = new AziendaPostgresDAO();
 
         ArrayList<String> ruoloPrecedentelist = new ArrayList<>();
         ArrayList<String> nuovoRuololist = new ArrayList<>();
-        ArrayList<SQLData> dataScattolist = new ArrayList<>();
+        ArrayList<java.sql.Date> dataScattolist = new ArrayList<>();
         ArrayList<String> impiegatoMatricolalist = new ArrayList<>();
 
         aziendaDAO.getListStoricoDAO(ruoloPrecedentelist, nuovoRuololist, dataScattolist, impiegatoMatricolalist);
@@ -146,8 +142,8 @@ public class Controller
 
 
             Progetto p = new Progetto(nomelist.get(i), cuplist.get(i),budgetlist.get(i),dataIniziolist.get(i),dataFinelist.get(i),responsabileAttuale, referenteAttuale);
+            listaProgetto.add(p);
         }
-
     }
 
 
@@ -169,7 +165,7 @@ public class Controller
     public void aggiungiImpiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso){
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
 
-        boolean control = i.addImpiegatoDAO(matricola,nome,cognome,codiceFiscale,curriculum, tipoImpiegato, dirigente, dataAssunzione, dataLicenziamento, stipendio, sesso);
+        boolean control = i.aggiungiImpiegatoDAO(matricola,nome,cognome,codiceFiscale,curriculum, tipoImpiegato, dirigente, dataAssunzione, dataLicenziamento, stipendio, sesso);
 
         if(control){
             System.out.println("Impiegato aggiunto con successo!");
@@ -183,7 +179,7 @@ public class Controller
     public void eliminaImpiegato(String matricolaSelezionata){
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
 
-        boolean control = i.removeImpiegatoDAO(matricolaSelezionata);
+        boolean control = i.eliminaImpiegatoDAO(matricolaSelezionata);
 
         if(control){
             System.out.println("Eliminazione avvenuta con successo ...!");
@@ -200,6 +196,14 @@ public class Controller
             System.out.println("Impossibile rimuovere l'Impiegato...");
         }
     }
+
+
+
+
+
+
+
+
 
 
 

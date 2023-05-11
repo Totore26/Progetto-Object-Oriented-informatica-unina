@@ -27,7 +27,7 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
 
 
     @Override
-    public boolean removeImpiegatoDAO(String matricolaSelezionata){
+    public boolean eliminaImpiegatoDAO(String matricolaSelezionata){
         try {
             PreparedStatement deleteImp;
             deleteImp = connection.prepareStatement("DELETE FROM IMPIEGATO WHERE MATRICOLA = ? ");
@@ -50,7 +50,7 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     }
 
     @Override
-    public boolean addImpiegatoDAO(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
+    public boolean aggiungiImpiegatoDAO(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
         try {
             PreparedStatement insertImp;
             insertImp = connection.prepareStatement("INSERT INTO IMPIEGATO (matricola, nome, cognome, codice_fiscale, curriculum, dirigente, tipo_impiegato, data_assunzione, data_licenziamento, stipendio, sesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
