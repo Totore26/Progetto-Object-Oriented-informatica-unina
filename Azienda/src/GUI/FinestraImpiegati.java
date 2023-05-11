@@ -14,7 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-//NON ESTENTE JDIALOG PERCHE VIENE GESTITA IN MODO DIVERSO
+
+//LA CLASSE NON ESTENTE JDIALOG PERCHE VIENE GESTITA IN MODO DIVERSO
     public class FinestraImpiegati
     {
         private JTable tabella;

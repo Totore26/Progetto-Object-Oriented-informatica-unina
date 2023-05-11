@@ -188,6 +188,8 @@ public class InserimentoImpiegato extends JDialog {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
+        //disattivo la finestra padre
+        setModal(true);
         //mostriamo la finestra
         setVisible(true);
     }
