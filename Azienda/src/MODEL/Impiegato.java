@@ -1,6 +1,5 @@
 package MODEL;
 
-import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +25,8 @@ public class Impiegato {
 
 
     //Crea il riferimento ad un Impiegato
+
+
     public Impiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
         this.matricola = matricola;
         this.nome = nome;
@@ -33,12 +34,12 @@ public class Impiegato {
         this.codiceFiscale = codiceFiscale;
         this.curriculum = curriculum;
         this.dirigente = dirigente;
+        this.tipoImpiegato = tipoImpiegato;
         this.dataAssunzione = dataAssunzione;
         this.dataLicenziamento = dataLicenziamento;
         this.stipendio = stipendio;
         this.sesso = sesso;
     }
-
 
     //aggiunge alla listaAfferenza il laboratorio in cui lavora
     public void aggiungiLaboratorio(Laboratorio lab){

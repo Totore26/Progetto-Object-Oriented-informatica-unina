@@ -1,8 +1,8 @@
 package CONTROLLER;
-import GUI.*;
+import DAO.ImpiegatoDAO;
 import DAO.AziendaDAO;
-import GUI.InserimentoImpiegato;
 import ImplementazionePostgresDAO.AziendaPostgresDAO;
+import ImplementazionePostgresDAO.ImpiegatoPostgresDAO;
 import MODEL.Impiegato;
 import MODEL.Laboratorio;
 import MODEL.Progetto;
@@ -161,6 +161,47 @@ public class Controller
 
 
     //todo aggiungere ad ogni progetto la lista dei laboratori che gestisce
+
+
+
+
+    //funzione per aggiungere al Database l'impiegato
+    public void aggiungiImpiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso){
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+
+        boolean control = i.addImpiegatoDAO(matricola,nome,cognome,codiceFiscale,curriculum, tipoImpiegato, dirigente, dataAssunzione, dataLicenziamento, stipendio, sesso);
+
+        if(control){
+            System.out.println("Impiegato aggiunto con successo!");
+            Impiegato a = new Impiegato(matricola,nome,cognome,codiceFiscale,curriculum,dirigente,tipoImpiegato,dataAssunzione,dataLicenziamento,stipendio,sesso);
+            listaImpiegato.add(a);
+        }
+        else{System.out.println("errore nell'aggiunta dell'Impiegato");}
+    }
+
+
+    public void eliminaImpiegato(String matricolaSelezionata){
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+
+        boolean control = i.removeImpiegatoDAO(matricolaSelezionata);
+
+        if(control){
+            System.out.println("Eliminazione avvenuta con successo ...!");
+
+            //se L'ELIMINAZIONE HA AVUTO SUCCESSO ALLORA ELIMINO ANCHE DAL MODEL L'IMPIEGATO...
+            for(Impiegato imp : listaImpiegato)
+            {
+                if(matricolaSelezionata.equals(imp.getMatricola()) ){
+                    listaImpiegato.remove(imp);
+                }
+            }
+        }
+        else{
+            System.out.println("Impossibile rimuovere l'Impiegato...");
+        }
+    }
+
+
 
 
 

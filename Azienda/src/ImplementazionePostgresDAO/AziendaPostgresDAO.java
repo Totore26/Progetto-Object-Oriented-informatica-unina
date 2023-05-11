@@ -4,10 +4,6 @@ package ImplementazionePostgresDAO;
 
 import DAO.AziendaDAO;
 import DBconnection.Connessione;
-import MODEL.Impiegato;
-import MODEL.Laboratorio;
-import MODEL.Progetto;
-import MODEL.Storico;
 
 import java.sql.*;
 import java.util.ArrayList;

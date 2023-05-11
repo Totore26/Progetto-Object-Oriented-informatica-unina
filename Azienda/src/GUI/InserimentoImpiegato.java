@@ -7,10 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Pattern;
 
 public class InserimentoImpiegato extends JDialog {
     private JTextField matricolaField;
@@ -19,7 +17,6 @@ public class InserimentoImpiegato extends JDialog {
     private JTextField codiceFiscaleField;
     private JRadioButton maschioRadioButton;
     private JRadioButton femminaRadioButton;
-    private JRadioButton nonSpecificatoButton;
     private JTextArea curriculumTextArea;
     private JCheckBox dirigenteCheckBox;
     private JComboBox<String> tipoImpiegatoComboBox;
@@ -58,14 +55,11 @@ public class InserimentoImpiegato extends JDialog {
         JPanel sessoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         maschioRadioButton = new JRadioButton("M");
         femminaRadioButton = new JRadioButton("F");
-        nonSpecificatoButton= new JRadioButton("NS");
         ButtonGroup sessoGroup = new ButtonGroup();
         sessoGroup.add(maschioRadioButton);
         sessoGroup.add(femminaRadioButton);
-        sessoGroup.add(nonSpecificatoButton);
         sessoPanel.add(maschioRadioButton);
         sessoPanel.add(femminaRadioButton);
-        sessoPanel.add(nonSpecificatoButton);
         inputPanel.add(sessoPanel);
 
         // Aggiungiamo il campo "Curriculum"
@@ -84,19 +78,17 @@ public class InserimentoImpiegato extends JDialog {
 
         // Aggiungiamo il campo "Stipendio"
         inputPanel.add(new JLabel("Stipendio:"));
-        stipendioSpinner = new JSpinner(new SpinnerNumberModel(0.0, 0.0, Double.MAX_VALUE, 100.0));
+        stipendioSpinner = new JSpinner(new SpinnerNumberModel(0.0f, 0.0f, Double.MAX_VALUE, 100.0));
         inputPanel.add(stipendioSpinner);
 
         // Aggiungiamo il campo "Data Assunzione"
         inputPanel.add(new JLabel("Data Assunzione:"));
         dataAssunzioneChooser = new JDateChooser();
-        dataAssunzioneChooser.setDateFormatString("yyyy/MM/dd");
         inputPanel.add(dataAssunzioneChooser);
 
         // Aggiungiamo il campo "Data Licenziamento"
         inputPanel.add(new JLabel("Data Licenziamento:"));
         dataLicenziamentoChooser = new JDateChooser();
-        dataLicenziamentoChooser.setDateFormatString("yyyy/MM/dd");
         inputPanel.add(dataLicenziamentoChooser);
 
         // Aggiungiamo il campo "Dirigente"
@@ -105,7 +97,7 @@ public class InserimentoImpiegato extends JDialog {
 
 
 
-        // Creiamo un pannello per contenere i bottoni "Salva" e "Annulla"
+        // Creiamo un pannello per contenere i bottoni "OK" e "Annulla"
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         // Implementazione bottone Salva
@@ -113,61 +105,41 @@ public class InserimentoImpiegato extends JDialog {
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String matricolaRegExp = "^MAT-[0-9]{3}$";
-                Pattern patternMatricola = Pattern.compile(matricolaRegExp);
 
-                //controllo che non ci siano dei campi vuoti
-                if (matricolaField.getText().isEmpty() || nomeField.getText().isEmpty() ||
-                        cognomeField.getText().isEmpty() || codiceFiscaleField.getText().isEmpty() ||
-                        curriculumTextArea.getText().isEmpty() || tipoImpiegatoComboBox.getSelectedItem() == null ||
-                        dataAssunzioneChooser.getDate() == null || (Double) stipendioSpinner.getValue() == 0.0 ||
-                        sessoGroup.getSelection() == null) {
-                    JOptionPane.showMessageDialog(null, "Inserisci tutti i dati prima di salvare.", "Attenzione", JOptionPane.WARNING_MESSAGE);
-                } else if(patternMatricola.matcher(matricolaField.getText()).matches()) {
-                    //controllo che la matricola inserita sia del formato giusto
-                    JOptionPane.showMessageDialog(null, "La matricola deve essere del formato MAT-???", "Attenzione", JOptionPane.WARNING_MESSAGE);
+                String matricola = matricolaField.getText();
+                String nome = nomeField.getText();
+                String cognome = cognomeField.getText();
+                String codiceFiscale = codiceFiscaleField.getText();
+                String curriculum = curriculumTextArea.getText();
+                String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
+                boolean dirigente = dirigenteCheckBox.isSelected();
+
+                java.util.Date dataAssunzione = dataAssunzioneChooser.getDate();
+                java.util.Date dataLicenziamento = dataLicenziamentoChooser.getDate();
+
+                java.sql.Date sqlDataAssunzione = new java.sql.Date(dataAssunzione.getTime());
+                java.sql.Date sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
+
+
+                float stipendio = ((Number)stipendioSpinner.getValue()).floatValue();
+                // Recupero il sesso selezionato
+                String sesso;
+                ButtonModel selectedSesso = sessoGroup.getSelection();
+                if (selectedSesso == maschioRadioButton.getModel()) {
+                    sesso = "M";
+                } else if (selectedSesso == femminaRadioButton.getModel()) {
+                    sesso = "F";
                 } else {
-                    //in questo caso sono stati inseriti tutti i campi e posso salvare l impiegato
-                    String matricola = matricolaField.getText();
-                    String nome = nomeField.getText();
-                    String cognome = cognomeField.getText();
-                    String codiceFiscale = codiceFiscaleField.getText();
-                    String curriculum = curriculumTextArea.getText();
-                    String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
-                    boolean dirigente = dirigenteCheckBox.isSelected();
-                    double stipendio = (double) stipendioSpinner.getValue();
-                    Date dataAssunzione = dataAssunzioneChooser.getDate();
-
-                    //ACQUISISCO LA DATA LICENZIAMENTO IN FORMATO DATE SOLO SE != NULL
-                    if(dataLicenziamentoChooser.getDate() != null) {
-                        Date dataLicenziamento = dataLicenziamentoChooser.getDate();
-                    } else {
-                        String dataLicenziamento = "NULL";
-                    }
-
-                    // Recupero il sesso selezionato
-                    String sesso;
-                    ButtonModel selectedSesso = sessoGroup.getSelection();
-                    if (selectedSesso == maschioRadioButton.getModel()) {
-                        sesso = "M";
-                    } else if (selectedSesso == femminaRadioButton.getModel()) {
-                        sesso = "F";
-                    } else if (selectedSesso == nonSpecificatoButton.getModel()) {
-                        sesso = "NS";
-                    } else {
-                        sesso = null; // Nessun sesso selezionato
-                    }
-                    // Tutti i campi sono stati inseriti, posso procedere con il salvataggio
-
-                    //Impiegato imp = new Impiegato(matricola,nome,cognome,codiceFiscale,curriculum,dirigente,tipoImpiegato,dataAssunzioneString,dataLicenziamentoString,stipendio,sesso);
-                    //DA AGGIUSTARE
-                    //dopo aver salvato in modo adeguato l'impiegato, controllo che l'inserimento vada a buon fine...
-                    //controller.InserimentoImpiegato(imp);
-                    JOptionPane.showMessageDialog(null, "I dati dell'impiegato sono stati salvati correttamente.", "Salvataggio Completo", JOptionPane.INFORMATION_MESSAGE);
-                    setVisible(false);
+                    sesso = null; // Nessun sesso selezionato
                 }
+
+                controller.aggiungiImpiegato(matricola,nome,cognome,codiceFiscale,curriculum,tipoImpiegato,dirigente, sqlDataAssunzione, sqlDataLicenziamento,stipendio,sesso);
+
+                //TODO SALVATORE FAI IN MODO CHE QUANDO AGGIUNGO L'IMPIEGATO LA GUI SI AGGIORNA...
+                setVisible(false);
             }
         });
+
 
         // Implementazione bottone Annulla
         JButton bottoneAnnulla = new JButton("Annulla");

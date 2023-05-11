@@ -73,8 +73,11 @@ import java.util.ArrayList;
                         int response = JOptionPane.showOptionDialog(frameVistaImpiegato, "Sei sicuro di voler eliminare la matricola " + matricolaSelezionata + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
                         if (response == JOptionPane.YES_OPTION) {
-                            // L'utente ha confermato l'eliminazione
-                            // ...
+
+                            controller.eliminaImpiegato(matricolaSelezionata);
+
+                            //TODO AGGIORNA LA GUI APPENA AVVIENE L'ELIMINAZIONE DI UN IMPIEGATO.
+
                         }
                     } else {
                         // L'utente non ha selezionato una cella
