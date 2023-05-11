@@ -104,9 +104,8 @@ public class InserimentoImpiegato extends JDialog {
         inputPanel.add(dirigenteCheckBox);
 
 
+        //BOTTONI
 
-        // Creiamo un pannello per contenere i bottoni "Salva" e "Annulla"
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         // Implementazione bottone Salva
         JButton bottoneSalva = new JButton("Salva");
@@ -175,7 +174,8 @@ public class InserimentoImpiegato extends JDialog {
             }
         });
 
-
+        // Creiamo un pannello per contenere i bottoni "Salva" e "Annulla"
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(bottoneSalva);
         buttonPanel.add(bottoneAnnulla);
 
@@ -188,8 +188,8 @@ public class InserimentoImpiegato extends JDialog {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        // Impostiamo la posizione della finestra al centro della finestra padre
-        setLocationRelativeTo(null);
+        //mostriamo la finestra
+        setVisible(true);
     }
 
 }

@@ -45,6 +45,7 @@ public class ProfiloImpiegato extends JDialog {
         tabellaAfferenza = new JTable(new DefaultTableModel(new String[]{"Colonna1", "Colonna2"}, 0));
 
         // Rendi non modificabili alcuni campi
+        matricolaField.setEditable(false);
         nomeField.setEditable(false);
         cognomeField.setEditable(false);
         codiceFiscaleField.setEditable(false);
