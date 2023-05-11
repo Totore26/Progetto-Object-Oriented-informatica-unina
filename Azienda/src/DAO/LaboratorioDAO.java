@@ -1,8 +1,11 @@
 package DAO;
 
+import java.sql.SQLException;
+
 public interface LaboratorioDAO {
 
-    //todo
-    public boolean addLaboratorioDAO();
-    public boolean removeLaboratorioDAO();
+    public boolean aggiungiLaboratorioDAO() throws SQLException;
+    public boolean eliminaLaboratorioDAO() throws SQLException;
+    public boolean modificaLaboratorioDAO() throws SQLException;
+    public boolean leggiProgettiDAO() throws SQLException;
 }

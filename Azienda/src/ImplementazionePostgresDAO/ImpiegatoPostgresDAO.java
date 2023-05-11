@@ -85,6 +85,19 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     }
 
     @Override
+    public boolean aggiungiAfferenza(String matricolaScelta, String idlabScelto) throws SQLException{
+        PreparedStatement insertImp;
+        insertImp = connection.prepareStatement("INSERT INTO AFFERENZA (matricola, id_lab) VALUES (?,?)");
+        insertImp.setString(1, matricolaScelta);
+        int rs = insertImp.executeUpdate();
+        if(rs==1){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean modificaImpiegatoDAO(String matricolaSelezionata,String curriculum, boolean dirigente, Date dataLicenziamento, float stipendio)throws SQLException {
 
         PreparedStatement insertImp;

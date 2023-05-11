@@ -1,11 +1,11 @@
 package DAO;
 
+import java.sql.SQLException;
+
 public interface ProgettoDAO {
 
-
-    //todo
-    public boolean addProgettoDAO();
-    public boolean removeProgettoDAO();
-
-    public boolean modifyProgettoDAO();
+    public boolean aggiungiProgettoDAO()  throws SQLException;
+    public boolean eliminaProgettoDAO()  throws SQLException;
+    public boolean modificaProgettoDAO() throws SQLException;
+    public boolean aggiungiGestione() throws SQLException;
 }

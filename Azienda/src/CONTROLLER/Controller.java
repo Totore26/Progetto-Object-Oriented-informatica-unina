@@ -139,6 +139,38 @@ public class Controller {
     }
 
 
+
+
+
+
+    /*
+     * La seguente funzione quando l'utente nella gui richiede di vedere il profilo dell'Impiegato
+     * inizializza la sua lista di storici (attributo listaStorico) e restituisce alla gui
+     * la vista presente nel database "View_Storico", la quale mostra in che data ha fatto gli scatti
+     */
+    public ArrayList<String> leggiStoriciImpiegato(String matricolaSelezionata) {
+
+        ArrayList<String> listaStoriciGUI = new ArrayList<>();
+
+        //trovo l'Impiegato a cui si riferisce
+        Impiegato impDaVisualizzare = null;
+        for (Impiegato imp : listaImpiegato)
+            if (imp.getMatricola().equals(matricolaSelezionata))
+                impDaVisualizzare = imp;
+
+        for (Storico s : listaStorico)
+            if (s.getMatricola().equals(matricolaSelezionata)) {
+                impDaVisualizzare.aggiungiStorico(s);
+            }
+
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+        //todo da continuare l'implementazione
+        return listaStoriciGUI;
+    }
+
+
+
+
     /*
      *    La seguente funzione leggiAfferenzaImpiegato fa in modo tale che se richiesto dalla GUI,
      *    recupera dal database i laboratori in cui afferisce la matricolaSelezionata,
@@ -176,33 +208,47 @@ public class Controller {
     }
 
 
+
     /*
-     * La seguente funzione quando l'utente nella gui richiede di vedere il profilo dell'Impiegato
-     * inizializza la sua lista di storici (attributo listaStorico) e restituisce alla gui
-     * la vista presente nel database "View_Storico", la quale mostra in che data ha fatto gli scatti
-     */
-    public ArrayList<String> leggiStoriciImpiegato(String matricolaSelezionata) {
+    * La seguente funzione aggiunge al database l'afferenza,
+    * nel caso affermativo allora aggiunge anche alla lista di afferenze dell'impiegato.
+    */
+    public void aggiungiAfferenza(String matricolaSelezionata, String idlabSelezionato) throws SQLException{
 
-        ArrayList<String> listaStoriciGUI = new ArrayList<>();
+        //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
+        Impiegato impiegatoScelto = null;
+        for(Impiegato imp : listaImpiegato)
+            if(imp.getMatricola().equals(matricolaSelezionata))
+            {
+                impiegatoScelto = imp;
+                break;
+            }
 
-        //trovo l'Impiegato a cui si riferisce
-        Impiegato impDaVisualizzare = null;
-        for (Impiegato imp : listaImpiegato)
-            if (imp.getMatricola().equals(matricolaSelezionata))
-                impDaVisualizzare = imp;
-
-        for (Storico s : listaStorico)
-            if (s.getMatricola().equals(matricolaSelezionata)) {
-                impDaVisualizzare.aggiungiStorico(s);
+        //come seconda cosa trovo l'oggetto laboratorio
+        Laboratorio laboratorioScelto = null;
+        for(Laboratorio lab : listaLaboratorio)
+            if(lab.getIdLab().equals(idlabSelezionato))
+            {
+                laboratorioScelto = lab;
+                break;
             }
 
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
-        //todo da continuare l'implementazione
-        return listaStoriciGUI;
-    }
+
+        boolean control = i.aggiungiAfferenza(matricolaSelezionata,idlabSelezionato);
+
+        //se l'inserimento nel database è andato a buon fine allora aggiungo alla lista dell'imp il lab
+        if(control){
+            impiegatoScelto.aggiungiLaboratorio(laboratorioScelto);
+        }
+
+    };
 
 
-    /*funzioni per aggiungere l'impiegato
+
+
+
+    /*  funzione per aggiungere l'impiegato
      *  le eccezioni sono riportate direttamente nella GUI in modo tale che è l'utente stesso a
      *  gestire i dati sbagliati che ha inserito...
      */
@@ -219,6 +265,8 @@ public class Controller {
             System.out.println("errore nell'aggiunta dell'Impiegato");
         }
     }
+
+
 
     //funzione per eliminare l'impiegato
     public void eliminaImpiegato(String matricolaSelezionata) throws SQLException {
@@ -241,7 +289,13 @@ public class Controller {
         }
     }
 
-    //funzione per modificare l'impiegato
+
+
+    /*
+    * Funzione che modifica i campi modificabili dell'impiegato...
+    * La seguente funzione salva le modifiche fatte all'impiegato nel database
+    * nel caso affermativo aggiorna l'impiegato in questione anche nel model.
+     */
     public void modificaImpiegato(String matricolaSelezionata, String curriculum, boolean dirigente, java.util.Date dataLicenziamento, float stipendio) throws SQLException {
 
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
@@ -249,11 +303,14 @@ public class Controller {
         boolean control = i.modificaImpiegatoDAO(matricolaSelezionata, curriculum, dirigente, dataLicenziamento, stipendio);
 
 
-        //se elimino correttamente, allora elimino anche nel model
+        //se modifico l'impiegato nel database allora lo modifico anche nel MODEL
         if (control) {
             for (Impiegato imp : listaImpiegato)
                 if (imp.getMatricola().equals(matricolaSelezionata)) {
-                    listaImpiegato.remove(imp);
+                    imp.setStipendio(stipendio);
+                    imp.setDirigente(dirigente);
+                    imp.setCurriculum(curriculum);
+                    imp.setDataLicenziamento(dataLicenziamento);
                     break;
                 }
         }
@@ -261,10 +318,21 @@ public class Controller {
     }
 
 
+
+
+
+
+
+
+
+
     //todo aggiungere ad ogni progetto la lista dei laboratori che gestisce
 
 
-    //funzioni che ritornano nella GUI FinestraImpiegati per riempire la tabella
+    /*
+    * le seguenti tre funzioni hanno come compito quello di passare
+    * alla GUI le varie informazioni che servono per creare le tabelle dell'impiegato...
+    */
     public List<String> getListaImpiegatoMatricoleGUI() {
         ArrayList<String> stringMatricole = new ArrayList<>();
 
@@ -273,7 +341,6 @@ public class Controller {
 
         return stringMatricole;
     }
-
     public List<String> getListaImpiegatoNomiGUI() {
         ArrayList<String> stringNomi = new ArrayList<>();
 
@@ -282,7 +349,6 @@ public class Controller {
 
         return stringNomi;
     }
-
     public List<String> getListaImpiegatoCognomiGUI() {
         ArrayList<String> stringCognomi = new ArrayList<>();
 
@@ -302,8 +368,14 @@ public class Controller {
             referentelist.add(listaProgetto.get(i).getResponsabile().getMatricola());
         }
     }
+    public void getListaLaboratorioGUI(ArrayList<String> idlablist, ArrayList<String> topiclist, ArrayList<String> rscientificolist){
 
-
+        for(int i = 0; i<listaLaboratorio.size(); i++){
+            idlablist.add(listaLaboratorio.get(i).getIdLab());
+            idlablist.add(listaLaboratorio.get(i).getTopic());
+            idlablist.add(listaLaboratorio.get(i).getRScientifico().getMatricola());
+        }
+    }
 
 
 

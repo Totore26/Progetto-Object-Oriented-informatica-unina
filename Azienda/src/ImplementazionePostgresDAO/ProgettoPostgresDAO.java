@@ -2,19 +2,27 @@ package ImplementazionePostgresDAO;
 
 import DAO.ProgettoDAO;
 
+import java.sql.SQLException;
+
 public class ProgettoPostgresDAO implements ProgettoDAO {
+
     @Override
-    public boolean addProgettoDAO() {
+    public boolean aggiungiProgettoDAO() throws SQLException {
         return false;
     }
 
     @Override
-    public boolean removeProgettoDAO() {
+    public boolean eliminaProgettoDAO() throws SQLException {
         return false;
     }
 
     @Override
-    public boolean modifyProgettoDAO() {
+    public boolean modificaProgettoDAO() throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean aggiungiGestione() throws SQLException {
         return false;
     }
 }
