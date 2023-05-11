@@ -2,6 +2,7 @@ package ImplementazionePostgresDAO;
 
 import DAO.ImpiegatoDAO;
 import DBconnection.Connessione;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,8 +48,7 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     }
 
     @Override
-    public boolean aggiungiImpiegatoDAO(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
-        try {
+    public boolean aggiungiImpiegatoDAO(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) throws SQLException {
             PreparedStatement insertImp;
             insertImp = connection.prepareStatement("INSERT INTO IMPIEGATO (matricola, nome, cognome, codice_fiscale, curriculum, dirigente, tipo_impiegato, data_assunzione, data_licenziamento, stipendio, sesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             insertImp.setString(1, matricola);
@@ -67,10 +67,6 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
                 return true;
             }
             return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     @Override

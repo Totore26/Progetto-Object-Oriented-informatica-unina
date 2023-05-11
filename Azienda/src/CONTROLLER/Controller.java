@@ -7,8 +7,10 @@ import MODEL.Impiegato;
 import MODEL.Laboratorio;
 import MODEL.Progetto;
 import MODEL.Storico;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -223,7 +225,7 @@ public class Controller
 
 
     //funzione per aggiungere l'impiegato
-    public void aggiungiImpiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso){
+    public void aggiungiImpiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, String tipoImpiegato, boolean dirigente, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) throws SQLException {
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
 
         boolean control = i.aggiungiImpiegatoDAO(matricola,nome,cognome,codiceFiscale,curriculum, tipoImpiegato, dirigente, dataAssunzione, dataLicenziamento, stipendio, sesso);

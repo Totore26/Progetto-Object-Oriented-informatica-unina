@@ -2,12 +2,14 @@ package GUI;
 
 import com.toedter.calendar.JDateChooser;
 import CONTROLLER.*;
+import org.postgresql.util.PSQLException;
 
 import javax.lang.model.type.NullType;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -25,8 +27,11 @@ public class InserimentoImpiegato extends JDialog {
     private JSpinner stipendioSpinner;
     private JDateChooser dataAssunzioneChooser;
     private JDateChooser dataLicenziamentoChooser;
+    private String[] colonneTabella = {"Matricola", "Nome", "Cognome"};
+
 
     public InserimentoImpiegato(Controller controller) {
+
 
         // Creiamo un pannello per contenere i campi d'input
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -151,9 +156,15 @@ public class InserimentoImpiegato extends JDialog {
                         sesso = null; // Nessun sesso selezionato
                     }
 
-                    controller.aggiungiImpiegato(matricola, nome, cognome, codiceFiscale, curriculum, tipoImpiegato, dirigente, sqlDataAssunzione, sqlDataLicenziamento, stipendio, sesso);
-                    JOptionPane.showMessageDialog(null, "I dati dell'impiegato sono stati salvati correttamente.", "Salvataggio Completo", JOptionPane.INFORMATION_MESSAGE);
-                    setVisible(false);
+                    try {
+                        controller.aggiungiImpiegato(matricola, nome, cognome, codiceFiscale, curriculum, tipoImpiegato, dirigente, sqlDataAssunzione, sqlDataLicenziamento, stipendio, sesso);
+                    } catch (PSQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Errore durante il salvataggio dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ee) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    } finally {
+                        dispose();
+                    }
                 }
             }
         });

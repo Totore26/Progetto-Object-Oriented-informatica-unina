@@ -77,6 +77,7 @@ import java.util.ArrayList;
                         public void windowClosed(WindowEvent e) {
                             // Chiamo il metodo updateTable() dopo la chiusura della finestra di dialogo
                             updateTable(controller, colonneTabella);
+
                         }
                     });
                 }
