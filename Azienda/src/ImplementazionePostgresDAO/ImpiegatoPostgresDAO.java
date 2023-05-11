@@ -2,7 +2,6 @@ package ImplementazionePostgresDAO;
 
 import DAO.ImpiegatoDAO;
 import DBconnection.Connessione;
-import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

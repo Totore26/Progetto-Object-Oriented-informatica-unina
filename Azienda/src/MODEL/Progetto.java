@@ -1,7 +1,6 @@
 package MODEL;
 
 
-import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

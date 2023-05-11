@@ -1,5 +1,4 @@
 package GUI;
-import MODEL.*;
 import CONTROLLER.Controller;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -32,14 +31,15 @@ import java.util.ArrayList;
             frameFinestraImpiegati.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             // Creiamo la tabella impiegati
-            //TODO AGGIUSTA QUESTA COSA POICHE' VIOLA LA BCE
             String[] colonneTabella = {"Matricola", "Nome", "Cognome"};
-            ArrayList<Impiegato> listaImpiegati = (ArrayList<Impiegato>) controller.getListaImpiegato();
-            Object[][] data = new Object[listaImpiegati.size()][3];
-            for (int i = 0; i < listaImpiegati.size(); i++) {
-                data[i][0] = listaImpiegati.get(i).getMatricola();
-                data[i][1] = listaImpiegati.get(i).getNome();
-                data[i][2] = listaImpiegati.get(i).getCognome();
+            ArrayList<String> listaNomi = (ArrayList<String>) controller.getListaImpiegatoNomiGUI();
+            ArrayList<String> listaCognomi = (ArrayList<String>) controller.getListaImpiegatoCognomiGUI();
+            ArrayList<String> listaMatricole = (ArrayList<String>) controller.getListaImpiegatoMatricoleGUI();
+            Object[][] data = new Object[listaMatricole.size()][3];
+            for (int i = 0; i < listaNomi.size(); i++) {
+                data[i][0] = listaMatricole.get(i);
+                data[i][1] = listaNomi.get(i);
+                data[i][2] = listaCognomi.get(i);
             }
 
             tabella = new JTable(data, colonneTabella);
@@ -174,12 +174,14 @@ import java.util.ArrayList;
         private void updateTable(Controller controller,String[] colonneTabella) {
 
             //LOAD DEI NUOVI DATI
-            ArrayList<Impiegato> listaImpiegati = (ArrayList<Impiegato>) controller.getListaImpiegato();
-            Object[][] nuoviDati = new Object[listaImpiegati.size()][3];
-            for (int i = 0; i < listaImpiegati.size(); i++) {
-                nuoviDati[i][0] = listaImpiegati.get(i).getMatricola();
-                nuoviDati[i][1] = listaImpiegati.get(i).getNome();
-                nuoviDati[i][2] = listaImpiegati.get(i).getCognome();
+            ArrayList<String> listaNomi = (ArrayList<String>) controller.getListaImpiegatoNomiGUI();
+            ArrayList<String> listaCognomi = (ArrayList<String>) controller.getListaImpiegatoCognomiGUI();
+            ArrayList<String> listaMatricole = (ArrayList<String>) controller.getListaImpiegatoMatricoleGUI();
+            Object[][] nuoviDati = new Object[listaMatricole.size()][3];
+            for (int i = 0; i < listaNomi.size(); i++) {
+                nuoviDati[i][0] = listaMatricole.get(i);
+                nuoviDati[i][1] = listaNomi.get(i);
+                nuoviDati[i][2] = listaCognomi.get(i);
             }
 
             //CODICE PER AGGIORNARE LA TABELLA CON I NUOVI DATI

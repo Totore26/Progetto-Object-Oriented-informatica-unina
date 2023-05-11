@@ -1,14 +1,7 @@
 package DAO;
 
-import MODEL.Impiegato;
-import MODEL.Laboratorio;
-import MODEL.Progetto;
-import MODEL.Storico;
-
 import java.sql.Date;
-import java.sql.SQLData;
 import java.util.ArrayList;
-import java.util.List;
 
 
 

@@ -4,14 +4,10 @@ import com.toedter.calendar.JDateChooser;
 import CONTROLLER.*;
 import org.postgresql.util.PSQLException;
 
-import javax.lang.model.type.NullType;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 public class InserimentoImpiegato extends JDialog {

@@ -1,7 +1,5 @@
 package DAO;
 
-import org.postgresql.util.PSQLException;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;

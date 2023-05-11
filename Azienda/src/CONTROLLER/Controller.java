@@ -1,13 +1,7 @@
 package CONTROLLER;
-import DAO.ImpiegatoDAO;
-import DAO.AziendaDAO;
-import ImplementazionePostgresDAO.AziendaPostgresDAO;
-import ImplementazionePostgresDAO.ImpiegatoPostgresDAO;
-import MODEL.Impiegato;
-import MODEL.Laboratorio;
-import MODEL.Progetto;
-import MODEL.Storico;
-import org.postgresql.util.PSQLException;
+import DAO.*;
+import ImplementazionePostgresDAO.*;
+import MODEL.*;
 
 import java.sql.Date;
 import java.sql.SQLException;

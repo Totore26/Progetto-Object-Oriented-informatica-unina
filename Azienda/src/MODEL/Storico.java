@@ -1,6 +1,5 @@
 package MODEL;
 
-import java.sql.SQLData;
 import java.util.Date;
 
 public class Storico {
