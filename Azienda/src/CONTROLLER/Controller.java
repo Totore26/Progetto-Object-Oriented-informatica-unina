@@ -460,8 +460,8 @@ public class Controller {
         curriculum = matScelta.getCurriculum();
         dirigente = matScelta.isDirigente();
         tipoImpiegato = matScelta.getTipoImpiegato();
-        dataAssunzione = (Date) matScelta.getDataAssunzione();
-        dataLicenziamento = (Date) matScelta.getDataLicenziamento();
+        dataAssunzione = (java.sql.Date) matScelta.getDataAssunzione();
+        dataLicenziamento = (java.sql.Date) matScelta.getDataLicenziamento();
         stipendio = matScelta.getStipendio();
         sesso = matScelta.getSesso();
 
