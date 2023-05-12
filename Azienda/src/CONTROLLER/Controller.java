@@ -305,8 +305,6 @@ public class Controller {
             System.out.println("Impiegato aggiunto con successo!");
             Impiegato a = new Impiegato(matricola, nome, cognome, codiceFiscale, curriculum, dirigente, tipoImpiegato, dataAssunzione, dataLicenziamento, stipendio, sesso);
             listaImpiegato.add(a);
-        } else {
-            System.out.println("errore nell'aggiunta dell'Impiegato");
         }
     }
 
@@ -375,6 +373,118 @@ public class Controller {
 
 
 
+//____________________________________________FUNZIONI SU LABORATORIO_________________________________________________//
+
+
+    /*
+    * LA SEGUENTE FUNZIONE AGGIUNGE SE RICHIESTO ALL'INTERNO DELLA GUI UN NUOVO
+    * LABORATORIO, SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
+    */
+    public void aggiungiLaboratorio(String idLab, String topic, String indirizzo,String numeroTelefonico, int numAfferenti, String rScientifico) throws SQLException{
+
+        LaboratorioDAO l = new LaboratorioPostgresDAO();
+
+        boolean control = l.aggiungiLaboratorioDAO(idLab,topic,indirizzo,numeroTelefonico,numAfferenti,rScientifico);
+
+        if(control){
+
+            //trovo il responsabile scientifico
+            Impiegato respScientifico = null;
+            for(Impiegato i : listaImpiegato)
+                if(i.getMatricola().equals(rScientifico)){
+                    respScientifico=i;
+                }
+
+            //a questo punto posso creare il mio oggeto Laboratorio e aggiungerlo anche al model...
+            Laboratorio nuovoLab = new Laboratorio(idLab,topic,indirizzo,numeroTelefonico,numAfferenti,respScientifico);
+
+            listaLaboratorio.add(nuovoLab);
+
+        }
+    }
+
+
+
+    /*
+     * LA SEGUENTE FUNZIONE ELIMINA SE RICHIESTO ALL'INTERNO DELLA GUI UN
+     * LABORATORIO DANDO UN IDLAB , SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
+     */
+    public void eliminaLaboratorio(String idLabScelto) throws SQLException{
+        LaboratorioDAO l = new LaboratorioPostgresDAO();
+
+        boolean control = l.eliminaLaboratorioDAO(idLabScelto);
+
+        if (control) {
+            //se L'ELIMINAZIONE HA AVUTO SUCCESSO ALLORA ELIMINO ANCHE DAL MODEL IL LABORATORIO...
+            for (Laboratorio lab : listaLaboratorio)
+                if (idLabScelto.equals(lab.getIdLab())) {
+                    listaLaboratorio.remove(lab);
+                    break;
+                }
+
+        }
+    }
+
+
+
+    /*
+     * LA SEGUENTE FUNZIONE MODIFICA SE RICHIESTO ALL'INTERNO DELLA GUI UN
+     * LABORATORIO DANDO UN IDLAB , SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
+     */
+    public void modificaLaboratorio(String idLabScelto,String indirizzo,String numeroTelefonico,String rScientifico) throws SQLException{
+        LaboratorioDAO lab = new LaboratorioPostgresDAO();
+
+        boolean control = lab.modificaLaboratorioDAO(idLabScelto,indirizzo,numeroTelefonico,rScientifico);
+
+        if(control){
+            //allora modifico anche il model...
+            Laboratorio laboratorio = null;
+            for(Laboratorio l : listaLaboratorio)
+                if(l.getIdLab().equals(idLabScelto)){
+                    laboratorio = l;
+                }
+
+            //trovo il nuovo potenziale responsabile scientifico...
+            Impiegato respScientificoNuovo = null;
+            for(Impiegato i : listaImpiegato) {
+                if (i.getMatricola().equals(rScientifico)) {
+                    respScientificoNuovo = i;
+                }
+            }
+
+            //trovato il laboratorio allora setto tutti gli attributi.
+            assert laboratorio != null;
+            laboratorio.setNumeroTelefonico(numeroTelefonico);
+            laboratorio.setIndirizzo(indirizzo);
+            laboratorio.setRScientifico(respScientificoNuovo);
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //________________________________________________________________________________________________________________//
+    //________________________________________________________________________________________________________________//
 
 
 
@@ -406,10 +516,18 @@ public class Controller {
 
 
 
-    //todo aggiungere ad ogni progetto la lista dei laboratori che gestisce
 
 
-    //________________________________________________FUNZIONI PER LA GUI_____________________________________________//
+
+
+
+
+
+
+
+
+
+    //___________________________________________FUNZIONI PER LA GUI__________________________________________________//
     /*
     * le seguenti tre funzioni hanno come compito quello di passare
     * alla GUI le varie informazioni che servono per creare le tabelle dell'impiegato...
@@ -604,6 +722,28 @@ public class Controller {
     //________________________________________________________________________________________________________________//
     //________________________________________________________________________________________________________________//
     //________________________________________________________________________________________________________________//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
