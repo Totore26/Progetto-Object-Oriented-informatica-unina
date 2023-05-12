@@ -1,6 +1,3 @@
-//COMPLETARE QUESTO FILE CON IL CODICE RICHIESTO PER OTTENERE IL PANNELLO DESIDERATO
-//CLASSE PROFILO IMPIEGATO
-
 package GUI;
 
 import java.awt.*;
@@ -11,6 +8,7 @@ import javax.swing.table.*;
 
 import CONTROLLER.Controller;
 import com.toedter.calendar.JDateChooser;
+import org.postgresql.util.PSQLException;
 
 public class ProfiloImpiegato extends JDialog {
     private JTextField matricolaField;
@@ -20,18 +18,32 @@ public class ProfiloImpiegato extends JDialog {
     private JTextField sessoField;
     private JTextArea curriculumTextArea;
     private JCheckBox dirigenteCheckBox;
-    private JTextField tipoImpiegatoComboBox;
+    private JTextField tipoImpiegatoField;
     private JSpinner stipendioSpinner;
     private JTextField dataAssunzioneChooser;
     private JDateChooser dataLicenziamentoChooser;
     private JTable tabellaStorico;
     private JTable tabellaAfferenza;
-    private JScrollBar scrollBar;
 
     public ProfiloImpiegato(String matricolaSelezionata, Controller controller) {
         setTitle("Profilo Impiegato");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        //Creiamo le variabili per ricevere dal controller i dati dell'impiegato
+        String nomeSelezionato = null;
+        String cognomeSelezionato = null;
+        String codiceFiscaleSelezionato = null;
+        String curriculumSelezionato = null;
+        boolean dirigenteSelezionato = false;
+        String tipoImpiegatoSelezionato = null;
+        java.sql.Date dataAssunzioneSelezionata= new java.sql.Date(2002-5-5);
+        java.sql.Date dataLicenziamentoSelezionata = null;
+        float stipendioSelezionato = 0;
+        String sessoSelezionato = null;
+
+        controller.getSingoloImpiegatoProfiloGUI(matricolaSelezionata,nomeSelezionato,cognomeSelezionato,codiceFiscaleSelezionato,curriculumSelezionato,dirigenteSelezionato,tipoImpiegatoSelezionato, (java.sql.Date) dataAssunzioneSelezionata, (java.sql.Date) dataLicenziamentoSelezionata,stipendioSelezionato,sessoSelezionato);
+
 
         // Creiamo il pannello principale
         JPanel panel = new JPanel(new BorderLayout());
@@ -48,24 +60,28 @@ public class ProfiloImpiegato extends JDialog {
         // Matricola
         JLabel matricolaLabel = new JLabel("Matricola:", SwingConstants.LEFT);
         matricolaField = new JTextField();
+        matricolaField.setText(matricolaSelezionata);
         datiAnagraficiPanel.add(matricolaLabel);
         datiAnagraficiPanel.add(matricolaField);
 
         // Nome
         JLabel nomeLabel = new JLabel("Nome:", SwingConstants.LEFT);
         nomeField = new JTextField();
+        nomeField.setText(nomeSelezionato);
         datiAnagraficiPanel.add(nomeLabel);
         datiAnagraficiPanel.add(nomeField);
 
         // Cognome
         JLabel cognomeLabel = new JLabel("Cognome:", SwingConstants.LEFT);
         cognomeField = new JTextField();
+        cognomeField.setText(cognomeSelezionato);
         datiAnagraficiPanel.add(cognomeLabel);
         datiAnagraficiPanel.add(cognomeField);
 
         // Codice fiscale
         JLabel codiceFiscaleLabel = new JLabel("Codice fiscale:", SwingConstants.LEFT);
         codiceFiscaleField = new JTextField();
+        codiceFiscaleField.setText(codiceFiscaleSelezionato);
         datiAnagraficiPanel.add(codiceFiscaleLabel);
         datiAnagraficiPanel.add(codiceFiscaleField);
 
@@ -77,9 +93,10 @@ public class ProfiloImpiegato extends JDialog {
 
         // Tipo impiegato
         JLabel tipoImpiegatoLabel = new JLabel("Tipo impiegato:", SwingConstants.LEFT);
-        tipoImpiegatoComboBox = new JTextField();
+        tipoImpiegatoField = new JTextField();
+        tipoImpiegatoField.setText(tipoImpiegatoSelezionato);
         datiAnagraficiPanel.add(tipoImpiegatoLabel);
-        datiAnagraficiPanel.add(tipoImpiegatoComboBox);
+        datiAnagraficiPanel.add(tipoImpiegatoField);
 
         // Stipendio
         JLabel stipendioLabel = new JLabel("Stipendio:", SwingConstants.LEFT);
@@ -87,31 +104,43 @@ public class ProfiloImpiegato extends JDialog {
         stipendioSpinner = new JSpinner(stipendioModel);
         JFormattedTextField stipendioText = ((JSpinner.NumberEditor) stipendioSpinner.getEditor()).getTextField();
         stipendioText.setColumns(10);
+        stipendioSpinner.setValue(stipendioSelezionato);
         datiAnagraficiPanel.add(stipendioLabel);
         datiAnagraficiPanel.add(stipendioSpinner);
 
         // Data assunzione
         JLabel dataAssunzioneLabel = new JLabel("Data assunzione:", SwingConstants.LEFT);
-        dataAssunzioneChooser = new JFormattedTextField("gg/mm/aaaa");
+        dataAssunzioneChooser = new JFormattedTextField();
+        dataAssunzioneChooser.setText(dataAssunzioneSelezionata.toString());
         datiAnagraficiPanel.add(dataAssunzioneLabel);
         datiAnagraficiPanel.add(dataAssunzioneChooser);
 
         // Data licenziamento
         JLabel dataLicenziamentoLabel = new JLabel("Data licenziamento:", SwingConstants.LEFT);
         dataLicenziamentoChooser = new JDateChooser();
+        dataLicenziamentoChooser.setDateFormatString("yyyy-mm-dd");
+        if(dataLicenziamentoSelezionata != null){
+            dataLicenziamentoChooser.setDate(dataLicenziamentoSelezionata);
+        }
         datiAnagraficiPanel.add(dataLicenziamentoLabel);
         datiAnagraficiPanel.add(dataLicenziamentoChooser);
 
         // Dirigente
         JLabel dirigenteLabel = new JLabel("Dirigente:", SwingConstants.LEFT);
         dirigenteCheckBox = new JCheckBox();
+        if(dirigenteSelezionato){
+            dirigenteCheckBox.setSelected(true);
+        } else {
+            dirigenteCheckBox.setSelected(false);
+        }
         datiAnagraficiPanel.add(dirigenteLabel);
         datiAnagraficiPanel.add(dirigenteCheckBox);
 
         // Curriculum
         JLabel curriculumLabel = new JLabel("Curriculum:", SwingConstants.LEFT);
-        curriculumTextArea = new JTextArea(5, 20);
+        curriculumTextArea = new JTextArea(5, 18);
         JScrollPane scrollPane = new JScrollPane(curriculumTextArea);
+        curriculumTextArea.setText(curriculumSelezionato);
         datiAnagraficiPanel.add(curriculumLabel);
         datiAnagraficiPanel.add(scrollPane);
 
@@ -224,15 +253,15 @@ public class ProfiloImpiegato extends JDialog {
         cognomeField.setEditable(false);
         codiceFiscaleField.setEditable(false);
         sessoField.setEditable(false);
-        tipoImpiegatoComboBox.setEditable(false);
+        tipoImpiegatoField.setEditable(false);
         dataAssunzioneChooser.setEditable(false);
 
 
         // Imposto la dimensione della finestra e la rendo visibile
         setSize(1000, 800);
         setLocationRelativeTo(null);
-        //disattivo la finestra padre (TODO QUESTA ISTRUZIONE POTREBBE DARE PROBLEMI COME PREMERE DUE VOLTE IL TASTO ANNULLA PRIMA DI USCIRE)
-        setModal(true);              //(TODO VERIFICA CHE SIA COSI SOLO PER IL TUO COMPUTER)
+        //disattivo la finestra padre
+        setModal(true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
     }

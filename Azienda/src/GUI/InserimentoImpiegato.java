@@ -172,6 +172,7 @@ public class InserimentoImpiegato extends JDialog {
             }
         });
 
+
         // Creiamo un pannello per contenere i bottoni "Salva" e "Annulla"
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(bottoneSalva);
@@ -186,8 +187,8 @@ public class InserimentoImpiegato extends JDialog {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        //disattivo la finestra padre (TODO QUESTA ISTRUZIONE POTREBBE DARE PROBLEMI COME PREMERE DUE VOLTE IL TASTO ANNULLA PRIMA DI USCIRE)
-        setModal(true);              //(TODO VERIFICA CHE SIA COSI SOLO PER IL TUO COMPUTER)
+        //disattivo la finestra padre
+        setModal(true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         //mostriamo la finestra
         setVisible(true);
