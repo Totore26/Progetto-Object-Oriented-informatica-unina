@@ -440,6 +440,39 @@ public class Controller {
     }
 
 
+
+    /*
+    * LA SEGUENTE FUNZIONE DATA IN INPUT LA MATRICOLA SELEZIONATA RITORNA ALLA GUI
+    * LA LISTA DI ATTRIBUTI DELL'IMPIEGATO SELEZIONATO
+    */
+    public void getSingoloImpiegatoProfiloGUI(String matricolaSelezionata, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso){
+
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+            }
+        }
+
+        nome = matScelta.getNome();
+        cognome = matScelta.getCognome();
+        codiceFiscale = matScelta.getCodiceFiscale();
+        curriculum = matScelta.getCurriculum();
+        dirigente = matScelta.isDirigente();
+        tipoImpiegato = matScelta.getTipoImpiegato();
+        dataAssunzione = (Date) matScelta.getDataAssunzione();
+        dataLicenziamento = (Date) matScelta.getDataLicenziamento();
+        stipendio = matScelta.getStipendio();
+        sesso = matScelta.getSesso();
+
+    }
+
+
+
+
+
+
+
     public void getListaProgettoGUI(ArrayList<String> nomelist, ArrayList<String> cuplist, ArrayList<String> responsabilelist, ArrayList<String> referentelist) {
 
         for (int i = 0; i < listaProgetto.size(); i++) {
