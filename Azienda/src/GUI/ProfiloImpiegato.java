@@ -221,27 +221,28 @@ public class ProfiloImpiegato extends JDialog {
         panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
 
 
-        // Logica per salvare le modifiche
+        // Logica per salvare le modifiche//TODO DA CORREEGERE(PROBLEMI CON I CAST CAZZO CULO CANE )
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //da agiungere la data licenziamrnto
-                    if(curriculumTextArea.getText().equals(curriculumSelezionato) && dirigenteCheckBox.isSelected() == dirigenteSelezionato && stipendioSpinner.getValue().equals(stipendioSelezionato)) {
+                // Converti la data in java.sql.Date
+                java.sql.Date sqlDataLicenziamento = (dataLicenziamentoSelezionata != null) ? new java.sql.Date(dataLicenziamentoSelezionata.getTime()) : null;
+                if(curriculumTextArea.getText().equals(curriculumSelezionato) && dirigenteCheckBox.isSelected() == dirigenteSelezionato && stipendioSpinner.getValue().equals(stipendioSelezionato) && dateisEquals(dataLicenziamentoSelezionata,dataLicenziamentoChooser.getDate())) {
+                    dispose();
+                } else {
+                    //Caso in cui sono state apportate delle modifiche e devo salvare i dati
+                    try {
+                        controller.modificaImpiegato(matricolaSelezionata,curriculumTextArea.getText(),dirigenteCheckBox.isSelected(),dataLicenziamentoChooser.getDate(), (Float) stipendioSpinner.getValue());
+                        System.out.println("sono un coglione ho salvato i dati");
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ee) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    } finally {
                         dispose();
-                    } else {
-                        //Caso in cui sono state apportate delle modifiche e devo salvare i dati
-                        try {
-                            controller.modificaImpiegato(matricolaSelezionata,curriculumTextArea.getText(),dirigenteCheckBox.isSelected(),dataLicenziamentoChooser.getDate(), (Float) stipendioSpinner.getValue());
-                            System.out.println("sono un coglione ho salvato i dati");
-                        } catch (SQLException ex) {
-                            JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
-                        } catch (Exception ee) {
-                            JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                        } finally {
-                            dispose();
-                        }
                     }
                 }
+            }
         });
 
         //bottone che torna alla vista impiegati
@@ -292,4 +293,20 @@ public class ProfiloImpiegato extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
+
+    private boolean dateisEquals(Date data1,Date data2)
+    {
+        if (data1 == null && data2 == null) {
+            return true;
+        } else if (data1 != null && data2 != null) {
+            if (data1.compareTo(data2) != 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
 }
