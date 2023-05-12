@@ -1,3 +1,6 @@
+//COMPLETARE QUESTO FILE CON IL CODICE RICHIESTO PER OTTENERE IL PANNELLO DESIDERATO
+//CLASSE PROFILO IMPIEGATO
+
 package GUI;
 
 import java.awt.*;
@@ -10,7 +13,6 @@ import CONTROLLER.Controller;
 import com.toedter.calendar.JDateChooser;
 
 public class ProfiloImpiegato extends JDialog {
-
     private JTextField matricolaField;
     private JTextField nomeField;
     private JTextField cognomeField;
@@ -24,21 +26,24 @@ public class ProfiloImpiegato extends JDialog {
     private JDateChooser dataLicenziamentoChooser;
     private JTable tabellaStorico;
     private JTable tabellaAfferenza;
+    private JScrollBar scrollBar;
 
     public ProfiloImpiegato(String matricolaSelezionata, Controller controller) {
         setTitle("Profilo Impiegato");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-
-
         // Creiamo il pannello principale
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JPanel panel = new JPanel(new BorderLayout());
+        //pannello per i dati anagrafici
 
         // Creiamo il pannello per i dati anagrafici
         JPanel datiAnagraficiPanel = new JPanel(new GridLayout(0, 2));
         datiAnagraficiPanel.setBorder(BorderFactory.createTitledBorder("Dati anagrafici"));
+
+        // Creiamo il pannello sinistro per i dati anagrafici
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         // Matricola
         JLabel matricolaLabel = new JLabel("Matricola:", SwingConstants.LEFT);
@@ -105,50 +110,57 @@ public class ProfiloImpiegato extends JDialog {
 
         // Curriculum
         JLabel curriculumLabel = new JLabel("Curriculum:", SwingConstants.LEFT);
-        curriculumTextArea = new JTextArea(10, 20);
+        curriculumTextArea = new JTextArea(5, 20);
         JScrollPane scrollPane = new JScrollPane(curriculumTextArea);
         datiAnagraficiPanel.add(curriculumLabel);
         datiAnagraficiPanel.add(scrollPane);
-        
-        
-        panel.add(datiAnagraficiPanel);
 
-        // Creiamo il pannello per la tabella di afferenza
-        JPanel tabellaAfferenzaPanel = new JPanel(new BorderLayout());
-        tabellaAfferenzaPanel.setBorder(BorderFactory.createTitledBorder("Tabella di afferenza"));
+        // ... aggiungo i dati anagrafici al pannello
+        leftPanel.add(datiAnagraficiPanel);
+        leftPanel.setPreferredSize(new Dimension(700,600));
+        panel.add(leftPanel, BorderLayout.CENTER);
+
+
+
+        // Creiamo il pannello destro per la tabella di afferenza
+        JPanel rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setBorder(BorderFactory.createTitledBorder("Laboratori Associati:"));
 
         // Tabella di afferenza
         DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
         tabellaAfferenzaModel.addColumn("ID");
-        tabellaAfferenzaModel.addColumn("Nome");
-        tabellaAfferenzaModel.addColumn("Cognome");
-        tabellaAfferenzaModel.addRow(new Object[]{1, "Mario", "Rossi"});
-        tabellaAfferenzaModel.addRow(new Object[]{2, "Luigi", "Verdi"});
+        tabellaAfferenzaModel.addRow(new Object[]{1});
+        tabellaAfferenzaModel.addRow(new Object[]{2});
         tabellaAfferenza = new JTable(tabellaAfferenzaModel);
-        tabellaAfferenzaPanel.add(new JScrollPane(tabellaAfferenza), BorderLayout.CENTER);
 
-        panel.add(tabellaAfferenzaPanel);
+        //barra di scorrimento
+        scrollPane = new JScrollPane(tabellaAfferenza);
+        rightPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Creiamo il pannello per la tabella dello storico
-        JPanel tabellaStoricoPanel = new JPanel(new BorderLayout());
-        tabellaStoricoPanel.setBorder(BorderFactory.createTitledBorder("Tabella storico"));
+        rightPanel.add(new JScrollPane(tabellaAfferenza), BorderLayout.CENTER);
+        rightPanel.setPreferredSize(new Dimension(150,600));
+        panel.add(rightPanel, BorderLayout.EAST);
+
+        // Creiamo il pannello inferiore per la tabella dello storico
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setBorder(BorderFactory.createTitledBorder("Storico:"));
 
         // Tabella dello storico
         DefaultTableModel tabellaStoricoModel = new DefaultTableModel();
-        tabellaStoricoModel.addColumn("Data");
-        tabellaStoricoModel.addColumn("Evento");
-        tabellaStoricoModel.addRow(new Object[]{new Date(), "Assunzione"});
-        tabellaStoricoModel.addRow(new Object[]{new Date(), "Promozione"});
+        tabellaStoricoModel.addColumn("Scatto junior");
+        tabellaStoricoModel.addColumn("Scatto middle");
+        tabellaStoricoModel.addColumn("Scatto senior");
+        tabellaStoricoModel.addRow(new Object[]{new Date(), new Date(),new Date()});
         tabellaStorico = new JTable(tabellaStoricoModel);
-        tabellaStoricoPanel.add(new JScrollPane(tabellaStorico), BorderLayout.CENTER);
 
-        panel.add(tabellaStoricoPanel);
+        bottomPanel.add(new JScrollPane(tabellaStorico), BorderLayout.CENTER);
+        panel.add(bottomPanel, BorderLayout.SOUTH);
+        bottomPanel.setPreferredSize(new Dimension(1000,75));
 
-        // Aggiungiamo il pannello alla finestra
-        add(panel);
 
 
         //BOTTONI
+
 
         // Crea il pannello dei bottoni
         JPanel panelBottoni = new JPanel(new BorderLayout());
@@ -168,7 +180,7 @@ public class ProfiloImpiegato extends JDialog {
         panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
 
 
-       // Logica per salvare le modifiche
+        // Logica per salvare le modifiche
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -201,10 +213,12 @@ public class ProfiloImpiegato extends JDialog {
             }
         });
 
-        // Aggiungi il pannello dei bottoni al dialogo
+        // Aggiungo i pannelli alla finestra principale
+        add(panel,BorderLayout.CENTER);
         add(panelBottoni, BorderLayout.SOUTH);
 
-        // Rendi non modificabili alcuni campi
+
+        // Rendo non modificabili alcuni campi
         matricolaField.setEditable(false);
         nomeField.setEditable(false);
         cognomeField.setEditable(false);
@@ -213,10 +227,13 @@ public class ProfiloImpiegato extends JDialog {
         tipoImpiegatoComboBox.setEditable(false);
         dataAssunzioneChooser.setEditable(false);
 
-        // Imposta la dimensione del dialogo e lo rende visibile
-        setSize(800, 600);
+
+        // Imposto la dimensione della finestra e la rendo visibile
+        setSize(1000, 800);
         setLocationRelativeTo(null);
-        setModal(true);
+        //disattivo la finestra padre (TODO QUESTA ISTRUZIONE POTREBBE DARE PROBLEMI COME PREMERE DUE VOLTE IL TASTO ANNULLA PRIMA DI USCIRE)
+        setModal(true);              //(TODO VERIFICA CHE SIA COSI SOLO PER IL TUO COMPUTER)
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }

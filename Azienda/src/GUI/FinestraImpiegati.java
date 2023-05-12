@@ -72,6 +72,7 @@ import java.util.ArrayList;
             tabella.getTableHeader().setBackground(Color.BLACK);
             tabella.getTableHeader().setForeground(Color.WHITE);
 
+            //barra di scorrimento
             scrollPane = new JScrollPane(tabella);
             frameFinestraImpiegati.add(scrollPane, BorderLayout.CENTER);
 
@@ -127,7 +128,6 @@ import java.util.ArrayList;
                         public void windowClosed(WindowEvent e) {
                             // Chiamo il metodo updateTable() dopo la chiusura della finestra di dialogo
                             updateTable(controller, colonneTabella);
-
                         }
                     });
                 }

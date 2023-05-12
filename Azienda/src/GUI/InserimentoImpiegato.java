@@ -23,8 +23,6 @@ public class InserimentoImpiegato extends JDialog {
     private JSpinner stipendioSpinner;
     private JDateChooser dataAssunzioneChooser;
     private JDateChooser dataLicenziamentoChooser;
-    private String[] colonneTabella = {"Matricola", "Nome", "Cognome"};
-
 
     public InserimentoImpiegato(Controller controller) {
 
@@ -170,7 +168,7 @@ public class InserimentoImpiegato extends JDialog {
         bottoneAnnulla.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+                dispose();
             }
         });
 
@@ -188,8 +186,9 @@ public class InserimentoImpiegato extends JDialog {
         setSize(800, 600);
         setLocationRelativeTo(null);
 
-        //disattivo la finestra padre
-        setModal(true);
+        //disattivo la finestra padre (TODO QUESTA ISTRUZIONE POTREBBE DARE PROBLEMI COME PREMERE DUE VOLTE IL TASTO ANNULLA PRIMA DI USCIRE)
+        setModal(true);              //(TODO VERIFICA CHE SIA COSI SOLO PER IL TUO COMPUTER)
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         //mostriamo la finestra
         setVisible(true);
     }
