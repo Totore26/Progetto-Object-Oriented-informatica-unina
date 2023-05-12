@@ -451,6 +451,7 @@ public class Controller {
         for(Impiegato imp : listaImpiegato){
             if(imp.getMatricola().equals(matricolaSelezionata)){
                 matScelta = imp;
+                break;
             }
         }
 
@@ -460,8 +461,8 @@ public class Controller {
         curriculum = matScelta.getCurriculum();
         dirigente = matScelta.isDirigente();
         tipoImpiegato = matScelta.getTipoImpiegato();
-        dataAssunzione = (java.sql.Date) matScelta.getDataAssunzione();
-        dataLicenziamento = (java.sql.Date) matScelta.getDataLicenziamento();
+        dataAssunzione = (Date) matScelta.getDataAssunzione();
+        dataLicenziamento = (Date) matScelta.getDataLicenziamento();
         stipendio = matScelta.getStipendio();
         sesso = matScelta.getSesso();
 
