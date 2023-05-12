@@ -31,20 +31,20 @@ public class ProfiloImpiegato extends JDialog {
         setLayout(new BorderLayout());
 
         //Creiamo le variabili per ricevere dal controller i dati dell'impiegato
-        String nomeSelezionato = null;
-        String cognomeSelezionato = null;
-        String codiceFiscaleSelezionato = null;
-        String curriculumSelezionato = null;
-        boolean dirigenteSelezionato = false;
-        String tipoImpiegatoSelezionato = null;
-        java.sql.Date dataAssunzioneSelezionata= new java.sql.Date(2002-5-5);
-        java.sql.Date dataLicenziamentoSelezionata = null;
-        float stipendioSelezionato = 0;
-        String sessoSelezionato = null;
-
-        controller.getSingoloImpiegatoProfiloGUI(matricolaSelezionata,nomeSelezionato,cognomeSelezionato,codiceFiscaleSelezionato,curriculumSelezionato,dirigenteSelezionato,tipoImpiegatoSelezionato, (java.sql.Date) dataAssunzioneSelezionata, (java.sql.Date) dataLicenziamentoSelezionata,stipendioSelezionato,sessoSelezionato);
+        String nomeSelezionato = controller.getSingoloImpiegatoNomeProfiloGUI(matricolaSelezionata);
+        String cognomeSelezionato = controller.getSingoloImpiegatoCognomeProfiloGUI(matricolaSelezionata);
+        String codiceFiscaleSelezionato = controller.getSingoloImpiegatoCodiceFiscaleProfiloGUI(matricolaSelezionata);
+        String curriculumSelezionato = controller.getSingoloImpiegatoCurriculumProfiloGUI(matricolaSelezionata);
+        boolean dirigenteSelezionato = controller.getSingoloImpiegatoDirigenteProfiloGUI(matricolaSelezionata);
+        String tipoImpiegatoSelezionato = controller.getSingoloImpiegatoTipoProfiloGUI(matricolaSelezionata);
+        java.sql.Date dataAssunzioneSelezionata= (java.sql.Date) controller.getSingoloImpiegatoDataAssProfiloGUI(matricolaSelezionata);
+        java.sql.Date dataLicenziamentoSelezionata = (java.sql.Date) controller.getSingoloImpiegatoDataLicProfiloGUI(matricolaSelezionata);
+        float stipendioSelezionato = controller.getSingoloImpiegatoStipendioProfiloGUI(matricolaSelezionata);
+        String sessoSelezionato = controller.getSingoloImpiegatoSessooProfiloGUI(matricolaSelezionata);
 
 
+
+        System.out.println(nomeSelezionato);
         // Creiamo il pannello principale
         JPanel panel = new JPanel(new BorderLayout());
         //pannello per i dati anagrafici
@@ -88,6 +88,7 @@ public class ProfiloImpiegato extends JDialog {
         // Sesso
         JLabel sessoLabel = new JLabel("Sesso:", SwingConstants.LEFT);
         sessoField = new JTextField();
+        sessoField.setText(sessoSelezionato);
         datiAnagraficiPanel.add(sessoLabel);
         datiAnagraficiPanel.add(sessoField);
 

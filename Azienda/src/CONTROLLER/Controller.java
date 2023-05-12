@@ -445,7 +445,7 @@ public class Controller {
     * LA SEGUENTE FUNZIONE DATA IN INPUT LA MATRICOLA SELEZIONATA RITORNA ALLA GUI
     * LA LISTA DI ATTRIBUTI DELL'IMPIEGATO SELEZIONATO
     */
-    public void getSingoloImpiegatoProfiloGUI(String matricolaSelezionata, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso){
+    public String getSingoloImpiegatoNomeProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
         for(Impiegato imp : listaImpiegato){
@@ -455,24 +455,131 @@ public class Controller {
             }
         }
 
-        nome = matScelta.getNome();
-        cognome = matScelta.getCognome();
-        codiceFiscale = matScelta.getCodiceFiscale();
-        curriculum = matScelta.getCurriculum();
-        dirigente = matScelta.isDirigente();
-        tipoImpiegato = matScelta.getTipoImpiegato();
-        dataAssunzione = (Date) matScelta.getDataAssunzione();
-        dataLicenziamento = (Date) matScelta.getDataLicenziamento();
-        stipendio = matScelta.getStipendio();
-        sesso = matScelta.getSesso();
+        return matScelta.getNome();
 
     }
 
+    public String getSingoloImpiegatoCognomeProfiloGUI(String matricolaSelezionata){
 
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
 
+        return matScelta.getCognome();
 
+    }
 
+    public String getSingoloImpiegatoCurriculumProfiloGUI(String matricolaSelezionata){
 
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.getCurriculum();
+
+    }
+
+    public String getSingoloImpiegatoCodiceFiscaleProfiloGUI(String matricolaSelezionata){
+
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.getCodiceFiscale();
+
+    }
+
+    public boolean getSingoloImpiegatoDirigenteProfiloGUI(String matricolaSelezionata){
+
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.isDirigente();
+
+    }
+
+    public String getSingoloImpiegatoTipoProfiloGUI(String matricolaSelezionata){
+
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.getTipoImpiegato();
+
+    }
+
+    public java.util.Date getSingoloImpiegatoDataAssProfiloGUI(String matricolaSelezionata){
+
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.getDataAssunzione();
+
+    }
+
+    public java.util.Date getSingoloImpiegatoDataLicProfiloGUI(String matricolaSelezionata){
+
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.getDataLicenziamento();
+
+    }
+
+    public float getSingoloImpiegatoStipendioProfiloGUI(String matricolaSelezionata){
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.getStipendio();
+    }
+
+    public String getSingoloImpiegatoSessooProfiloGUI(String matricolaSelezionata){
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        return matScelta.getSesso();
+    }
 
     public void getListaProgettoGUI(ArrayList<String> nomelist, ArrayList<String> cuplist, ArrayList<String> responsabilelist, ArrayList<String> referentelist) {
 
