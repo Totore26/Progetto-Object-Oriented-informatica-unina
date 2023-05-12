@@ -2,7 +2,9 @@ package GUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
@@ -24,6 +26,9 @@ public class ProfiloImpiegato extends JDialog {
     private JDateChooser dataLicenziamentoChooser;
     private JTable tabellaStorico;
     private JTable tabellaAfferenza;
+    private JTextField impiegatoReferente;
+    private JTextField impiegatoResponsabile;
+    private JTextField impiegatoRScientifico;
 
     public ProfiloImpiegato(String matricolaSelezionata, Controller controller) {
         setTitle("Profilo Impiegato");
@@ -44,10 +49,8 @@ public class ProfiloImpiegato extends JDialog {
 
 
 
-        System.out.println(nomeSelezionato);
         // Creiamo il pannello principale
         JPanel panel = new JPanel(new BorderLayout());
-        //pannello per i dati anagrafici
 
         // Creiamo il pannello per i dati anagrafici
         JPanel datiAnagraficiPanel = new JPanel(new GridLayout(0, 2));
@@ -168,7 +171,16 @@ public class ProfiloImpiegato extends JDialog {
         rightPanel.add(scrollPane, BorderLayout.CENTER);
 
         rightPanel.add(new JScrollPane(tabellaAfferenza), BorderLayout.CENTER);
-        rightPanel.setPreferredSize(new Dimension(150,600));
+        rightPanel.setPreferredSize(new Dimension(150,700));
+
+        //creiamo i cambi dove viene visualizzato se l'impiegato è speciale
+        impiegatoReferente = new JTextField();
+        impiegatoResponsabile = new JTextField();
+        impiegatoRScientifico = new JTextField();
+
+        rightPanel.add(impiegatoRScientifico, BorderLayout.CENTER);
+        rightPanel.add(impiegatoReferente, BorderLayout.CENTER);
+        rightPanel.add(impiegatoResponsabile, BorderLayout.CENTER);
         panel.add(rightPanel, BorderLayout.EAST);
 
         // Creiamo il pannello inferiore per la tabella dello storico
@@ -182,7 +194,6 @@ public class ProfiloImpiegato extends JDialog {
         tabellaStoricoModel.addColumn("Scatto senior");
         tabellaStoricoModel.addRow(new Object[]{new Date(), new Date(),new Date()});
         tabellaStorico = new JTable(tabellaStoricoModel);
-
         bottomPanel.add(new JScrollPane(tabellaStorico), BorderLayout.CENTER);
         panel.add(bottomPanel, BorderLayout.SOUTH);
         bottomPanel.setPreferredSize(new Dimension(1000,75));
@@ -214,8 +225,23 @@ public class ProfiloImpiegato extends JDialog {
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-            }
+                //da agiungere la data licenziamrnto
+                    if(curriculumTextArea.getText().equals(curriculumSelezionato) && dirigenteCheckBox.isSelected() == dirigenteSelezionato && stipendioSpinner.getValue().equals(stipendioSelezionato)) {
+                        dispose();
+                    } else {
+                        //Caso in cui sono state apportate delle modifiche e devo salvare i dati
+                        try {
+                            controller.modificaImpiegato(matricolaSelezionata,curriculumTextArea.getText(),dirigenteCheckBox.isSelected(),dataLicenziamentoChooser.getDate(), (Float) stipendioSpinner.getValue());
+                            System.out.println("sono un coglione ho salvato i dati");
+                        } catch (SQLException ex) {
+                            JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                        } catch (Exception ee) {
+                            JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                        } finally {
+                            dispose();
+                        }
+                    }
+                }
         });
 
         //bottone che torna alla vista impiegati
