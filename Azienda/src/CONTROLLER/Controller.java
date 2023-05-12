@@ -21,6 +21,9 @@ public class Controller {
     }
 
 
+    //____________________________________________FUNZIONI PER IL LOAD DEI DATI_______________________________________//
+
+
     //il dumpDati non inizializza le relazioni di afferenza e la gestione...
     private void dumpdati() {
         dumpDatiImpiegato();
@@ -139,8 +142,8 @@ public class Controller {
     }
 
 
-
-
+//____________________________________________________________________________________________________________________//
+//_______________________________________FUNZIONI PER L'IMPIEGATO_____________________________________________________//
 
 
     /*
@@ -209,6 +212,7 @@ public class Controller {
 
 
 
+
     /*
     * La seguente funzione aggiunge al database l'afferenza,
     * nel caso affermativo allora aggiunge anche alla lista di afferenze dell'impiegato.
@@ -235,7 +239,7 @@ public class Controller {
 
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
 
-        boolean control = i.aggiungiAfferenza(matricolaSelezionata,idlabSelezionato);
+        boolean control = i.aggiungiAfferenzaDAO(matricolaSelezionata,idlabSelezionato);
 
         //se l'inserimento nel database è andato a buon fine allora aggiungo alla lista dell'imp il lab
         if(control){
@@ -243,6 +247,46 @@ public class Controller {
         }
 
     };
+
+
+
+
+    /*
+    * LA SEGUENTE FUNZIONE ELIMINA L'AFFERENZA SELEZIONATA PER UN IMPIEGATO
+    * NEL CASO IN CUI ELIMINA NEL DATABASE ALLORA ELIMINA ANCHE NEL MODEL...
+    * NEL CASO DI ECCEZIONI ALLORA MANDA IL WARNING ALLA GUI
+     */
+    public void eliminaAfferenza(String matricolaScelta, String idlabSelezionato) throws SQLException{
+        //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
+        Impiegato impiegatoScelto = null;
+        for(Impiegato imp : listaImpiegato)
+            if(imp.getMatricola().equals(matricolaScelta))
+            {
+                impiegatoScelto = imp;
+                break;
+            }
+
+        //come seconda cosa trovo l'oggetto laboratorio
+        Laboratorio laboratorioScelto = null;
+        for(Laboratorio lab : listaLaboratorio)
+            if(lab.getIdLab().equals(idlabSelezionato))
+            {
+                laboratorioScelto = lab;
+                break;
+            }
+
+
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+
+        boolean control = i.eliminaAfferenzaDAO(matricolaScelta,idlabSelezionato);
+
+        if (control) {
+            //se l'eliminazione ha avuto successo allora elimino anche dal model
+            impiegatoScelto.removeAfferenzaImp(idlabSelezionato);
+
+        }
+
+    }
 
 
 
@@ -265,6 +309,8 @@ public class Controller {
             System.out.println("errore nell'aggiunta dell'Impiegato");
         }
     }
+
+
 
 
 
@@ -321,6 +367,40 @@ public class Controller {
 
 
 
+//____________________________________________________________________________________________________________________//
+//____________________________________________________________________________________________________________________//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -329,6 +409,7 @@ public class Controller {
     //todo aggiungere ad ogni progetto la lista dei laboratori che gestisce
 
 
+    //________________________________________________FUNZIONI PER LA GUI_____________________________________________//
     /*
     * le seguenti tre funzioni hanno come compito quello di passare
     * alla GUI le varie informazioni che servono per creare le tabelle dell'impiegato...
@@ -379,44 +460,9 @@ public class Controller {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //________________________________________________________________________________________________________________//
+    //________________________________________________________________________________________________________________//
+    //________________________________________________________________________________________________________________//
 
 
 

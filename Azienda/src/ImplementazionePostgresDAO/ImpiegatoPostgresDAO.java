@@ -85,9 +85,22 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     }
 
     @Override
-    public boolean aggiungiAfferenza(String matricolaScelta, String idlabScelto) throws SQLException{
+    public boolean aggiungiAfferenzaDAO(String matricolaScelta, String idlabScelto) throws SQLException{
         PreparedStatement insertImp;
         insertImp = connection.prepareStatement("INSERT INTO AFFERENZA (matricola, id_lab) VALUES (?,?)");
+        insertImp.setString(1, matricolaScelta);
+        int rs = insertImp.executeUpdate();
+        if(rs==1){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean eliminaAfferenzaDAO(String matricolaScelta, String idlabScelto) throws  SQLException{
+        PreparedStatement insertImp;
+        insertImp = connection.prepareStatement("DELETE FROM AFFERENZA WHERE MATRICOLA = ?");
         insertImp.setString(1, matricolaScelta);
         int rs = insertImp.executeUpdate();
         if(rs==1){

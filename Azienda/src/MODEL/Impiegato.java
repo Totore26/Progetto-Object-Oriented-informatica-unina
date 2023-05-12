@@ -161,4 +161,15 @@ public class Impiegato {
     }
 
 
+    //la funzione elimina idlab scelto
+    public void removeAfferenzaImp(String idlabToRemove){
+        for(Laboratorio lab : this.listaAfferenza){
+            if(lab.getIdLab().equals(idlabToRemove)){
+                listaAfferenza.remove(lab);
+                break;
+            }
+        }
+    }
+
+
 }
