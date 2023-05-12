@@ -114,14 +114,14 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     public boolean modificaImpiegatoDAO(String matricolaSelezionata,String curriculum, boolean dirigente, Date dataLicenziamento, float stipendio)throws SQLException {
 
         PreparedStatement insertImp;
-        insertImp = connection.prepareStatement("UPDATE IMPEGATO SET curriculum=? dirigente=? data_licenziamento=? stipendio=? WHERE MATRICOLA = ?");
+        insertImp = connection.prepareStatement("UPDATE IMPIEGATO SET curriculum=? ,dirigente = ? ,data_licenziamento = ? , stipendio=? WHERE MATRICOLA = ?");
         insertImp.setString(1, curriculum);
         insertImp.setBoolean(2, dirigente);
         insertImp.setDate(3, (java.sql.Date) dataLicenziamento);
         insertImp.setFloat(4, stipendio);
         insertImp.setString(5,matricolaSelezionata);
-        int result = insertImp.executeUpdate();
-        if (result == 1) {
+        int rs = insertImp.executeUpdate();
+        if (rs>0) {
             return true;
         }
         return false;

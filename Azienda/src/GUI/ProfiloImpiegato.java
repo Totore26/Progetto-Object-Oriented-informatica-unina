@@ -3,6 +3,7 @@ package GUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import javax.swing.*;
@@ -160,11 +161,16 @@ public class ProfiloImpiegato extends JDialog {
         rightPanel.setBorder(BorderFactory.createTitledBorder("Laboratori Associati:"));
 
         // Tabella di afferenza
+        ArrayList<String> listaLab = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
         DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
         tabellaAfferenzaModel.addColumn("ID");
-        tabellaAfferenzaModel.addRow(new Object[]{1});
-        tabellaAfferenzaModel.addRow(new Object[]{2});
+        Object[][] data = new Object[listaLab.size()][1];
+        for (int i = 0; i < listaLab.size(); i++) {
+            data[i][0] = listaLab.get(i);
+        }
+        tabellaAfferenzaModel.setDataVector(data, new Object[]{"ID"});
         tabellaAfferenza = new JTable(tabellaAfferenzaModel);
+
 
         //barra di scorrimento
         scrollPane = new JScrollPane(tabellaAfferenza);
@@ -173,14 +179,7 @@ public class ProfiloImpiegato extends JDialog {
         rightPanel.add(new JScrollPane(tabellaAfferenza), BorderLayout.CENTER);
         rightPanel.setPreferredSize(new Dimension(150,700));
 
-        //creiamo i cambi dove viene visualizzato se l'impiegato è speciale
-        impiegatoReferente = new JTextField();
-        impiegatoResponsabile = new JTextField();
-        impiegatoRScientifico = new JTextField();
 
-        rightPanel.add(impiegatoRScientifico, BorderLayout.CENTER);
-        rightPanel.add(impiegatoReferente, BorderLayout.CENTER);
-        rightPanel.add(impiegatoResponsabile, BorderLayout.CENTER);
         panel.add(rightPanel, BorderLayout.EAST);
 
         // Creiamo il pannello inferiore per la tabella dello storico
@@ -225,23 +224,30 @@ public class ProfiloImpiegato extends JDialog {
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Converti la data in java.sql.Date
-                java.sql.Date sqlDataLicenziamento = (dataLicenziamentoSelezionata != null) ? new java.sql.Date(dataLicenziamentoSelezionata.getTime()) : null;
-                if(curriculumTextArea.getText().equals(curriculumSelezionato) && dirigenteCheckBox.isSelected() == dirigenteSelezionato && stipendioSpinner.getValue().equals(stipendioSelezionato) && dateisEquals(dataLicenziamentoSelezionata,dataLicenziamentoChooser.getDate())) {
-                    dispose();
-                } else {
-                    //Caso in cui sono state apportate delle modifiche e devo salvare i dati
-                    try {
-                        controller.modificaImpiegato(matricolaSelezionata,curriculumTextArea.getText(),dirigenteCheckBox.isSelected(),dataLicenziamentoChooser.getDate(), (Float) stipendioSpinner.getValue());
-                        System.out.println("sono un coglione ho salvato i dati");
-                    } catch (SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
-                    } catch (Exception ee) {
-                        JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                    } finally {
-                        dispose();
+
+
+
+                try {
+                    float stipendioModificato = ((Number) stipendioSpinner.getValue()).floatValue();
+                    boolean dirigenteModificato = dirigenteCheckBox.isSelected();
+                    String curriculumModificato = curriculumTextArea.getText();
+                    java.util.Date dataLicenziamento = dataLicenziamentoChooser.getDate();
+                    java.sql.Date sqlDataLicenziamento = null;
+                    if(dataLicenziamentoChooser.getDate() != null) {
+                        sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
                     }
+                    controller.modificaImpiegato(matricolaSelezionata,curriculumModificato,dirigenteModificato,sqlDataLicenziamento,stipendioModificato);
+                    JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ee) {
+                    JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    dispose();
                 }
+
             }
         });
 
@@ -289,24 +295,10 @@ public class ProfiloImpiegato extends JDialog {
         setSize(1000, 800);
         setLocationRelativeTo(null);
         //disattivo la finestra padre
-        setModal(true);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 
-    private boolean dateisEquals(Date data1,Date data2)
-    {
-        if (data1 == null && data2 == null) {
-            return true;
-        } else if (data1 != null && data2 != null) {
-            if (data1.compareTo(data2) != 0) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
+
 
 }
