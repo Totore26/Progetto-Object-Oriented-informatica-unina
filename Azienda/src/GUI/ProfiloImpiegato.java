@@ -5,13 +5,11 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
 import javax.swing.*;
 import javax.swing.table.*;
 
 import CONTROLLER.Controller;
 import com.toedter.calendar.JDateChooser;
-import org.postgresql.util.PSQLException;
 
 public class ProfiloImpiegato extends JDialog {
     private JTextField matricolaField;
@@ -62,49 +60,63 @@ public class ProfiloImpiegato extends JDialog {
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         // Matricola
-        JLabel matricolaLabel = new JLabel("Matricola:", SwingConstants.LEFT);
+        JLabel matricolaLabel = new JLabel("MATRICOLA:", SwingConstants.CENTER);
+        matricolaLabel.setFont(matricolaLabel.getFont().deriveFont(Font.BOLD, 15));
+        matricolaLabel.setHorizontalAlignment(SwingConstants.LEFT);
         matricolaField = new JTextField();
         matricolaField.setText(matricolaSelezionata);
         datiAnagraficiPanel.add(matricolaLabel);
         datiAnagraficiPanel.add(matricolaField);
 
         // Nome
-        JLabel nomeLabel = new JLabel("Nome:", SwingConstants.LEFT);
+        JLabel nomeLabel = new JLabel("NOME:", SwingConstants.CENTER);
+        nomeLabel.setFont(nomeLabel.getFont().deriveFont(Font.BOLD, 15));
+        nomeLabel.setHorizontalAlignment(SwingConstants.LEFT);
         nomeField = new JTextField();
         nomeField.setText(nomeSelezionato);
         datiAnagraficiPanel.add(nomeLabel);
         datiAnagraficiPanel.add(nomeField);
 
         // Cognome
-        JLabel cognomeLabel = new JLabel("Cognome:", SwingConstants.LEFT);
+        JLabel cognomeLabel = new JLabel("COGNOME:", SwingConstants.CENTER);
+        cognomeLabel.setFont(cognomeLabel.getFont().deriveFont(Font.BOLD, 15));
+        cognomeLabel.setHorizontalAlignment(SwingConstants.LEFT);
         cognomeField = new JTextField();
         cognomeField.setText(cognomeSelezionato);
         datiAnagraficiPanel.add(cognomeLabel);
         datiAnagraficiPanel.add(cognomeField);
 
         // Codice fiscale
-        JLabel codiceFiscaleLabel = new JLabel("Codice fiscale:", SwingConstants.LEFT);
+        JLabel codiceFiscaleLabel = new JLabel("CODICE FISCALE", SwingConstants.CENTER);
+        codiceFiscaleLabel.setFont(codiceFiscaleLabel.getFont().deriveFont(Font.BOLD, 15));
+        codiceFiscaleLabel.setHorizontalAlignment(SwingConstants.LEFT);
         codiceFiscaleField = new JTextField();
         codiceFiscaleField.setText(codiceFiscaleSelezionato);
         datiAnagraficiPanel.add(codiceFiscaleLabel);
         datiAnagraficiPanel.add(codiceFiscaleField);
 
         // Sesso
-        JLabel sessoLabel = new JLabel("Sesso:", SwingConstants.LEFT);
+        JLabel sessoLabel = new JLabel("SESSO:", SwingConstants.CENTER);
+        sessoLabel.setFont(sessoLabel.getFont().deriveFont(Font.BOLD, 15));
+        sessoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         sessoField = new JTextField();
         sessoField.setText(sessoSelezionato);
         datiAnagraficiPanel.add(sessoLabel);
         datiAnagraficiPanel.add(sessoField);
 
         // Tipo impiegato
-        JLabel tipoImpiegatoLabel = new JLabel("Tipo impiegato:", SwingConstants.LEFT);
+        JLabel tipoImpiegatoLabel = new JLabel("TIPO IMPIEGATO:", SwingConstants.CENTER);
+        tipoImpiegatoLabel.setFont(tipoImpiegatoLabel.getFont().deriveFont(Font.BOLD, 15));
+        tipoImpiegatoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         tipoImpiegatoField = new JTextField();
         tipoImpiegatoField.setText(tipoImpiegatoSelezionato);
         datiAnagraficiPanel.add(tipoImpiegatoLabel);
         datiAnagraficiPanel.add(tipoImpiegatoField);
 
         // Stipendio
-        JLabel stipendioLabel = new JLabel("Stipendio:", SwingConstants.LEFT);
+        JLabel stipendioLabel = new JLabel("STIPENDIO:", SwingConstants.CENTER);
+        stipendioLabel.setFont(stipendioLabel.getFont().deriveFont(Font.BOLD, 15));
+        stipendioLabel.setHorizontalAlignment(SwingConstants.LEFT);
         SpinnerNumberModel stipendioModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE, 100.0);
         stipendioSpinner = new JSpinner(stipendioModel);
         JFormattedTextField stipendioText = ((JSpinner.NumberEditor) stipendioSpinner.getEditor()).getTextField();
@@ -114,14 +126,18 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(stipendioSpinner);
 
         // Data assunzione
-        JLabel dataAssunzioneLabel = new JLabel("Data assunzione:", SwingConstants.LEFT);
+        JLabel dataAssunzioneLabel = new JLabel("DATA ASSUNZIONE:", SwingConstants.CENTER);
+        dataAssunzioneLabel.setFont(dataAssunzioneLabel.getFont().deriveFont(Font.BOLD, 15));
+        dataAssunzioneLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dataAssunzioneChooser = new JFormattedTextField();
         dataAssunzioneChooser.setText(dataAssunzioneSelezionata.toString());
         datiAnagraficiPanel.add(dataAssunzioneLabel);
         datiAnagraficiPanel.add(dataAssunzioneChooser);
 
         // Data licenziamento
-        JLabel dataLicenziamentoLabel = new JLabel("Data licenziamento:", SwingConstants.LEFT);
+        JLabel dataLicenziamentoLabel = new JLabel("DATA LICENZIAMENTO:", SwingConstants.LEFT);
+        dataLicenziamentoLabel.setFont(dataLicenziamentoLabel.getFont().deriveFont(Font.BOLD, 15));
+        dataLicenziamentoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dataLicenziamentoChooser = new JDateChooser();
         dataLicenziamentoChooser.setDateFormatString("yyyy-mm-dd");
         if(dataLicenziamentoSelezionata != null){
@@ -130,8 +146,11 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(dataLicenziamentoLabel);
         datiAnagraficiPanel.add(dataLicenziamentoChooser);
 
+
         // Dirigente
-        JLabel dirigenteLabel = new JLabel("Dirigente:", SwingConstants.LEFT);
+        JLabel dirigenteLabel = new JLabel("DIRIGENTE:", SwingConstants.LEFT);
+        dirigenteLabel.setFont(dirigenteLabel.getFont().deriveFont(Font.BOLD, 15));
+        dataLicenziamentoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dirigenteCheckBox = new JCheckBox();
         if(dirigenteSelezionato){
             dirigenteCheckBox.setSelected(true);
@@ -142,7 +161,9 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(dirigenteCheckBox);
 
         // Curriculum
-        JLabel curriculumLabel = new JLabel("Curriculum:", SwingConstants.LEFT);
+        JLabel curriculumLabel = new JLabel("CURRICULUM:", SwingConstants.CENTER);
+        curriculumLabel.setFont(curriculumLabel.getFont().deriveFont(Font.BOLD, 15));
+        curriculumLabel.setHorizontalAlignment(SwingConstants.LEFT);
         curriculumTextArea = new JTextArea(5, 18);
         JScrollPane scrollPane = new JScrollPane(curriculumTextArea);
         curriculumTextArea.setText(curriculumSelezionato);
@@ -160,6 +181,7 @@ public class ProfiloImpiegato extends JDialog {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBorder(BorderFactory.createTitledBorder("Laboratori Associati:"));
 
+
         // Tabella di afferenza
         ArrayList<String> listaLab = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
         DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
@@ -170,6 +192,7 @@ public class ProfiloImpiegato extends JDialog {
         }
         tabellaAfferenzaModel.setDataVector(data, new Object[]{"ID"});
         tabellaAfferenza = new JTable(tabellaAfferenzaModel);
+
 
 
         //barra di scorrimento
@@ -220,7 +243,7 @@ public class ProfiloImpiegato extends JDialog {
         panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
 
 
-        // Logica per salvare le modifiche//TODO DA CORREEGERE(PROBLEMI CON I CAST CAZZO CULO CANE )
+        // Logica per salvare le modifiche//
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
