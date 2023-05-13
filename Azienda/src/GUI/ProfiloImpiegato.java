@@ -52,25 +52,24 @@ public class ProfiloImpiegato extends JDialog {
         JPanel panel = new JPanel(new BorderLayout());
 
         // Creiamo il pannello per i dati anagrafici
-        JPanel datiAnagraficiPanel = new JPanel(new GridLayout(0, 2));
-        datiAnagraficiPanel.setBorder(BorderFactory.createTitledBorder("Dati anagrafici"));
+        JPanel datiAnagraficiPanel = new JPanel(new GridLayout(0, 2,5,5));
+        datiAnagraficiPanel.setBorder(BorderFactory.createEmptyBorder(30, 100, 10, 100));
 
         // Creiamo il pannello sinistro per i dati anagrafici
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         // Matricola
-        JLabel matricolaLabel = new JLabel("MATRICOLA:", SwingConstants.CENTER);
-        matricolaLabel.setFont(matricolaLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel matricolaLabel = new JLabel("Matricola:", SwingConstants.CENTER);
         matricolaLabel.setHorizontalAlignment(SwingConstants.LEFT);
         matricolaField = new JTextField();
+
         matricolaField.setText(matricolaSelezionata);
         datiAnagraficiPanel.add(matricolaLabel);
         datiAnagraficiPanel.add(matricolaField);
 
         // Nome
-        JLabel nomeLabel = new JLabel("NOME:", SwingConstants.CENTER);
-        nomeLabel.setFont(nomeLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel nomeLabel = new JLabel("Nome:", SwingConstants.CENTER);
         nomeLabel.setHorizontalAlignment(SwingConstants.LEFT);
         nomeField = new JTextField();
         nomeField.setText(nomeSelezionato);
@@ -78,8 +77,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(nomeField);
 
         // Cognome
-        JLabel cognomeLabel = new JLabel("COGNOME:", SwingConstants.CENTER);
-        cognomeLabel.setFont(cognomeLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel cognomeLabel = new JLabel("Cognome:", SwingConstants.CENTER);
         cognomeLabel.setHorizontalAlignment(SwingConstants.LEFT);
         cognomeField = new JTextField();
         cognomeField.setText(cognomeSelezionato);
@@ -87,8 +85,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(cognomeField);
 
         // Codice fiscale
-        JLabel codiceFiscaleLabel = new JLabel("CODICE FISCALE", SwingConstants.CENTER);
-        codiceFiscaleLabel.setFont(codiceFiscaleLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel codiceFiscaleLabel = new JLabel("Codice Fiscale", SwingConstants.CENTER);
         codiceFiscaleLabel.setHorizontalAlignment(SwingConstants.LEFT);
         codiceFiscaleField = new JTextField();
         codiceFiscaleField.setText(codiceFiscaleSelezionato);
@@ -96,8 +93,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(codiceFiscaleField);
 
         // Sesso
-        JLabel sessoLabel = new JLabel("SESSO:", SwingConstants.CENTER);
-        sessoLabel.setFont(sessoLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel sessoLabel = new JLabel("Sesso:", SwingConstants.CENTER);
         sessoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         sessoField = new JTextField();
         sessoField.setText(sessoSelezionato);
@@ -105,8 +101,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(sessoField);
 
         // Tipo impiegato
-        JLabel tipoImpiegatoLabel = new JLabel("TIPO IMPIEGATO:", SwingConstants.CENTER);
-        tipoImpiegatoLabel.setFont(tipoImpiegatoLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel tipoImpiegatoLabel = new JLabel("Tipo Impiegato:", SwingConstants.CENTER);
         tipoImpiegatoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         tipoImpiegatoField = new JTextField();
         tipoImpiegatoField.setText(tipoImpiegatoSelezionato);
@@ -114,8 +109,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(tipoImpiegatoField);
 
         // Stipendio
-        JLabel stipendioLabel = new JLabel("STIPENDIO:", SwingConstants.CENTER);
-        stipendioLabel.setFont(stipendioLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel stipendioLabel = new JLabel("Stipendio:", SwingConstants.CENTER);
         stipendioLabel.setHorizontalAlignment(SwingConstants.LEFT);
         SpinnerNumberModel stipendioModel = new SpinnerNumberModel(0, 0, Double.MAX_VALUE, 100.0);
         stipendioSpinner = new JSpinner(stipendioModel);
@@ -126,8 +120,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(stipendioSpinner);
 
         // Data assunzione
-        JLabel dataAssunzioneLabel = new JLabel("DATA ASSUNZIONE:", SwingConstants.CENTER);
-        dataAssunzioneLabel.setFont(dataAssunzioneLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel dataAssunzioneLabel = new JLabel("Data assunzione:", SwingConstants.CENTER);
         dataAssunzioneLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dataAssunzioneChooser = new JFormattedTextField();
         dataAssunzioneChooser.setText(dataAssunzioneSelezionata.toString());
@@ -135,8 +128,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(dataAssunzioneChooser);
 
         // Data licenziamento
-        JLabel dataLicenziamentoLabel = new JLabel("DATA LICENZIAMENTO:", SwingConstants.LEFT);
-        dataLicenziamentoLabel.setFont(dataLicenziamentoLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel dataLicenziamentoLabel = new JLabel("Data licenziamento:", SwingConstants.LEFT);
         dataLicenziamentoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dataLicenziamentoChooser = new JDateChooser();
         dataLicenziamentoChooser.setDateFormatString("yyyy-mm-dd");
@@ -148,8 +140,7 @@ public class ProfiloImpiegato extends JDialog {
 
 
         // Dirigente
-        JLabel dirigenteLabel = new JLabel("DIRIGENTE:", SwingConstants.LEFT);
-        dirigenteLabel.setFont(dirigenteLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel dirigenteLabel = new JLabel("Dirigente:", SwingConstants.LEFT);
         dataLicenziamentoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dirigenteCheckBox = new JCheckBox();
         if(dirigenteSelezionato){
@@ -161,8 +152,7 @@ public class ProfiloImpiegato extends JDialog {
         datiAnagraficiPanel.add(dirigenteCheckBox);
 
         // Curriculum
-        JLabel curriculumLabel = new JLabel("CURRICULUM:", SwingConstants.CENTER);
-        curriculumLabel.setFont(curriculumLabel.getFont().deriveFont(Font.BOLD, 15));
+        JLabel curriculumLabel = new JLabel("Curriculum:", SwingConstants.CENTER);
         curriculumLabel.setHorizontalAlignment(SwingConstants.LEFT);
         curriculumTextArea = new JTextArea(5, 18);
         JScrollPane scrollPane = new JScrollPane(curriculumTextArea);
@@ -250,7 +240,7 @@ public class ProfiloImpiegato extends JDialog {
         panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
 
 
-        // Logica per salvare le modifiche//
+        // Logica per salvare le modifiche
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -282,9 +272,6 @@ public class ProfiloImpiegato extends JDialog {
         });
 
 
-
-
-
         //bottone che torna alla vista impiegati
         bottoneAnnulla.addActionListener(new ActionListener() {
             @Override
@@ -295,10 +282,6 @@ public class ProfiloImpiegato extends JDialog {
         });
 
 
-
-
-
-
         // Logica per aggiungere afferenza
         bottoneAggiungiAfferenza.addActionListener(new ActionListener() {
             @Override
@@ -306,9 +289,6 @@ public class ProfiloImpiegato extends JDialog {
 
             }
         });
-
-
-
 
 
         // Logica per rimuovere afferenza
@@ -339,7 +319,7 @@ public class ProfiloImpiegato extends JDialog {
 
 
         // Imposto la dimensione della finestra e la rendo visibile
-        setSize(1000, 800);
+        setSize(800, 600);
         setLocationRelativeTo(null);
         //disattivo la finestra padre
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

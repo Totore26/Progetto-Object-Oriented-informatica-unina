@@ -29,6 +29,7 @@ public class InserimentoImpiegato extends JDialog {
 
         // Creiamo un pannello per contenere i campi d'input
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(30, 100, 10, 100));
         setTitle("Inserimento Impigato");
         // Aggiungiamo il campo "Matricola"
         inputPanel.add(new JLabel("Matricola:"));
