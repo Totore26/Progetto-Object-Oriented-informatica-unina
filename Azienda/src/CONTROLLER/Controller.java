@@ -3,7 +3,6 @@ import DAO.*;
 import ImplementazionePostgresDAO.*;
 import MODEL.*;
 
-import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -147,165 +146,6 @@ public class Controller {
 //_______________________________________FUNZIONI PER L'IMPIEGATO_____________________________________________________//
 
 
-    /*
-     * La seguente funzione quando l'utente nella gui richiede di vedere il profilo dell'Impiegato
-     * inizializza la sua lista di storici (attributo listaStorico) e restituisce alla gui
-     * le varie date di scatti di carriera, la quale mostra in che data ha fatto gli scatti
-     */
-    public Date[]  leggiStoriciImpiegato(String matricolaSelezionata) {
-
-        ArrayList<String> listaStoriciGUI = new ArrayList<>();
-
-        //trovo l'Impiegato a cui si riferisce
-        Impiegato impDaVisualizzare = null;
-        for (Impiegato imp : listaImpiegato)
-            if (imp.getMatricola().equals(matricolaSelezionata))
-                impDaVisualizzare = imp;
-
-        //Inizalizzo la lista degli storici dell'Impiegato
-        for (Storico s : listaStorico)
-            if (s.getMatricola().equals(matricolaSelezionata)) {
-                assert impDaVisualizzare != null;
-                impDaVisualizzare.aggiungiStorico(s);
-            }
-
-      //a questo punto salvo nell'ArrayList<> le date scatto junior middle e senior...
-
-        //trovo la data scatto Junior :
-        Date[] listaScatti = new Date[3];
-
-        for(Storico s: impDaVisualizzare.getListaStorico()){
-            if(s.getNuovoRuolo().equals("junior")){
-                listaScatti[0] = (Date) s.getDataScatto();
-            }
-
-            if(s.getNuovoRuolo().equals("middle")){
-                listaScatti[1] = (Date) s.getDataScatto();
-            }
-
-            if(s.getNuovoRuolo().equals("senior")){
-                listaScatti[2] = (Date) s.getDataScatto();
-            }
-        }
-        return listaScatti;
-    }
-
-
-
-
-    /*
-     *    La seguente funzione leggiAfferenzaImpiegato fa in modo tale che se richiesto dalla GUI,
-     *    recupera dal database i laboratori in cui afferisce la matricolaSelezionata,
-     *    inizializza L'arraylist dell'impiegato in questione e ritorna alla gui la lista di laboratori a cui
-     *    è associato, in questo modo carica i dati dal database solamente quando sono richiesti dall'utente.
-     */
-    public ArrayList<String> leggiAfferenzeImpiegato(String matricolaSelezionata) {
-        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
-
-        //step 0: trovo l'impiegato a cui si riferisce la vista
-        Impiegato impDaVisualizzare = null;
-        for (Impiegato imp : listaImpiegato)
-            if (imp.getMatricola().equals(matricolaSelezionata)) {
-                impDaVisualizzare = imp;
-                break;
-            }
-
-
-        //2 step : trovo i laboratori associati
-        ArrayList<String> laboratoriAssociati = new ArrayList<>();
-        boolean control = i.leggiAfferenzeDAO(matricolaSelezionata, laboratoriAssociati);
-
-        //2 step : inzializzo la lista di laboratori a cui afferisce l'impiegato
-        if (control) {
-            for (Laboratorio lab : listaLaboratorio)
-                for (String l : laboratoriAssociati)
-                    if (lab.getIdLab().equals(l)) {
-                        assert impDaVisualizzare != null;
-                        impDaVisualizzare.aggiungiLaboratorio(lab);
-                    }
-        }
-
-        return laboratoriAssociati;
-
-    }
-
-
-
-
-    /*
-    * La seguente funzione aggiunge al database l'afferenza,
-    * nel caso affermativo allora aggiunge anche alla lista di afferenze dell'impiegato.
-    */
-    public void aggiungiAfferenza(String matricolaSelezionata, String idlabSelezionato) throws SQLException{
-
-        //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
-        Impiegato impiegatoScelto = null;
-        for(Impiegato imp : listaImpiegato)
-            if(imp.getMatricola().equals(matricolaSelezionata))
-            {
-                impiegatoScelto = imp;
-                break;
-            }
-
-        //come seconda cosa trovo l'oggetto laboratorio
-        Laboratorio laboratorioScelto = null;
-        for(Laboratorio lab : listaLaboratorio)
-            if(lab.getIdLab().equals(idlabSelezionato))
-            {
-                laboratorioScelto = lab;
-                break;
-            }
-
-        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
-
-        boolean control = i.aggiungiAfferenzaDAO(matricolaSelezionata,idlabSelezionato);
-
-        //se l'inserimento nel database è andato a buon fine allora aggiungo alla lista dell'imp il lab
-        if(control){
-            impiegatoScelto.aggiungiLaboratorio(laboratorioScelto);
-        }
-
-    };
-
-
-
-
-    /*
-    * LA SEGUENTE FUNZIONE ELIMINA L'AFFERENZA SELEZIONATA PER UN IMPIEGATO
-    * NEL CASO IN CUI ELIMINA NEL DATABASE ALLORA ELIMINA ANCHE NEL MODEL...
-    * NEL CASO DI ECCEZIONI ALLORA MANDA IL WARNING ALLA GUI
-     */
-    public void eliminaAfferenza(String matricolaScelta, String idlabSelezionato) throws SQLException{
-        //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
-        Impiegato impiegatoScelto = null;
-        for(Impiegato imp : listaImpiegato)
-            if(imp.getMatricola().equals(matricolaScelta))
-            {
-                impiegatoScelto = imp;
-                break;
-            }
-
-        //come seconda cosa trovo l'oggetto laboratorio
-        Laboratorio laboratorioScelto = null;
-        for(Laboratorio lab : listaLaboratorio)
-            if(lab.getIdLab().equals(idlabSelezionato))
-            {
-                laboratorioScelto = lab;
-                break;
-            }
-
-
-        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
-
-        boolean control = i.eliminaAfferenzaDAO(matricolaScelta,idlabSelezionato);
-
-        if (control) {
-            //se l'eliminazione ha avuto successo allora elimino anche dal model
-            impiegatoScelto.removeAfferenzaImp(idlabSelezionato);
-
-        }
-
-    }
 
 
 
@@ -379,6 +219,174 @@ public class Controller {
         }
 
     }
+
+
+
+    /*
+     * La seguente funzione quando l'utente nella gui richiede di vedere il profilo dell'Impiegato
+     * inizializza la sua lista di storici (attributo listaStorico) e restituisce alla gui
+     * le varie date di scatti di carriera, la quale mostra in che data ha fatto gli scatti
+     */
+    public Date[]  leggiStoriciImpiegato(String matricolaSelezionata) {
+
+        ArrayList<String> listaStoriciGUI = new ArrayList<>();
+
+        //trovo l'Impiegato a cui si riferisce
+        Impiegato impDaVisualizzare = null;
+        for (Impiegato imp : listaImpiegato)
+            if (imp.getMatricola().equals(matricolaSelezionata))
+                impDaVisualizzare = imp;
+
+        //Inizalizzo la lista degli storici dell'Impiegato
+        for (Storico s : listaStorico)
+            if (s.getMatricola().equals(matricolaSelezionata)) {
+                assert impDaVisualizzare != null;
+                impDaVisualizzare.aggiungiStorico(s);
+            }
+
+        //a questo punto salvo nell'ArrayList<> le date scatto junior middle e senior...
+
+        //trovo la data scatto Junior :
+        Date[] listaScatti = new Date[3];
+
+        for(Storico s: impDaVisualizzare.getListaStorico()){
+            if(s.getNuovoRuolo().equals("junior")){
+                listaScatti[0] = (Date) s.getDataScatto();
+            }
+
+            if(s.getNuovoRuolo().equals("middle")){
+                listaScatti[1] = (Date) s.getDataScatto();
+            }
+
+            if(s.getNuovoRuolo().equals("senior")){
+                listaScatti[2] = (Date) s.getDataScatto();
+            }
+        }
+        return listaScatti;
+    }
+
+
+
+
+    /*
+     *    La seguente funzione leggiAfferenzaImpiegato fa in modo tale che se richiesto dalla GUI,
+     *    recupera dal database i laboratori in cui afferisce la matricolaSelezionata,
+     *    inizializza L'arraylist dell'impiegato in questione e ritorna alla gui la lista di laboratori a cui
+     *    è associato, in questo modo carica i dati dal database solamente quando sono richiesti dall'utente.
+     */
+    public ArrayList<String> leggiAfferenzeImpiegato(String matricolaSelezionata) {
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+
+        //step 0: trovo l'impiegato a cui si riferisce la vista
+        Impiegato impDaVisualizzare = null;
+        for (Impiegato imp : listaImpiegato)
+            if (imp.getMatricola().equals(matricolaSelezionata)) {
+                impDaVisualizzare = imp;
+                break;
+            }
+
+
+        //2 step : trovo i laboratori associati
+        ArrayList<String> laboratoriAssociati = new ArrayList<>();
+        boolean control = i.leggiAfferenzeDAO(matricolaSelezionata, laboratoriAssociati);
+
+        //2 step : inzializzo la lista di laboratori a cui afferisce l'impiegato
+        if (control) {
+            for (Laboratorio lab : listaLaboratorio)
+                for (String l : laboratoriAssociati)
+                    if (lab.getIdLab().equals(l)) {
+                        assert impDaVisualizzare != null;
+                        impDaVisualizzare.aggiungiLaboratorio(lab);
+                    }
+        }
+
+        return laboratoriAssociati;
+
+    }
+
+
+
+
+    /*
+     * La seguente funzione aggiunge al database l'afferenza,
+     * nel caso affermativo allora aggiunge anche alla lista di afferenze dell'impiegato.
+     */
+    public void aggiungiAfferenza(String matricolaSelezionata, String idlabSelezionato) throws SQLException{
+
+        //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
+        Impiegato impiegatoScelto = null;
+        for(Impiegato imp : listaImpiegato)
+            if(imp.getMatricola().equals(matricolaSelezionata))
+            {
+                impiegatoScelto = imp;
+                break;
+            }
+
+        //come seconda cosa trovo l'oggetto laboratorio
+        Laboratorio laboratorioScelto = null;
+        for(Laboratorio lab : listaLaboratorio)
+            if(lab.getIdLab().equals(idlabSelezionato))
+            {
+                laboratorioScelto = lab;
+                break;
+            }
+
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+
+        boolean control = i.aggiungiAfferenzaDAO(matricolaSelezionata,idlabSelezionato);
+
+        //se l'inserimento nel database è andato a buon fine allora aggiungo alla lista dell'imp il lab
+        if(control){
+            impiegatoScelto.aggiungiLaboratorio(laboratorioScelto);
+        }
+
+    };
+
+
+
+
+    /*
+     * LA SEGUENTE FUNZIONE ELIMINA L'AFFERENZA SELEZIONATA PER UN IMPIEGATO
+     * NEL CASO IN CUI ELIMINA NEL DATABASE ALLORA ELIMINA ANCHE NEL MODEL...
+     * NEL CASO DI ECCEZIONI ALLORA MANDA IL WARNING ALLA GUI
+     */
+    public void eliminaAfferenza(String matricolaScelta, String idlabSelezionato) throws SQLException{
+        //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
+        Impiegato impiegatoScelto = null;
+        for(Impiegato imp : listaImpiegato)
+            if(imp.getMatricola().equals(matricolaScelta))
+            {
+                impiegatoScelto = imp;
+                break;
+            }
+
+        //come seconda cosa trovo l'oggetto laboratorio
+        Laboratorio laboratorioScelto = null;
+        for(Laboratorio lab : listaLaboratorio)
+            if(lab.getIdLab().equals(idlabSelezionato))
+            {
+                laboratorioScelto = lab;
+                break;
+            }
+
+
+        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
+
+        boolean control = i.eliminaAfferenzaDAO(matricolaScelta,idlabSelezionato);
+
+        if (control) {
+            //se l'eliminazione ha avuto successo allora elimino anche dal model
+            assert impiegatoScelto != null;
+            impiegatoScelto.removeAfferenzaImp(idlabSelezionato);
+
+        }
+
+    }
+
+
+
+
+
 
 
 
@@ -729,10 +737,10 @@ public class Controller {
     }
     public void getListaLaboratorioGUI(ArrayList<String> idlablist, ArrayList<String> topiclist, ArrayList<String> rscientificolist){
 
-        for(int i = 0; i<listaLaboratorio.size(); i++){
-            idlablist.add(listaLaboratorio.get(i).getIdLab());
-            idlablist.add(listaLaboratorio.get(i).getTopic());
-            idlablist.add(listaLaboratorio.get(i).getRScientifico().getMatricola());
+        for (Laboratorio laboratorio : listaLaboratorio) {
+            idlablist.add(laboratorio.getIdLab());
+            idlablist.add(laboratorio.getTopic());
+            idlablist.add(laboratorio.getRScientifico().getMatricola());
         }
     }
 

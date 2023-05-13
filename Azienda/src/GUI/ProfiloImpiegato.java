@@ -192,8 +192,7 @@ public class ProfiloImpiegato extends JDialog {
         }
         tabellaAfferenzaModel.setDataVector(data, new Object[]{"ID"});
         tabellaAfferenza = new JTable(tabellaAfferenzaModel);
-
-
+        tabellaAfferenza.setShowGrid(true);
 
         //barra di scorrimento
         scrollPane = new JScrollPane(tabellaAfferenza);
@@ -201,6 +200,7 @@ public class ProfiloImpiegato extends JDialog {
 
         rightPanel.add(new JScrollPane(tabellaAfferenza), BorderLayout.CENTER);
         rightPanel.setPreferredSize(new Dimension(150,700));
+        tabellaAfferenza.getTableHeader().setReorderingAllowed(false);
 
 
         panel.add(rightPanel, BorderLayout.EAST);
@@ -217,6 +217,7 @@ public class ProfiloImpiegato extends JDialog {
         tabellaStoricoModel.addColumn("Scatto senior");
         tabellaStoricoModel.addRow(new Object[]{listaScatti[0],listaScatti[1],listaScatti[2]});
         tabellaStorico = new JTable(tabellaStoricoModel);
+        tabellaStorico.setEnabled(false);
         bottomPanel.add(new JScrollPane(tabellaStorico), BorderLayout.CENTER);
         panel.add(bottomPanel, BorderLayout.SOUTH);
         bottomPanel.setPreferredSize(new Dimension(1000,75));
@@ -226,7 +227,7 @@ public class ProfiloImpiegato extends JDialog {
         tabellaStorico.getColumnModel().getColumn(0).setCellRenderer(renderer);
         tabellaStorico.getColumnModel().getColumn(1).setCellRenderer(renderer);
         tabellaStorico.getColumnModel().getColumn(2).setCellRenderer(renderer);
-
+        tabellaStorico.getTableHeader().setReorderingAllowed(false);
 
         //BOTTONI
 
@@ -280,6 +281,10 @@ public class ProfiloImpiegato extends JDialog {
             }
         });
 
+
+
+
+
         //bottone che torna alla vista impiegati
         bottoneAnnulla.addActionListener(new ActionListener() {
             @Override
@@ -289,6 +294,11 @@ public class ProfiloImpiegato extends JDialog {
             }
         });
 
+
+
+
+
+
         // Logica per aggiungere afferenza
         bottoneAggiungiAfferenza.addActionListener(new ActionListener() {
             @Override
@@ -297,6 +307,10 @@ public class ProfiloImpiegato extends JDialog {
             }
         });
 
+
+
+
+
         // Logica per rimuovere afferenza
         bottoneRimuoviAfferenza.addActionListener(new ActionListener() {
             @Override
@@ -304,6 +318,10 @@ public class ProfiloImpiegato extends JDialog {
 
             }
         });
+
+
+
+
 
         // Aggiungo i pannelli alla finestra principale
         add(panel,BorderLayout.CENTER);
