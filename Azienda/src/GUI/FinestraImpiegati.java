@@ -25,14 +25,7 @@ import java.util.ArrayList;
         public FinestraImpiegati(Controller controller, Frame frameMenuPrincipale) {
             // Creiamo una finestra di esempio per testare la finestra d'inserimento impiegato
 
-            JFrame frameVistaImpiegato = new JFrame("Finestra Impiegati");
-            frameVistaImpiegato.setSize(800, 600);
-            frameVistaImpiegato.setLocationRelativeTo(null);
-            frameVistaImpiegato.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-            // Creiamo la tabella impiegati
-            String[] columns = {"Matricola", "Nome", "Cognome"};
             JFrame frameFinestraImpiegati = new JFrame("Finestra Impiegati");
             frameFinestraImpiegati.setSize(800, 600);
             frameFinestraImpiegati.setLocationRelativeTo(null);
@@ -41,6 +34,7 @@ import java.util.ArrayList;
 
 
             // TABELLA IMPIEGATI
+
 
 
             String[] colonneTabella = {"Matricola", "Nome", "Cognome"};

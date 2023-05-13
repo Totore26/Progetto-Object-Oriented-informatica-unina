@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.function.ObjLongConsumer;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -28,9 +29,6 @@ public class ProfiloImpiegato extends JDialog {
     private JDateChooser dataLicenziamentoChooser;
     private JTable tabellaStorico;
     private JTable tabellaAfferenze;
-    private JTextField impiegatoReferente;
-    private JTextField impiegatoResponsabile;
-    private JTextField impiegatoRScientifico;
 
     public ProfiloImpiegato(String matricolaSelezionata, Controller controller) {
         setTitle("Profilo Impiegato");
@@ -175,36 +173,59 @@ public class ProfiloImpiegato extends JDialog {
         rightPanel.setBorder(BorderFactory.createTitledBorder("Laboratori Associati:"));
 
 
+
+        //TABELLE
+
+
+
         // Tabella di afferenza
         ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
-        DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
-        tabellaAfferenzaModel.addColumn("ID");
+
+        DefaultTableModel tabellaAfferenzeModel = new DefaultTableModel();
         Object[][] data = new Object[listaLabAfferiti.size()][1];
         for (int i = 0; i < listaLabAfferiti.size(); i++) {
             data[i][0] = listaLabAfferiti.get(i);
         }
-        tabellaAfferenzaModel.setDataVector(data, new Object[]{"ID"});
-        tabellaAfferenze = new JTable(tabellaAfferenzaModel);
-        tabellaAfferenze.setShowGrid(true);
+        tabellaAfferenzeModel.setDataVector(data, new Object[]{"ID"});
+        this.tabellaAfferenze = new JTable(tabellaAfferenzeModel);
+        this.tabellaAfferenze.setShowGrid(true);
+
         //allineo il testo delle colonne al centro
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         // Applicazione del renderizzatore personalizzato a tutte le colonne
-        int columnCount = tabellaAfferenze.getColumnCount();
+        int columnCount = this.tabellaAfferenze.getColumnCount();
         for (int i = 0; i < columnCount; i++) {
-            tabellaAfferenze.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            this.tabellaAfferenze.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tabellaAfferenzeModel);
+        // Impostiamo il TableRowSorter sulla tabella
+        this.tabellaAfferenze.setRowSorter(sorter);
+
+        tabellaAfferenze.setDefaultEditor(Object.class, null);
+        tabellaAfferenze.setDefaultEditor(Object.class, null);
+        tabellaAfferenze.getTableHeader().setReorderingAllowed(false);
+        tabellaAfferenze.setShowGrid(true);
+        //COLORI TABELLA
+        tabellaAfferenze.setGridColor(Color.DARK_GRAY);
+        tabellaAfferenze.setBackground(Color.DARK_GRAY);
+        tabellaAfferenze.getTableHeader().setBackground(Color.DARK_GRAY);
+        tabellaAfferenze.getTableHeader().setForeground(Color.WHITE);
+
         //barra di scorrimento
-        scrollPane = new JScrollPane(tabellaAfferenze);
+        scrollPane = new JScrollPane(this.tabellaAfferenze);
         rightPanel.add(scrollPane, BorderLayout.CENTER);
 
-        rightPanel.add(new JScrollPane(tabellaAfferenze), BorderLayout.CENTER);
+        rightPanel.add(new JScrollPane(this.tabellaAfferenze), BorderLayout.CENTER);
         rightPanel.setPreferredSize(new Dimension(150,700));
-        tabellaAfferenze.getTableHeader().setReorderingAllowed(false);
+        this.tabellaAfferenze.getTableHeader().setReorderingAllowed(false);
 
 
         panel.add(rightPanel, BorderLayout.EAST);
+
+
+
 
         // Creiamo il pannello inferiore per la tabella dello storico
         JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -228,7 +249,16 @@ public class ProfiloImpiegato extends JDialog {
         tabellaStorico.getColumnModel().getColumn(0).setCellRenderer(renderer);
         tabellaStorico.getColumnModel().getColumn(1).setCellRenderer(renderer);
         tabellaStorico.getColumnModel().getColumn(2).setCellRenderer(renderer);
+
+        tabellaStorico.setDefaultEditor(Object.class, null);
+        tabellaStorico.setDefaultEditor(Object.class, null);
         tabellaStorico.getTableHeader().setReorderingAllowed(false);
+        tabellaStorico.setShowGrid(true);
+        //COLORI TABELLA
+        tabellaStorico.setGridColor(Color.DARK_GRAY);
+        tabellaStorico.setBackground(Color.DARK_GRAY);
+        tabellaStorico.getTableHeader().setBackground(Color.DARK_GRAY);
+        tabellaStorico.getTableHeader().setForeground(Color.WHITE);
 
         //BOTTONI
 
@@ -262,7 +292,7 @@ public class ProfiloImpiegato extends JDialog {
                     float stipendioModificato = ((Number) stipendioSpinner.getValue()).floatValue();
                     boolean dirigenteModificato = dirigenteCheckBox.isSelected();
                     String curriculumModificato = curriculumTextArea.getText();
-                    java.util.Date dataLicenziamento = dataLicenziamentoChooser.getDate();
+                    Date dataLicenziamento = dataLicenziamentoChooser.getDate();
                     java.sql.Date sqlDataLicenziamento = null;
                     if(dataLicenziamentoChooser.getDate() != null) {
                         sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
@@ -352,7 +382,7 @@ public class ProfiloImpiegato extends JDialog {
                             } finally {
                                 dialog.dispose();
                             }
-                            updateTabella(controller,new String[]{"ID"},matricolaSelezionata);
+                            updateTabella(controller,matricolaSelezionata);
                         }
                     }
                 });
@@ -369,12 +399,12 @@ public class ProfiloImpiegato extends JDialog {
         bottoneRimuoviAfferenza.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = tabellaAfferenze.getSelectedRow();
-                int selectedColumn = tabellaAfferenze.getSelectedColumn();
+                int selectedRow = ProfiloImpiegato.this.tabellaAfferenze.getSelectedRow();
+                int selectedColumn = ProfiloImpiegato.this.tabellaAfferenze.getSelectedColumn();
 
                 if (selectedRow != -1 && selectedColumn != -1) {
                     // La matricola si trova nella prima colonna della tabella
-                    String codLabSelezionato = tabellaAfferenze.getValueAt(tabellaAfferenze.getSelectedRow(), 0).toString();
+                    String codLabSelezionato = ProfiloImpiegato.this.tabellaAfferenze.getValueAt(ProfiloImpiegato.this.tabellaAfferenze.getSelectedRow(), 0).toString();
                     int response = JOptionPane.showOptionDialog( panel, "Sei sicuro di voler eliminare l'afferenza al laboratorio " + codLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
                     if (response == JOptionPane.YES_OPTION) {
@@ -387,7 +417,7 @@ public class ProfiloImpiegato extends JDialog {
                             JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                         }
                         //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
-                        updateTabella(controller,new String[]{"ID"},codLabSelezionato);
+                        updateTabella(controller,codLabSelezionato);
                     }
                 } else {
                     // L'utente non ha selezionato una cella
@@ -395,8 +425,6 @@ public class ProfiloImpiegato extends JDialog {
                 }
             }
         });
-
-
 
 
 
@@ -423,18 +451,19 @@ public class ProfiloImpiegato extends JDialog {
         setVisible(true);
     }
 
-    private void updateTabella(Controller controller,String[] colonneTabella,String matricolaSelezionata) {
-        //LOAD DEI NUOVI DATI
+    private void updateTabella(Controller controller, String matricolaSelezionata) {
+        //load dei nuovi dati
         ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
-        Object[][] nuoviDati = new Object[listaLabAfferiti.size()][3];
+        Object[][] nuoviDati = new Object[listaLabAfferiti.size()][];
         for (int i = 0; i < listaLabAfferiti.size(); i++) {
             nuoviDati[i][0] = listaLabAfferiti.get(i);
         }
-
-        //CODICE PER AGGIORNARE LA TABELLA CON I NUOVI DATI
+        // Aggiungi le nuove righe alla tabella
         DefaultTableModel model = (DefaultTableModel) tabellaAfferenze.getModel();
-        model.setDataVector(nuoviDati, colonneTabella);
+        model.setDataVector(nuoviDati,new Object[]{"ID"});
     }
+
+
 
 
 }
