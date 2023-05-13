@@ -89,6 +89,7 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
         PreparedStatement insertImp;
         insertImp = connection.prepareStatement("INSERT INTO AFFERENZA (matricola, id_lab) VALUES (?,?)");
         insertImp.setString(1, matricolaScelta);
+        insertImp.setString(2,idlabScelto);
         int rs = insertImp.executeUpdate();
         if(rs==1){
             return true;
