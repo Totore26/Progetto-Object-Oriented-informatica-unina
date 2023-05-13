@@ -210,16 +210,22 @@ public class ProfiloImpiegato extends JDialog {
         bottomPanel.setBorder(BorderFactory.createTitledBorder("Storico:"));
 
         // Tabella dello storico
+        Date[] listaScatti = controller.leggiStoriciImpiegato(matricolaSelezionata);
         DefaultTableModel tabellaStoricoModel = new DefaultTableModel();
         tabellaStoricoModel.addColumn("Scatto junior");
         tabellaStoricoModel.addColumn("Scatto middle");
         tabellaStoricoModel.addColumn("Scatto senior");
-        tabellaStoricoModel.addRow(new Object[]{new Date(), new Date(),new Date()});
+        tabellaStoricoModel.addRow(new Object[]{listaScatti[0],listaScatti[1],listaScatti[2]});
         tabellaStorico = new JTable(tabellaStoricoModel);
         bottomPanel.add(new JScrollPane(tabellaStorico), BorderLayout.CENTER);
         panel.add(bottomPanel, BorderLayout.SOUTH);
         bottomPanel.setPreferredSize(new Dimension(1000,75));
 
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tabellaStorico.getColumnModel().getColumn(0).setCellRenderer(renderer);
+        tabellaStorico.getColumnModel().getColumn(1).setCellRenderer(renderer);
+        tabellaStorico.getColumnModel().getColumn(2).setCellRenderer(renderer);
 
 
         //BOTTONI

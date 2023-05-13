@@ -31,8 +31,9 @@ public class Storico {
         return dataScatto;
     }
 
-    public Impiegato getMatricola() {
-        return impiegato;
+    public Impiegato getImpiegato(){return impiegato;}
+    public String getMatricola() {
+        return impiegato.getMatricola();
     }
 
 

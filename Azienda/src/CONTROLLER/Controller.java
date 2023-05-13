@@ -3,6 +3,7 @@ import DAO.*;
 import ImplementazionePostgresDAO.*;
 import MODEL.*;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -149,9 +150,9 @@ public class Controller {
     /*
      * La seguente funzione quando l'utente nella gui richiede di vedere il profilo dell'Impiegato
      * inizializza la sua lista di storici (attributo listaStorico) e restituisce alla gui
-     * la vista presente nel database "View_Storico", la quale mostra in che data ha fatto gli scatti
+     * le varie date di scatti di carriera, la quale mostra in che data ha fatto gli scatti
      */
-    public ArrayList<String> leggiStoriciImpiegato(String matricolaSelezionata) {
+    public Date[]  leggiStoriciImpiegato(String matricolaSelezionata) {
 
         ArrayList<String> listaStoriciGUI = new ArrayList<>();
 
@@ -161,14 +162,32 @@ public class Controller {
             if (imp.getMatricola().equals(matricolaSelezionata))
                 impDaVisualizzare = imp;
 
+        //Inizalizzo la lista degli storici dell'Impiegato
         for (Storico s : listaStorico)
             if (s.getMatricola().equals(matricolaSelezionata)) {
+                assert impDaVisualizzare != null;
                 impDaVisualizzare.aggiungiStorico(s);
             }
 
-        ImpiegatoDAO i = new ImpiegatoPostgresDAO();
-        //todo da continuare l'implementazione
-        return listaStoriciGUI;
+      //a questo punto salvo nell'ArrayList<> le date scatto junior middle e senior...
+
+        //trovo la data scatto Junior :
+        Date[] listaScatti = new Date[3];
+
+        for(Storico s: impDaVisualizzare.getListaStorico()){
+            if(s.getNuovoRuolo().equals("junior")){
+                listaScatti[0] = (Date) s.getDataScatto();
+            }
+
+            if(s.getNuovoRuolo().equals("middle")){
+                listaScatti[1] = (Date) s.getDataScatto();
+            }
+
+            if(s.getNuovoRuolo().equals("senior")){
+                listaScatti[2] = (Date) s.getDataScatto();
+            }
+        }
+        return listaScatti;
     }
 
 
