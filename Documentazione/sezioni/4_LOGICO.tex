@@ -1,0 +1,61 @@
+\section{Modello Logico}
+
+\subsection{Traduzione di Entità e Associazioni}
+
+Finito il processo di ristrutturazione, possiamo procedere col \textit{mapping} di entità e associazioni. Per ogni entità del modello ristrutturato, definiremo una relazione equivalente con gli stessi attributi.
+Il processo di traduzione per le associazioni è invece più complesso e richiede un'analisi più approfondita. 
+
+\begin{itemize}
+    \item \textbf{Identificante}: è un tipo di associazione \textit{uno-a-molti totale}, motivo per il quale si è deciso di mappare tale associazione usando nell'entità Storico la chiave esterna matricola, in quanto un Impiegato ha sicuramente almeno uno scatto di carriera ma soprattutto poiché lo Storico è un'entità debole e ha bisogno della chiave primaria di un impiegato per identificare ogni suo scatto.
+
+    \item \textbf{Afferenza,Gestione}: sono associazioni \textit{molti-a-molti}, motivo per il quale vengono espresse tramite relazioni indipendenti.
+
+    \item \textbf{Responsabilità, Referenzialità}: essendo queste associazioni \textit{uno-a-molti parziali} rispetto al progetto il quale ha un referente ed un responsabile, si è deciso di mappare tali associazioni attraverso l'introduzione delle due chiavi esterne all'interno dell'Entità Progetto.
+
+    \item \textbf{Responsabilità scientifica}: tale associazione \textit{uno-a-uno parziale}, si sceglie di mappare anch'essa attraverso l'introduzione della chiave esterna del responsabile all'interno della classe Laboratorio.
+\end{itemize}
+\newpage
+
+\subsection{Relazioni}
+
+\textit{\textbf{Legenda:}} \underline{Chiave Primaria}, Chiave Esterna$\uparrow$, \dashuline{Attributo Derivato}
+
+\begin{itemize}
+\item \textbf{IMPIEGATO}(\underline{Matricola}, Nome, Cognome, Codice fiscale, Curriculum, Stipendio, Foto, Tipo impiegato, Dirigente, Data assunzione, Data licenziamento.)
+\\
+
+\item \textbf{LABORATORIO}(\underline{IdLab}, Topic, Indirizzo, Numero telefono, \dashuline{Numero afferenti},Responsabile Scientifico$\uparrow$)
+\begin{itemize}
+    \item Responsabile Scientifico $\rightarrow$ IMPIEGATO.Matricola\\
+\end{itemize}
+
+
+\item \textbf{PROGETTO}(\underline{Cup}, Referente$\uparrow$, Responsabile$\uparrow$,Nome progetto,Budget, Data Inizio, Data Fine)
+\begin{itemize}
+    \item Referente $\rightarrow$ IMPIEGATO.Matricola
+    \item Responsabile $\rightarrow$ IMPIEGATO.Matricola\\
+\end{itemize}
+
+
+\item \textbf{STORICO}(\underline{Matricola$\uparrow$, Data scatto, Nuovo ruolo},Ruolo precedente )
+\begin{itemize}
+    \item Matricola $\rightarrow$ IMPIEGATO.Matricola\\
+\end{itemize}
+
+
+\item \textbf{AFFERENZA}(\underline{Matricola$\uparrow$, IdLab$\uparrow$},Ore giornaliere)
+\begin{itemize}
+    \item Matricola $\rightarrow$ IMPIEGATO.Matricola
+    \item IdLab $\rightarrow$ LABORATORIO.Idlab\\
+\end{itemize}
+
+
+\item \textbf{GESTIONE}(\underline{matricola$\uparrow$, Idlab$\uparrow$})
+\begin{itemize}
+    \item Matricola $\rightarrow$ IMPIEGATO.Matricola
+    \item IdLab $\rightarrow$ LABORATORIO.Idlab\\
+\end{itemize}
+
+
+\end{itemize}
+\newpage

@@ -1,0 +1,96 @@
+\section{Procedure}
+\subsection{avviso\_su\_impiegati\_licenziati}
+\begin{itemize}
+\normalsize
+\item La procedura \textbf{avviso\_su\_impiegati\_licenziati} ha lo scopo di verificare quali impiegati sono arrivati al termine del contratto (sono giunti alla data\_licenziamento) e , nel caso in cui vi sono degli impiegati con ruoli speciali, avvisa l'utente di aggiornare tali ruoli.
+
+\scriptsize
+\begin{lstlisting}
+CREATE OR REPLACE PROCEDURE avviso_su_impiegati_licenziati() AS
+$$ DECLARE
+cursore_rscientifico CURSOR IS (select i.matricola, l.id_lab from impiegato AS i JOIN laboratorio AS l ON i.matricola = l.r_scientifico where i.matricola NOT IN (select matricola from Impiegati_attuali));
+cursore_referenti CURSOR IS (select i.matricola, pa.cup from impiegato AS i JOIN PROGETTI_ATTUALI AS pa ON (i.matricola = pa.referente) where i.matricola NOT IN (select matricola from Impiegati_attuali));
+cursore_responsabili CURSOR IS (select i.matricola, pa.cup from impiegato AS i JOIN PROGETTI_ATTUALI AS pa ON (i.matricola = pa.responsabile) where i.matricola NOT IN (select matricola from Impiegati_attuali));
+rigacorrente RECORD;
+BEGIN
+	OPEN cursore_rscientifico;
+	LOOP
+		FETCH cursore_rscientifico INTO rigacorrente;
+		IF NOT FOUND THEN
+			EXIT;
+		END IF;
+		RAISE WARNING 'L IMPIEGATO CON MATRICOLA % E STATO LICENZIATO, AGGIORNA IL REFERENTE SCIENTIFICO NEL LABORATORIO %',
+						rigacorrente.matricola, rigacorrente.id_lab;
+	END LOOP;
+	CLOSE cursore_rscientifico;
+
+	OPEN cursore_referenti;
+	LOOP
+		FETCH cursore_referenti INTO rigacorrente;
+		IF NOT FOUND THEN
+			EXIT;
+		END IF;
+		RAISE WARNING 'L IMPIEGATO CON MATRICOLA % E STATO LICENZIATO, AGGIORNA IL REFERENTE NEL PROGETTO %',
+						rigacorrente.matricola, rigacorrente.cup;
+	END LOOP;
+	CLOSE cursore_referenti;
+
+	OPEN cursore_responsabili;
+	LOOP
+		FETCH cursore_responsabili INTO rigacorrente;
+		IF NOT FOUND THEN
+			EXIT;
+		END IF;
+		RAISE WARNING 'L IMPIEGATO CON MATRICOLA % E STATO LICENZIATO, AGGIORNA IL RESPONSABILE NEL PROGETTO %',
+						rigacorrente.matricola, rigacorrente.cup;
+	END LOOP;
+	CLOSE cursore_responsabili;
+END; $$ LANGUAGE plpgsql;
+\end{lstlisting}
+%MANCA LA PROCEDURA AGGIORNA_DATABASE E POI FINITO COME SBORRO
+\newpage
+\subsection{update\_database}
+\normalsize
+\item La procedura \textbf{update\_database} è la routine di base per aggiornare automaticamente gli scatti di carriera di tutti gli impiegati, aggiornando anche l'attributo tipo\_impiegato se necessario.
+\scriptsize
+\begin{lstlisting}
+CREATE OR REPLACE PROCEDURE update_database() AS
+$$ DECLARE
+	cursore_impiegati cursor is (select* from Impiegati_attuali as i natural join storico as s where s.nuovo_ruolo = i.tipo_impiegato);
+	imp_corrente record;
+BEGIN
+	open cursore_impiegati;
+	LOOP
+	FETCH cursore_impiegati INTO imp_corrente;
+	IF NOT FOUND THEN
+		EXIT;
+	end if;
+		IF(imp_corrente.tipo_impiegato = 'junior') THEN
+			IF(imp_corrente.data_assunzione + INTERVAL '3 years' <= CURRENT_DATE) THEN
+				INSERT INTO STORICO VALUES('junior','middle',imp_corrente.data_assunzione + INTERVAL '3 YEARS', imp_corrente.matricola);
+				IF(imp_corrente.data_assunzione + INTERVAL '7 years' >= CURRENT_DATE) THEN
+					UPDATE IMPIEGATO
+					SET tipo_impiegato = 'middle'
+					WHERE impiegato.matricola = imp_corrente.matricola;
+				ELSE
+					INSERT INTO STORICO VALUES('middle','senior',imp_corrente.data_assunzione + INTERVAL '7 YEARS', imp_corrente.matricola);
+					UPDATE IMPIEGATO
+					SET tipo_impiegato = 'senior'
+					WHERE impiegato.matricola = imp_corrente.matricola;
+				END IF;
+			END IF;
+		END IF;
+		IF(imp_corrente.tipo_impiegato = 'middle') THEN
+			IF(imp_corrente.data_assunzione + INTERVAL '7 years' <= CURRENT_DATE) THEN
+				INSERT INTO STORICO VALUES('middle','senior',imp_corrente.data_assunzione + INTERVAL '7 YEARS', imp_corrente.matricola);
+				UPDATE IMPIEGATO
+				SET tipo_impiegato = 'senior'
+				WHERE impiegato.matricola = imp_corrente.matricola;
+			END IF;
+		END IF;
+	END LOOP;
+	close cursore_impiegati;
+END; $$ LANGUAGE plpgsql;
+\end{lstlisting}
+
+\end{itemize}
