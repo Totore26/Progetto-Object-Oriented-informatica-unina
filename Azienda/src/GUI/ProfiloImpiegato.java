@@ -417,7 +417,7 @@ public class ProfiloImpiegato extends JDialog {
                             JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                         }
                         //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
-                        updateTabella(controller,codLabSelezionato);
+                        updateTabella(controller,matricolaSelezionata);
                     }
                 } else {
                     // L'utente non ha selezionato una cella
@@ -454,7 +454,7 @@ public class ProfiloImpiegato extends JDialog {
     private void updateTabella(Controller controller, String matricolaSelezionata) {
         //load dei nuovi dati
         ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
-        Object[][] nuoviDati = new Object[listaLabAfferiti.size()][];
+        Object[][] nuoviDati = new Object[listaLabAfferiti.size()][listaLabAfferiti.size()];
         for (int i = 0; i < listaLabAfferiti.size(); i++) {
             nuoviDati[i][0] = listaLabAfferiti.get(i);
         }

@@ -727,6 +727,23 @@ public class Controller {
         return matScelta.getSesso();
     }
 
+    public ArrayList<String> getSingoloImpiegatoAfferenzeGUI(String matricolaSelezionata){
+        Impiegato matScelta = null;
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getMatricola().equals(matricolaSelezionata)){
+                matScelta = imp;
+                break;
+            }
+        }
+
+        ArrayList<String> ritornoLab = new ArrayList<>();
+        for(Laboratorio lab : matScelta.getListaAfferenza())
+            ritornoLab.add(lab.getIdLab());
+
+
+        return ritornoLab;
+    }
+
     public void getListaProgettoGUI(ArrayList<String> nomelist, ArrayList<String> cuplist, ArrayList<String> responsabilelist, ArrayList<String> referentelist) {
 
         for (int i = 0; i < listaProgetto.size(); i++) {

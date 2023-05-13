@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//TODO
+
 public class Impiegato {
 
     //Questi rappresentano tutti gli attributi di un impiegato.
