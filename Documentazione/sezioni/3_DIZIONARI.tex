@@ -1,0 +1,112 @@
+\section{Dizionari}
+
+\subsection{Dizionario delle Entità}
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{0.2\textwidth}|p{0.3\textwidth}|p{0.55\textwidth}|}
+        \hline
+        
+        \textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} \\ \hline
+        
+        Impiegato & Entità che fa parte del personale dell'Azienda & 
+        \textbf{Matricola}(Stringa): Identificante di un \mbox{impiegato.}\newline
+        \textbf{Nome}(Stringa): Nome di un impiegato.\newline
+        \textbf{Cognome}(Stringa): Cognome di un impiegato.\newline
+        \textbf{Codice Fiscale}(Stringa): codice fiscale di un impiegato.\newline
+        \textbf{Curriculum}(Stringa): Descrive le competenze di un Impiegato.\newline
+        \textbf{Stipendio}(Stringa): Descrive la somma complessiva dello stipendio.\newline
+        \textbf{Sesso}(Carattere): Specifica il sesso di un Impiegato.\newline
+        \textbf{Foto}(Stringa binaria): rappresenta la foto dell'impiegato.\newline
+        \textbf{tipo\_impiegato}(stringa):rappresenta il ruolo attuale dell'impiegato.\newline
+        \textbf{Dirigente}(booleano):indica se attualmente l'impiegato è dirigente oppure no.\newline
+        \textbf{Data assunzione}(data): Descrive la data di assunzione di un Impiegato.\newline
+        \textbf{Data licenziamento}(Data): data di licenziamento dell'impiegato.\newline
+        \\ \hline
+        Storico & Entità Debole in cui si salvano tutti gli scatti di carriera di un impiegato & 
+        \textbf{Ruolo precedente}(Stringa): ruolo precedente allo scatto.\newline
+        \textbf{Nuovo ruolo}(Stringa): il ruolo di scatto.\newline
+        \textbf{Data scatto}(data): Data dello scatto \mbox{di ruolo.}\newline
+        \\ \hline
+
+    \end{tabular}
+\end{table}
+
+\newpage
+%-------------------------------------------------------------------------------------
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{0.15\textwidth}|p{0.3\textwidth}|p{0.55\textwidth}|}
+        \hline
+        
+        \textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} \\ \hline
+
+        Afferenza & Entità ad associazione tra Laboratorio e Impiegato.& 
+        \textbf{Ore giornaliere}(intero): indica le ore lavorative giornaliere su un laboratorio.\newline
+        \\ \hline
+
+        Laboratorio & Luogo in cui lavorano gli Impiegati & 
+        \textbf{Topic}(Stringa): Indica la materia trattata nel laboratorio.\newline
+        \textbf{Indirizzo}(Stringa): Indica la locazione del laboratorio.\newline
+        \textbf{Numero Telefononico}(intero): Descrive il riferimento telefonico.\newline
+        \textbf{Numero Afferenti}(Intero): Attributo derivato che descrive quanti afferenti ha un laboratorio.
+        \\ \hline
+
+        Progetto & Ideazione e progettazione di un'Idea lavorativa & 
+        \textbf{CUP}(stringa): Codice Univoco del Progetto. \newline
+        \textbf{Nome Progetto}(stringa): Il nome del progetto unico nel sistema.\newline
+        \textbf{Budget}(Decimale):Capitale investito nel progetto.\newline
+        \textbf{Data Inizio}(data): data di avvio del progetto.\newline
+        \textbf{Data Fine}(data): data di fine progetto.\newline
+        \\ \hline
+    \end{tabular}
+\end{table}
+%-------------------------------------------------------------------------------------
+\subsection{Dizionario delle Associazioni}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{0.25\textwidth}|p{0.2\textwidth}|p{0.55\textwidth}|}
+        \hline
+        
+        \textbf{Associazione} & \textbf{Tipologia} & \textbf{Descrizione} \\ \hline
+        
+        Afferenza & Molti-a-Molti & Associa ad un impiegato all'insieme di laboratori a cui lavora.
+        \\ \hline
+        Responsabilità & Uno-a-Molti & Associa un Dirigente ai suoi progetti.
+        \\ \hline
+        Responsabilità scientifica & Uno-a-Uno & Associa un laboratorio al proprio responsabile scientifico.
+        \\ \hline
+        Referenzialità & Uno-a-Molti & Associa un referente ai suoi progetti.
+        \\ \hline
+        Gestione & Molti-a-Molti & Un laboratorio può essere gestito da più progetti, un progetto gestisce al massimo tre laboratori.
+        \\ \hline
+        Identificante & Uno-a-Molti & Associa un Impiegato ai suoi scatti di carriera.
+        \\ \hline
+
+    \end{tabular}
+\end{table}
+
+\newpage
+%-------------------------------------------------------------------------------------
+\subsection{Dizionario dei Vincoli}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|p{0.25\textwidth}|p{0.2\textwidth}|p{0.55\textwidth}|}
+        \hline
+        \textbf{Vincolo} & \textbf{Tipologia} & \textbf{Descrizione} \\ \hline
+        
+         Di Gestione & interrelazione & Un progetto attivo può gestire al più tre laboratori.
+        \\ \hline
+        Di Referenzialità & interrelazionale & Il referente di un progetto è un dipendente Senior
+        \\ \hline
+        Di Responsabilità & interrelazionale & Il responsabile di un progetto è un dirigente dell'Azienda.
+        \\ \hline
+        Di Responsabilità Scientifico & interrelazionale & Il responsabile scientifico di un laboratorio è un dipendente Senior
+        \\ \hline
+        Di Unicità del Nome Progetto & intrarelazionale & Il nome di un progetto è UNICO nel Sistema.
+        \\ \hline
+        Su ore lavorative& interrelazionale & Un impiegato non può lavorare per più di otto ore al giorno.
+        \\ \hline
+    \end{tabular}
+\end{table}

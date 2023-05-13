@@ -1,0 +1,265 @@
+
+\section{Modello Fisico}
+
+\subsection{Domini}
+\begin{lstlisting}
+CREATE DOMAIN DOMINIO_SESSO AS CHAR
+    CHECK(VALUE IN('M','F','N'))
+\end{lstlisting}
+
+Il dominio DOMINIO\_SESSO indica il corretto dominio che può assumere l'attributo sesso in IMPIEGATO.
+\begin{lstlisting}
+CREATE DOMAIN DOMINIO_MATRICOLA AS 
+    VARCHAR(8) CHECK(VALUE LIKE('MAT-%'));
+\end{lstlisting}
+
+DOMINIO\_MATRICOLA indica la forma corretta che l'attributo Matricola può assumere, in particolare il numero di matricola sarà anticipato dal prefisso 'MAT-'.
+\begin{lstlisting}
+CREATE DOMAIN DOMINIO_IMPIEGATO AS VARCHAR 
+    CHECK(VALUE IN('junior','middle','senior'));
+\end{lstlisting}
+
+Il Dominio sopra riportato è specifico per l'attributo \textit{Tipo impiegato}.
+
+\begin{lstlisting}
+CREATE DOMAIN DOMINIO_SCATTO AS 
+    VARCHAR CHECK(VALUE IN('junior','middle','senior',
+                            'dirigente','NonDirigente'));
+\end{lstlisting}
+
+Questo Dominio è importante per descrivere il tipo di scatto che un impiegato può fare, in particolare rispetto al DOMINIO\_IMPIEGATO, vi si aggiungono due nuovi tipi : dirigente e NonDirigente, in modo tale da salvare all'interno dello STORICO, tutti gli scatti di carriera anche quelli dirigenziali i quali, come descritto nella sezione Analisi dei Requisiti , possono essere molteplici motivo per il quale non devo solamente tener traccia della data in cui inizia ad essere Dirigente, ma anche della data in cui smette di esserlo.
+
+
+\newpage
+\subsection{Tabelle}
+
+\textbf{TABELLA IMPIEGATO :}
+\scriptsize
+\begin{lstlisting}
+CREATE TABLE IF NOT EXISTS IMPIEGATO(
+	matricola DOMINIO_MATRICOLA,
+	nome VARCHAR NOT NULL,
+	cognome VARCHAR NOT NULL,
+	codice_fiscale CHAR(16) NOT NULL UNIQUE, 
+	curriculum VARCHAR,
+	stipendio DECIMAL(12,2) NOT NULL,
+	sesso DOMINIO_SESSO NOT NULL,
+	foto BYTEA,
+	tipo_impiegato DOMINIO_IMPIEGATO NOT NULL DEFAULT 'junior',
+	dirigente BOOLEAN NOT NULL DEFAULT FALSE,
+	data_assunzione DATE NOT NULL
+	data_licenziamento DATE DEFAULT NULL,
+
+	CONSTRAINT data_corretta CHECK(data_assunzione < data_licenziamento),
+	CONSTRAINT impiegato_pk PRIMARY KEY(matricola),
+	CONSTRAINT stipendio_corretto CHECK(stipendio > 0)
+);
+\end{lstlisting}
+\normalsize
+\textbf{nota:} \textit{data\_corretta} è un vincolo che definisce la seguente regola : la data assunzione dev'essere precedente rispetto alla data di licenziamento.\\
+
+\noindent\textbf{TABELLA LABORATORIO:}
+\scriptsize
+\begin{lstlisting}
+CREATE TABLE IF NOT EXISTS LABORATORIO(
+	id_lab VARCHAR,
+	topic VARCHAR NOT NULL,
+	indirizzo VARCHAR NOT NULL,
+	numero_telefono VARCHAR(12), 
+	numero_afferenti INTEGER DEFAULT 1,
+	r_scientifico DOMINIO_MATRICOLA NOT NULL UNIQUE,
+
+	CONSTRAINT laboratorio_pk PRIMARY KEY(id_lab),
+	CONSTRAINT r_scientifico_fk FOREIGN KEY(r_scientifico) 
+        REFERENCES IMPIEGATO(matricola)
+		ON UPDATE CASCADE
+);
+\end{lstlisting}
+\normalsize
+\textbf{nota:} \textit{r\_scientifico} identifica il responsabile scientifico di un laboratorio e, siccome si è considerato unico per ogni laboratorio, allora vi è stato aggiunto la clausola di UNIQUE.\\
+
+\newpage
+
+\noindent\textbf{TABELLA PROGETTO :}
+\scriptsize
+\begin{lstlisting}
+CREATE TABLE IF NOT EXISTS PROGETTO(
+	cup VARCHAR,
+	nome_progetto VARCHAR UNIQUE NOT NULL,
+	budget DECIMAL(12,2) NOT NULL,
+	data_inizio DATE NOT NULL,
+	data_fine DATE DEFAULT NULL,  
+	responsabile DOMINIO_MATRICOLA NOT NULL, 
+	referente DOMINIO_MATRICOLA NOT NULL,  
+	
+	CONSTRAINT progetto_pk PRIMARY KEY(cup),
+	CONSTRAINT budget_corretto CHECK(budget > 0),
+	CONSTRAINT data_corretta CHECK(data_fine > data_inizio),
+	  CONSTRAINT responsabile_fk FOREIGN KEY(responsabile) 
+        REFERENCES IMPIEGATO(matricola)
+		ON UPDATE CASCADE,
+	  CONSTRAINT referente_fk FOREIGN KEY(referente) 
+        REFERENCES IMPIEGATO(matricola)
+		ON UPDATE CASCADE
+);
+\end{lstlisting}
+\normalsize
+\textbf{nota:} con \texit{referente} , s'intende il referente scientifico del progetto.\\
+
+\noindent\textbf{TABELLA AFFERENZA :}
+\scriptsize
+\begin{lstlisting}
+CREATE TABLE IF NOT EXISTS AFFERENZA(
+	ore_giornaliere INTEGER NOT NULL,
+	matricola DOMINIO_MATRICOLA NOT NULL,
+	id_lab VARCHAR NOT NULL,
+
+	CONSTRAINT afferenza_pk PRIMARY KEY(matricola,id_lab),
+	CONSTRAINT impiegato_fk FOREIGN KEY(matricola) 
+        REFERENCES IMPIEGATO(matricola)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT laboratorio_fk FOREIGN KEY(id_lab) 
+        REFERENCES LABORATORIO(id_lab)
+		ON UPDATE CASCADE ON DELETE CASCADE
+
+);
+\end{lstlisting}
+\normalsize
+\textbf{nota:} l'attributo \textit{ore\_giornaliere}, indica le ore lavorative di un impiegato su un singolo laboratorio.
+
+\newpage
+
+\noindent\textbf{TABELLA STORICO :}
+\scriptsize
+\begin{lstlisting}
+CREATE TABLE IF NOT EXISTS STORICO(
+	ruolo_prec DOMINIO_SCATTO,
+	nuovo_ruolo DOMINIO_SCATTO NOT NULL, 
+	data_scatto DATE NOT NULL,
+	matricola DOMINIO_MATRICOLA,
+
+	CONSTRAINT storico_pk PRIMARY KEY(nuovo_ruolo,matricola,data_scatto),
+	CONSTRAINT matricola_fk FOREIGN KEY(matricola) 
+        REFERENCES IMPIEGATO(matricola)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT check_ruolo CHECK(
+    ((ruolo_prec is NULL) AND (nuovo_ruolo = 'junior')) OR 
+    ((ruolo_prec = 'junior') AND (nuovo_ruolo = 'middle')) OR
+    ((ruolo_prec = 'middle') AND (nuovo_ruolo = 'senior')) OR
+    (ruolo_prec = 'NonDirigente') AND (nuovo_ruolo = 'dirigente') OR
+    ((ruolo_prec = 'dirigente') AND (nuovo_ruolo = 'NonDirigente'))) );
+\end{lstlisting}
+\normalsize
+
+\textbf{nota:} il vincolo \textit{check\_ruolo} , descrive le sole ed uniche possibilità di combinazione tra gli scatti di carriera, definendo in questo modo le sequenze possibili di promozioni.\\
+
+\noindent\textbf{TABELLA GESTIONE :}
+\scriptsize
+\begin{lstlisting}
+CREATE TABLE IF NOT EXISTS GESTIONE(
+	cup VARCHAR NOT NULL,
+	id_lab VARCHAR NOT NULL,
+
+	CONSTRAINT gestione_pk PRIMARY KEY(cup, id_lab),
+	CONSTRAINT progetto_fk FOREIGN KEY(cup) 
+        REFERENCES PROGETTO(cup)
+		ON UPDATE CASCADE ON DELETE CASCADE ,
+	CONSTRAINT laboratorio_fk FOREIGN KEY(id_lab) 
+        REFERENCES LABORATORIO(id_lab)
+		ON UPDATE CASCADE ON DELETE CASCADE
+);
+\end{lstlisting}
+
+\normalsize
+
+\newpage
+\subsection{Viste}
+\begin{itemize}
+In questa sezione vengono descritte l'insieme di \textit{view} che vengono messe a disposizione a chi nell'azienda ha il compito di gestire il personale, i progetti e i laboratori.
+
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Impiegati_attuali AS(
+SELECT*
+FROM Impiegato
+where data_licenziamento IS NULL or data_licenziamento > CURRENT_DATE);
+\end{lstlisting}
+
+ La vista \textit{Impiegati\_attuali} descrive semplicemente la lista di impiegati che non sono stati licenziati, dove la data di licenziamento è messa a NULL oppure non si è ancora raggiunto la fine del contratto (si pensi nel caso in cui l'impiegato ha un particolare tipo di contratto determinato in cui sin dall'inserimento nell'azienda conosce la data di fine del proprio percorso lavorativo[...]).\\
+
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Dirigenti_Attuali AS (
+    SELECT *
+    FROM Impiegati_attuali
+    WHERE dirigente is true );
+\end{lstlisting}
+
+Dalla vista sugli Impiegati Attuali, ne deduciamo i dirigenti attuali.\\
+
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Referenti_attuali AS(
+    SELECT *
+    FROM Impiegati_attuali as i
+    WHERE i.matricola IN (SELECT referente FROM Progetti_attuali));
+\end{lstlisting}
+La vista rappresenta i referenti attuali dei progetti in corso.\\
+
+\newpage
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Responsabili_scientifici_attuali AS(
+    SELECT *
+    FROM Impiegati_attuali as i 
+    WHERE i.matricola IN (SELECT r_scientifico FROM laboratorio));
+\end{lstlisting}
+La vista rappresenta i responsabili scientifici attuali dei laboratori. \\
+
+
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Afferenza_attuale AS(
+    SELECT a.matricola, a.id_lab
+    FROM afferenza as a NATURAL JOIN Impiegati_attuali );
+\end{lstlisting}
+La vista \textit{Afferenza\_attuale}, mostra un impiegato attuale rispetto ai laboratori in cui lavora.\\
+
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Progetti_attuali AS(
+    SELECT *
+    FROM progetto
+    WHERE data_fine > CURRENT_DATE OR data_fine is NULL );
+\end{lstlisting}
+La vista \textit{Progetti\_Attuali} descrive i progetti che sono attivi nell'azienda.\\
+
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Progetti_terminati AS(
+    SELECT *
+    FROM progetto
+    WHERE data_fine < CURRENT_DATE);
+\end{lstlisting}
+
+Di conseguenza è utile avere una vista di tutti i progetti terminati.\\
+\newpage
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Storico_view AS (
+    SELECT i.nome, i.cognome, i.matricola,
+        s1.data_scatto AS data_scatto_junior,
+        s2.data_scatto AS data_scatto_middle,
+        s3.data_scatto AS data_scatto_senior
+    FROM IMPIEGATO i
+    LEFT JOIN STORICO s1 ON i.matricola = s1.matricola 
+    AND s1.nuovo_ruolo = 'junior'
+    LEFT JOIN STORICO s2 ON i.matricola = s2.matricola 
+    AND s2.nuovo_ruolo = 'middle'
+    LEFT JOIN STORICO s3 ON i.matricola = s3.matricola 
+    AND s3.nuovo_ruolo = 'senior'
+);
+\end{lstlisting}
+
+La precedente vista \textit{STORICO\_VIEW}, mette a disposizione un'importante semplificazione della tabella STORICO, riuscendo a rappresentare in questo modo un impiegato con tutti i suoi scatti di carriera (se compiuti) in un'unica tupla.\\
+
+\begin{lstlisting}
+CREATE OR REPLACE VIEW Gestione_Attuale AS (
+    SELECT g.cup,g.id_lab
+    FROM gestione as g NATURAL JOIN Progetti_attuali as p);
+\end{lstlisting}
+E' utile conoscere per un progetto non terminato, i laboratori che gestisce.\\
+
+\end{itemize}
