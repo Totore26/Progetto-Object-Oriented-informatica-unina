@@ -6,10 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.*;
 
 import CONTROLLER.Controller;
 import com.toedter.calendar.JDateChooser;
+import org.postgresql.util.PSQLException;
 
 public class ProfiloImpiegato extends JDialog {
     private JTextField matricolaField;
@@ -24,7 +27,7 @@ public class ProfiloImpiegato extends JDialog {
     private JTextField dataAssunzioneChooser;
     private JDateChooser dataLicenziamentoChooser;
     private JTable tabellaStorico;
-    private JTable tabellaAfferenza;
+    private JTable tabellaAfferenze;
     private JTextField impiegatoReferente;
     private JTextField impiegatoResponsabile;
     private JTextField impiegatoRScientifico;
@@ -173,24 +176,32 @@ public class ProfiloImpiegato extends JDialog {
 
 
         // Tabella di afferenza
-        ArrayList<String> listaLab = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
+        ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
         DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
         tabellaAfferenzaModel.addColumn("ID");
-        Object[][] data = new Object[listaLab.size()][1];
-        for (int i = 0; i < listaLab.size(); i++) {
-            data[i][0] = listaLab.get(i);
+        Object[][] data = new Object[listaLabAfferiti.size()][1];
+        for (int i = 0; i < listaLabAfferiti.size(); i++) {
+            data[i][0] = listaLabAfferiti.get(i);
         }
         tabellaAfferenzaModel.setDataVector(data, new Object[]{"ID"});
-        tabellaAfferenza = new JTable(tabellaAfferenzaModel);
-        tabellaAfferenza.setShowGrid(true);
+        tabellaAfferenze = new JTable(tabellaAfferenzaModel);
+        tabellaAfferenze.setShowGrid(true);
+        //allineo il testo delle colonne al centro
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        // Applicazione del renderizzatore personalizzato a tutte le colonne
+        int columnCount = tabellaAfferenze.getColumnCount();
+        for (int i = 0; i < columnCount; i++) {
+            tabellaAfferenze.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
         //barra di scorrimento
-        scrollPane = new JScrollPane(tabellaAfferenza);
+        scrollPane = new JScrollPane(tabellaAfferenze);
         rightPanel.add(scrollPane, BorderLayout.CENTER);
 
-        rightPanel.add(new JScrollPane(tabellaAfferenza), BorderLayout.CENTER);
+        rightPanel.add(new JScrollPane(tabellaAfferenze), BorderLayout.CENTER);
         rightPanel.setPreferredSize(new Dimension(150,700));
-        tabellaAfferenza.getTableHeader().setReorderingAllowed(false);
+        tabellaAfferenze.getTableHeader().setReorderingAllowed(false);
 
 
         panel.add(rightPanel, BorderLayout.EAST);
@@ -286,9 +297,73 @@ public class ProfiloImpiegato extends JDialog {
         bottoneAggiungiAfferenza.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Creazione e visualizzazione della finestra di dialogo
+                JDialog dialog = new JDialog(); // Puoi utilizzare una classe di finestra di dialogo personalizzata
+                dialog.setModal(true); // Imposta la finestra di dialogo come modale per bloccare l'interazione con la finestra principale
+                dialog.setTitle("Aggiungi afferenza:\n");
 
+                //creo la tabella
+                DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
+                tabellaAfferenzaModel.addColumn("ID");
+                ArrayList<String> listaCodLab = controller.getListaCodiciLaboratoriGUI();
+                //rimuovo dalla lista dei laboratori quelli a cui l'impiegato afferisce gia
+                listaCodLab.removeAll(listaLabAfferiti);
+                //riempio la tabella
+                Object[][] data = new Object[listaCodLab.size()][1];
+                for (int i = 0; i < listaCodLab.size(); i++) {
+                    data[i][0] = listaCodLab.get(i);
+                }
+                tabellaAfferenzaModel.setDataVector(data, new Object[]{"ID"});
+                JTable tabellaCodiciLab = new JTable(tabellaAfferenzaModel);
+                tabellaCodiciLab.setShowGrid(true);
+
+                //allineo il testo delle colonne al centro
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+                // Applicazione del renderizzatore personalizzato a tutte le colonne
+                int columnCount = tabellaCodiciLab.getColumnCount();
+                for (int i = 0; i < columnCount; i++) {
+                    tabellaCodiciLab.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+                }
+
+                // Aggiungi la tabella a un componente di scorrimento
+                JScrollPane scrollPane = new JScrollPane(tabellaCodiciLab);
+                // Aggiungi il componente di scorrimento alla finestra di dialogo
+                dialog.add(scrollPane);
+
+                // Quando l'utente tocca un codice, parte questo Listener
+                tabellaCodiciLab.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                    @Override
+                    public void valueChanged(ListSelectionEvent e) {
+                        // Ottieni il codice selezionato
+                        int selectedRow = tabellaCodiciLab.getSelectedRow();
+                        String codLabSelezionato = (String) tabellaCodiciLab.getValueAt(selectedRow, 0);
+                        
+                        // L utente ha selezionato una colonna
+                        int response = JOptionPane.showOptionDialog(dialog, "Aggiungo alla matricola " + matricolaSelezionata + " l'afferenza al laboratorio " + codLabSelezionato + "?", "Conferma Salvataggio", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+                        if (response == JOptionPane.YES_OPTION) {
+                            //aggiungo l'afferenza al codLabSelezionato
+                            try {
+                                controller.aggiungiAfferenza(matricolaSelezionata,codLabSelezionato);
+                            } catch (PSQLException ex) {
+                                JOptionPane.showMessageDialog(null, "Errore durante l'aggiunta dell'afferenza al laboratorio:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                            } catch (Exception ee) {
+                                JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                            } finally {
+                                dialog.dispose();
+                            }
+                            updateTabella(controller,new String[]{"ID"},matricolaSelezionata);
+                        }
+                    }
+                });
+                
+                // Imposta le dimensioni e la posizione della finestra di dialogo
+                dialog.setSize(250, 400);
+                dialog.setLocationRelativeTo(null); // Posiziona la finestra di dialogo al centro dello schermo
+                dialog.setVisible(true);
             }
         });
+
 
 
         // Logica per rimuovere afferenza
@@ -326,6 +401,18 @@ public class ProfiloImpiegato extends JDialog {
         setVisible(true);
     }
 
+    private void updateTabella(Controller controller,String[] colonneTabella,String matricolaSelezionata) {
+        //LOAD DEI NUOVI DATI
+        ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
+        Object[][] nuoviDati = new Object[listaLabAfferiti.size()][3];
+        for (int i = 0; i < listaLabAfferiti.size(); i++) {
+            nuoviDati[i][0] = listaLabAfferiti.get(i);
+        }
+
+        //CODICE PER AGGIORNARE LA TABELLA CON I NUOVI DATI
+        DefaultTableModel model = (DefaultTableModel) tabellaAfferenze.getModel();
+        model.setDataVector(nuoviDati, colonneTabella);
+    }
 
 
 }

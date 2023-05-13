@@ -2,6 +2,7 @@ package CONTROLLER;
 import DAO.*;
 import ImplementazionePostgresDAO.*;
 import MODEL.*;
+import jdk.internal.icu.text.UnicodeSet;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -742,6 +743,14 @@ public class Controller {
             idlablist.add(laboratorio.getTopic());
             idlablist.add(laboratorio.getRScientifico().getMatricola());
         }
+    }
+
+    public ArrayList<String> getListaCodiciLaboratoriGUI(){
+        ArrayList<String> idlablist = new ArrayList<String>();
+        for (Laboratorio laboratorio : listaLaboratorio) {
+            idlablist.add(laboratorio.getIdLab());
+        }
+        return idlablist;
     }
 
 
