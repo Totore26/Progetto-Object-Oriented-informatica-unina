@@ -365,12 +365,34 @@ public class ProfiloImpiegato extends JDialog {
         });
 
 
-
         // Logica per rimuovere afferenza
         bottoneRimuoviAfferenza.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int selectedRow = tabellaAfferenze.getSelectedRow();
+                int selectedColumn = tabellaAfferenze.getSelectedColumn();
 
+                if (selectedRow != -1 && selectedColumn != -1) {
+                    // La matricola si trova nella prima colonna della tabella
+                    String codLabSelezionato = tabellaAfferenze.getValueAt(tabellaAfferenze.getSelectedRow(), 0).toString();
+                    int response = JOptionPane.showOptionDialog( panel, "Sei sicuro di voler eliminare l'afferenza al laboratorio " + codLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+
+                    if (response == JOptionPane.YES_OPTION) {
+                        //elimino l'impiegato con la matricola selezionata
+                        try {
+                            controller.eliminaAfferenza(matricolaSelezionata,codLabSelezionato);
+                        } catch (PSQLException ex) {
+                            JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione dell'afferenza:\n" + ex.getMessage(), "Errore di eliminazione", JOptionPane.ERROR_MESSAGE);
+                        } catch (Exception ee) {
+                            JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                        }
+                        //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
+                        updateTabella(controller,new String[]{"ID"},codLabSelezionato);
+                    }
+                } else {
+                    // L'utente non ha selezionato una cella
+                    JOptionPane.showMessageDialog(panel, "Seleziona un codice laboratorio per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 

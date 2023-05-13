@@ -101,13 +101,13 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     @Override
     public boolean eliminaAfferenzaDAO(String matricolaScelta, String idlabScelto) throws  SQLException{
         PreparedStatement insertImp;
-        insertImp = connection.prepareStatement("DELETE FROM AFFERENZA WHERE MATRICOLA = ?");
+        insertImp = connection.prepareStatement("DELETE FROM AFFERENZA WHERE MATRICOLA = ? AND ID_LAB=?");
         insertImp.setString(1, matricolaScelta);
+        insertImp.setString(2,idlabScelto);
         int rs = insertImp.executeUpdate();
         if(rs==1){
             return true;
         }
-
         return false;
     }
 
