@@ -629,23 +629,27 @@ public class Controller {
     * nell'Azienda.
     */
     public ArrayList<String> getListaResponsabiliScientificiDisponibiliGUI(){
-        Set<String> matricoleDisponibili = new HashSet<>();
+
+        ArrayList<String> rscientificiDisponibili = new ArrayList<>();
         for(Impiegato imp : listaImpiegato){
             if(imp.getTipoImpiegato().equals("senior")){
+
+                int i=0;
                 boolean disponibile = true;
-                for(Laboratorio lab : listaLaboratorio){
-                    if(imp.getMatricola().equals(lab.getRScientifico().getMatricola())){
-                        disponibile = false;
-                        break;
-                    }
+                while(i<listaLaboratorio.size() && disponibile == true){
+                    if(listaLaboratorio.get(i).getRScientifico().equals(imp))
+                        disponibile=false;
+                    i++;
                 }
+
                 if(disponibile){
-                    matricoleDisponibili.add(imp.getMatricola());
+                    rscientificiDisponibili.add(imp.getMatricola());
                 }
             }
+
+
         }
 
-        ArrayList<String> rscientificiDisponibili = new ArrayList<>(matricoleDisponibili);
         return rscientificiDisponibili;
     }
 
