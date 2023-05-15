@@ -52,7 +52,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         // IdLab
-        JLabel idLabLabel = new JLabel("Id Laboratorio:", SwingConstants.CENTER);
+        JLabel idLabLabel = new JLabel("Id Laboratorio:", SwingConstants.LEFT);
         idLabLabel.setHorizontalAlignment(SwingConstants.LEFT);
         idLabField = new JTextField();
         idLabField.setText(idLabSelezionato);
@@ -60,7 +60,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         datiAnagraficiPanel.add(idLabField);
 
         //Topic
-        JLabel topicLabel = new JLabel("Topic:", SwingConstants.CENTER);
+        JLabel topicLabel = new JLabel("Topic:", SwingConstants.LEFT);
         topicLabel.setHorizontalAlignment(SwingConstants.LEFT);
         topicField = new JTextField();
         topicField.setText(topicSelezionato);
@@ -68,7 +68,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         datiAnagraficiPanel.add(topicField);
 
         //Indirizzo
-        JLabel indirizzoLabel = new JLabel("Indirizzo:", SwingConstants.CENTER);
+        JLabel indirizzoLabel = new JLabel("Indirizzo:", SwingConstants.LEFT);
         topicLabel.setHorizontalAlignment(SwingConstants.LEFT);
         indirizzoField = new JTextField();
         indirizzoField.setText(indirizzoSelezionato);
@@ -76,7 +76,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         datiAnagraficiPanel.add(indirizzoField);
 
         //Numero
-        JLabel numeroTelefonicoLabel = new JLabel("Numero Telefonico:", SwingConstants.CENTER);
+        JLabel numeroTelefonicoLabel = new JLabel("Numero Telefonico:", SwingConstants.LEFT);
         numeroTelefonicoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         numeroTelefonicoField = new JTextField();
         numeroTelefonicoField.setText(numeroTelefonicoSelezionato);
@@ -84,12 +84,15 @@ public class ProfiloLaboratorioGUI extends JDialog{
         datiAnagraficiPanel.add(numeroTelefonicoField);
 
         //RScientifico
+        JLabel rscient = new JLabel("responsabile scientifico :",SwingConstants.LEFT);
+        rscient.setHorizontalAlignment(SwingConstants.LEFT);
         rScientificoComboBox = new JComboBox<>();
         rScientificoComboBox.addItem(rScientificoSelezionato);
         ArrayList<String> rScientificiDisponibili= controller.getListaResponsabiliScientificiDisponibiliGUI();
         for(String s : rScientificiDisponibili)
             rScientificoComboBox.addItem(s);
-        datiAnagraficiPanel.add(rScientificoComboBox);
+        datiAnagraficiPanel.add(rScientificoComboBox, BorderLayout.WEST);
+
 
 
 
@@ -107,7 +110,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
 
 
         rightPanel1.setBorder(BorderFactory.createTitledBorder("Impiegati Associati:"));
-        rightPanel2.setBorder(BorderFactory.createTitledBorder("Progetti Gestiti:"));
+        rightPanel2.setBorder(BorderFactory.createTitledBorder("Progetti in lavoro :"));
 
         //TABELLE
 
@@ -204,8 +207,8 @@ public class ProfiloLaboratorioGUI extends JDialog{
 
         JButton bottoneSalva = new JButton("Salva modifiche");
         JButton bottoneAnnulla = new JButton("Annulla modifiche");
-        JButton bottoneAggiungiAfferenza = new JButton("Aggiungi afferenza");
-        JButton bottoneRimuoviAfferenza = new JButton("Rimuovi afferenza");
+        JButton bottoneAggiungiAfferenza = new JButton("Aggiungi afferente");
+        JButton bottoneRimuoviAfferenza = new JButton("Rimuovi afferente");
         panelBottoniLeft.add(bottoneSalva);
         panelBottoniLeft.add(bottoneAnnulla);
         panelBottoniRight.add(bottoneAggiungiAfferenza);
@@ -389,15 +392,15 @@ public class ProfiloLaboratorioGUI extends JDialog{
         setVisible(true);
     }
 
-        private void updateTabella(Controller controller, String matricolaSelezionata) {
+        private void updateTabella(Controller controller, String idLabScelto) {
             //load dei nuovi dati
-            ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeImpiegato(matricolaSelezionata);
+            ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeLaboratorio(idLabScelto);
             Object[][] nuoviDati = new Object[listaLabAfferiti.size()][listaLabAfferiti.size()];
             for (int i = 0; i < listaLabAfferiti.size(); i++) {
                 nuoviDati[i][0] = listaLabAfferiti.get(i);
             }
             // Aggiungi le nuove righe alla tabella
             DefaultTableModel model = (DefaultTableModel) tabellaAfferenze.getModel();
-            model.setDataVector(nuoviDati,new Object[]{"ID"});
+            model.setDataVector(nuoviDati,new Object[]{"MAT"});
         }
 }

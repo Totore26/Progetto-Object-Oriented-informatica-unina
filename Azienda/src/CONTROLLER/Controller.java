@@ -532,7 +532,7 @@ public class Controller {
      *    inizializza L'arraylist del laboratorio in questione e ritorna alla gui la lista di matricole a cui
      *    è associato, in questo modo carica i dati dal database solamente quando sono richiesti dall'utente.
      */
-    public ArrayList<String> leggiAfferenzeLaboratorio(String idLabSelezionato) throws SQLException {
+    public ArrayList<String> leggiAfferenzeLaboratorio(String idLabSelezionato) {
         LaboratorioDAO i = new LaboratorioPostgresDAO();
 
         //step 0: trovo l'impiegato a cui si riferisce la vista
@@ -545,7 +545,12 @@ public class Controller {
 
         //2 step : trovo i matricole associati
         ArrayList<String> matricoleAssociate = new ArrayList<>();
-        boolean control = i.leggiAfferenzePerLaboratorioDAO(idLabSelezionato, matricoleAssociate);
+        boolean control = false;
+        try {
+            control = i.leggiAfferenzePerLaboratorioDAO(idLabSelezionato, matricoleAssociate);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         //2 step : Inizializzo la lista di afferenze che ha un laboratorio
         if (control) {
