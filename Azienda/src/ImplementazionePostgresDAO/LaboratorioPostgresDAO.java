@@ -43,7 +43,7 @@ public class LaboratorioPostgresDAO implements LaboratorioDAO {
     @Override
     public boolean eliminaLaboratorioDAO(String idLabSelezionato) throws SQLException {
         PreparedStatement deleteLab;
-        deleteLab = connection.prepareStatement("DELETE FROM LABORATORIO WHERE MATRICOLA = ? ");
+        deleteLab = connection.prepareStatement("DELETE FROM LABORATORIO WHERE ID_LAB = ? ");
         deleteLab.setString(1, idLabSelezionato);
         int result = deleteLab.executeUpdate();
         if (result == 1) {
