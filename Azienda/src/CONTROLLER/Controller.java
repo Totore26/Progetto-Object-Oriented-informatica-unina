@@ -2,14 +2,11 @@ package CONTROLLER;
 import DAO.*;
 import ImplementazionePostgresDAO.*;
 import MODEL.*;
-import jdk.internal.icu.text.UnicodeSet;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Controller {
 
@@ -291,7 +288,7 @@ public class Controller {
 
         //2 step : trovo i laboratori associati
         ArrayList<String> laboratoriAssociati = new ArrayList<>();
-        boolean control = i.leggiAfferenzeDAO(matricolaSelezionata, laboratoriAssociati);
+        boolean control = i.leggiAfferenzePerImpiegatoDAO(matricolaSelezionata, laboratoriAssociati);
 
         //2 step : inzializzo la lista di laboratori a cui afferisce l'impiegato
         if (control) {
@@ -306,8 +303,6 @@ public class Controller {
         return laboratoriAssociati;
 
     }
-
-
 
 
     /*
@@ -531,7 +526,40 @@ public class Controller {
     }
 
 
+    /*
+     *    La seguente funzione leggiAfferenzaLaboratorio fa in modo tale che se richiesto dalla GUI,
+     *    recupera dal database le matricole afferenti al lab selezionato,
+     *    inizializza L'arraylist del laboratorio in questione e ritorna alla gui la lista di matricole a cui
+     *    è associato, in questo modo carica i dati dal database solamente quando sono richiesti dall'utente.
+     */
+    public ArrayList<String> leggiAfferenzeLaboratorio(String idLabSelezionato) throws SQLException {
+        LaboratorioDAO i = new LaboratorioPostgresDAO();
 
+        //step 0: trovo l'impiegato a cui si riferisce la vista
+        Laboratorio labDaVisualizzare = null;
+        for (Laboratorio lab : listaLaboratorio)
+            if (lab.getIdLab().equals(idLabSelezionato)) {
+                labDaVisualizzare = lab;
+                break;
+            }
+
+        //2 step : trovo i matricole associati
+        ArrayList<String> matricoleAssociate = new ArrayList<>();
+        boolean control = i.leggiAfferenzePerLaboratorioDAO(idLabSelezionato, matricoleAssociate);
+
+        //2 step : Inizializzo la lista di afferenze che ha un laboratorio
+        if (control) {
+            for (Impiegato imp : listaImpiegato)
+                for (String l : matricoleAssociate)
+                    if (imp.getMatricola().equals(l)) {
+                        assert labDaVisualizzare != null;
+                        labDaVisualizzare.aggiungiMatricola(imp);
+                    }
+        }
+
+        return matricoleAssociate;
+
+    }
 
 
 
@@ -599,7 +627,7 @@ public class Controller {
     * le seguenti tre funzioni hanno come compito quello di passare
     * alla GUI le varie informazioni che servono per creare le tabelle dell'impiegato...
     */
-    public List<String> getListaImpiegatoMatricoleGUI() {
+    public ArrayList<String> getListaImpiegatoMatricoleGUI() {
         ArrayList<String> stringMatricole = new ArrayList<>();
 
         for (Impiegato imp : listaImpiegato)
@@ -625,7 +653,7 @@ public class Controller {
     }
 
     /*
-    * Funzioni che ritorna la lista di responsabili scientifici disponibili
+    * Funzione che ritorna la lista di responsabili scientifici disponibili
     * nell'Azienda.
     */
     public ArrayList<String> getListaResponsabiliScientificiDisponibiliGUI(){
@@ -633,7 +661,6 @@ public class Controller {
         ArrayList<String> rscientificiDisponibili = new ArrayList<>();
         for(Impiegato imp : listaImpiegato){
             if(imp.getTipoImpiegato().equals("senior")){
-
                 int i=0;
                 boolean disponibile = true;
                 while(i<listaLaboratorio.size() && disponibile == true){
@@ -641,15 +668,11 @@ public class Controller {
                         disponibile=false;
                     i++;
                 }
-
                 if(disponibile){
                     rscientificiDisponibili.add(imp.getMatricola());
                 }
             }
-
-
         }
-
         return rscientificiDisponibili;
     }
 
@@ -796,22 +819,83 @@ public class Controller {
         return matScelta.getSesso();
     }
 
-    public ArrayList<String> getSingoloImpiegatoAfferenzeGUI(String matricolaSelezionata){
-        Impiegato matScelta = null;
-        for(Impiegato imp : listaImpiegato){
-            if(imp.getMatricola().equals(matricolaSelezionata)){
-                matScelta = imp;
+
+
+    /*
+    *   Funzioni che servono per il Profilo laboratorio
+    *   esse restituiscono tutti gli attributi singolarmente dato un idlab scelto nella gui.
+    */
+
+    //funzione che ritorna codici dei laboratori
+    public ArrayList<String> getListaCodiciLaboratoriGUI(){
+        ArrayList<String> idlablist = new ArrayList<String>();
+        for (Laboratorio laboratorio : listaLaboratorio) {
+            idlablist.add(laboratorio.getIdLab());
+        }
+        return idlablist;
+    }
+
+    //funzione che serve per fare le tabelle
+    public void getListaLaboratorioGUI(ArrayList<String> idlablist, ArrayList<String> topiclist, ArrayList<String> rscientificolist){
+
+        for (Laboratorio laboratorio : listaLaboratorio) {
+            idlablist.add(laboratorio.getIdLab());
+            topiclist.add(laboratorio.getTopic());
+            rscientificolist.add(laboratorio.getRScientifico().getMatricola());
+        }
+    }
+
+    public String getSingoloLaboratorioTopicGUI(String idLabSelezionato){
+
+        Laboratorio labScelto = null;
+        for(Laboratorio lab : listaLaboratorio){
+            if(lab.getIdLab().equals(idLabSelezionato)){
+                labScelto = lab;
                 break;
             }
         }
-
-        ArrayList<String> ritornoLab = new ArrayList<>();
-        for(Laboratorio lab : matScelta.getListaAfferenza())
-            ritornoLab.add(lab.getIdLab());
-
-
-        return ritornoLab;
+        return labScelto.getTopic();
     }
+
+    public String getSingoloIndirizzoGUI(String idLabSelezionato){
+
+        Laboratorio labScelto = null;
+        for(Laboratorio lab : listaLaboratorio){
+            if(lab.getIdLab().equals(idLabSelezionato)){
+                labScelto = lab;
+                break;
+            }
+        }
+        return labScelto.getIndirizzo();
+    }
+
+    public String getSingoloNumeroTelefonicoGUI(String idLabSelezionato){
+
+        Laboratorio labScelto = null;
+        for(Laboratorio lab : listaLaboratorio){
+            if(lab.getIdLab().equals(idLabSelezionato)){
+                labScelto = lab;
+                break;
+            }
+        }
+        return labScelto.getNumeroTelefonico();
+    }
+
+    public String getSingoloRefScientificoGUI(String idLabSelezionato){
+
+        Laboratorio labScelto = null;
+        for(Laboratorio lab : listaLaboratorio){
+            if(lab.getIdLab().equals(idLabSelezionato)){
+                labScelto = lab;
+                break;
+            }
+        }
+        return labScelto.getRScientifico().getMatricola();
+    }
+
+
+
+
 
     public void getListaProgettoGUI(ArrayList<String> nomelist, ArrayList<String> cuplist, ArrayList<String> responsabilelist, ArrayList<String> referentelist) {
 
@@ -823,22 +907,6 @@ public class Controller {
         }
     }
 
-    public void getListaLaboratorioGUI(ArrayList<String> idlablist, ArrayList<String> topiclist, ArrayList<String> rscientificolist){
-
-        for (Laboratorio laboratorio : listaLaboratorio) {
-            idlablist.add(laboratorio.getIdLab());
-            topiclist.add(laboratorio.getTopic());
-            rscientificolist.add(laboratorio.getRScientifico().getMatricola());
-        }
-    }
-
-    public ArrayList<String> getListaCodiciLaboratoriGUI(){
-        ArrayList<String> idlablist = new ArrayList<String>();
-        for (Laboratorio laboratorio : listaLaboratorio) {
-            idlablist.add(laboratorio.getIdLab());
-        }
-        return idlablist;
-    }
 
 
 

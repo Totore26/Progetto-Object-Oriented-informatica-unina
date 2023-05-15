@@ -86,7 +86,23 @@ public class LaboratorioPostgresDAO implements LaboratorioDAO {
 
     }
 
-
+    @Override
+    public boolean leggiAfferenzePerLaboratorioDAO(String idLabSelezionato, ArrayList<String> matricoleAssociate) throws SQLException{
+        try {
+            PreparedStatement leggiAfferenze;
+            leggiAfferenze = connection.prepareStatement("SELECT MATRICOLA FROM AFFERENZA WHERE ID_LAB = ?");
+            leggiAfferenze.setString(1,idLabSelezionato);
+            ResultSet rs = leggiAfferenze.executeQuery();
+            while(rs.next())
+            {
+                matricoleAssociate.add(rs.getString("matricola"));
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 }

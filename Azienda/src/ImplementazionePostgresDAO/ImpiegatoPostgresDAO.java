@@ -66,7 +66,7 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
     }
 
     @Override
-    public boolean leggiAfferenzeDAO(String matricolaSelezionata, ArrayList<String> laboratori){
+    public boolean leggiAfferenzePerImpiegatoDAO(String matricolaSelezionata, ArrayList<String> laboratoriAssociati){
         try {
             PreparedStatement leggiAfferenze;
             leggiAfferenze = connection.prepareStatement("SELECT ID_LAB FROM AFFERENZA WHERE MATRICOLA = ?");
@@ -74,7 +74,7 @@ public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
             ResultSet rs = leggiAfferenze.executeQuery();
             while(rs.next())
             {
-                laboratori.add(rs.getString("id_lab"));
+                laboratoriAssociati.add(rs.getString("id_lab"));
             }
             return true;
         } catch (SQLException e) {

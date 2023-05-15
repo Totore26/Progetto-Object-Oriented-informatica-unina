@@ -14,6 +14,7 @@ public interface LaboratorioDAO {
     * progetti lavorare.
     */
 
+    public boolean leggiAfferenzePerLaboratorioDAO(String idLabSelezionato, ArrayList<String> matricoleAssociate) throws SQLException;
     public boolean modificaLaboratorioDAO(String idLabScelto,String indirizzo,String numeroTelefonico,String rScientifico) throws SQLException;
     public boolean leggiProgettiDAO(String idLabScelto, ArrayList<String> progettiAssociati) throws SQLException;
 }

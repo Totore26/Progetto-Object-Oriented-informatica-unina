@@ -109,4 +109,8 @@ public class Laboratorio {
     public void setListaAfferenti(List<Impiegato> listaAfferenti) {
         listaAfferenti = listaAfferenti;
     }
+
+    public void aggiungiMatricola(Impiegato imp) {
+        this.listaAfferenti.add(imp);
+    }
 }

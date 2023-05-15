@@ -13,8 +13,10 @@ public interface ImpiegatoDAO {
 
     public boolean eliminaAfferenzaDAO(String matricolaScelta, String idlabScelto) throws  SQLException;
 
-    public boolean leggiAfferenzeDAO(String matricolaSelezionata, ArrayList<String> laboratoriAssociati);
+    public boolean leggiAfferenzePerImpiegatoDAO(String matricolaSelezionata, ArrayList<String> laboratoriAssociati);
     public boolean modificaImpiegatoDAO(String matricolaSelezionata,String curriculum, boolean dirigente, Date dataLicenziamento, float stipendio)throws SQLException;
+
+
 }
 
 
