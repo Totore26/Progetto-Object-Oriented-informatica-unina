@@ -5,7 +5,9 @@ import DBconnection.Connessione;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class LaboratorioPostgresDAO implements LaboratorioDAO {
@@ -22,13 +24,13 @@ public class LaboratorioPostgresDAO implements LaboratorioDAO {
     };
 
     @Override
-    public boolean aggiungiLaboratorioDAO(String idLab, String topic, String indirizzo,String numeroTelefonico, int numAfferenti, String rScientifico) throws SQLException{
+    public boolean aggiungiLaboratorioDAO(String idLab, String topic, String indirizzo,String numeroTelefonico, String rScientifico) throws SQLException{
         PreparedStatement InsertLab;
-        InsertLab = connection.prepareStatement("INSERT INTO laboratorio (id_lab, topic, indirizzo, numero_telefono, numero_afferenti, r_scientifico) VALUES (?, ?, ?, ?, ?, ?)");
+        InsertLab = connection.prepareStatement("INSERT INTO laboratorio (id_lab, topic, indirizzo, numero_telefono, r_scientifico) VALUES (?, ?, ?, ?, ?)");
         InsertLab.setString(1, idLab);
-        InsertLab.setString(2, indirizzo);
-        InsertLab.setString(3, numeroTelefonico);
-        InsertLab.setInt(4, numAfferenti);
+        InsertLab.setString(2, topic);
+        InsertLab.setString(3, indirizzo);
+        InsertLab.setString(4, numeroTelefonico);
         InsertLab.setString(5, rScientifico);
 
         int result = InsertLab.executeUpdate();
@@ -66,7 +68,25 @@ public class LaboratorioPostgresDAO implements LaboratorioDAO {
         return false;
     }
 
-    public boolean leggiProgettiDAO() throws SQLException{
-        return false;
+    public boolean leggiProgettiDAO(String idLabScelto, ArrayList<String> progettiAssociati) throws SQLException{
+        try {
+            PreparedStatement leggiProgetti;
+            leggiProgetti = connection.prepareStatement("SELECT CUP FROM GESTIONE WHERE ID_LAB = ?");
+            leggiProgetti.setString(1,idLabScelto);
+            ResultSet rs = leggiProgetti.executeQuery();
+            while(rs.next())
+            {
+                progettiAssociati.add(rs.getString("CUP"));
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
+
+
+
+
 }

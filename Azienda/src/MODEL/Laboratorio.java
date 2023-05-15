@@ -15,6 +15,11 @@ public class Laboratorio {
     //il seguente attributo considera la lista di afferenti per un laboratorio
     private List<Impiegato> listaAfferenti = new ArrayList<>();
 
+    //il seguente attributo considera la lista di progetti su cui lavora il singolo Laboratorio
+    private List<Progetto> listaProgetti = new ArrayList<>();
+
+
+    //serve a quando lo prendo in input con il numero di afferenti
     public Laboratorio(String idLab, String topic, String indirizzo, String numeroTelefonico, int numAfferenti, Impiegato RScientifico) {
         this.idLab = idLab;
         this.topic = topic;
@@ -24,10 +29,23 @@ public class Laboratorio {
         this.RScientifico = RScientifico;
     }
 
+    //serve ad aggiungere, nel caso di aggiunta il numero di afferenti è pari a 0
+    public Laboratorio(String idLab, String topic, String indirizzo, String numeroTelefonico, Impiegato RScientifico) {
+        this.idLab = idLab;
+        this.topic = topic;
+        this.indirizzo = indirizzo;
+        this.numeroTelefonico = numeroTelefonico;
+        this.RScientifico = RScientifico;
+    }
+
 
     //aggiunge un afferente ad un dato laboratorio
     public void aggiungiAfferente(Impiegato imp){
         this.listaAfferenti.add(imp);
+    }
+
+    public void aggiungiProgetto(Progetto pro){
+        this.listaProgetti.add(pro);
     }
 
     //getter di Laboratorio
@@ -58,6 +76,8 @@ public class Laboratorio {
     public List<Impiegato> getListaAfferenti() {
         return listaAfferenti;
     }
+
+    public List<Progetto> getListaLaboratoriSuCuiLavora(){ return listaProgetti; }
 
 
 

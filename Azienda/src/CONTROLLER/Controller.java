@@ -336,9 +336,10 @@ public class Controller {
 
         boolean control = i.aggiungiAfferenzaDAO(matricolaSelezionata,idlabSelezionato);
 
-        //se l'inserimento nel database è andato a buon fine allora aggiungo alla lista dell'imp il lab
+        //se l'inserimento nel database è andato a buon fine allora aggiungo alla lista dell'imp il lab e nel laboratorio lo aggiungo alla lista degli afferenti
         if(control){
             impiegatoScelto.aggiungiLaboratorio(laboratorioScelto);
+            laboratorioScelto.aggiungiAfferente(impiegatoScelto);
         }
 
     };
@@ -408,11 +409,11 @@ public class Controller {
     * LA SEGUENTE FUNZIONE AGGIUNGE SE RICHIESTO ALL'INTERNO DELLA GUI UN NUOVO
     * LABORATORIO, SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
     */
-    public void aggiungiLaboratorio(String idLab, String topic, String indirizzo,String numeroTelefonico, int numAfferenti, String rScientifico) throws SQLException{
+    public void aggiungiLaboratorio(String idLab, String topic, String indirizzo,String numeroTelefonico, String rScientifico) throws SQLException{
 
         LaboratorioDAO l = new LaboratorioPostgresDAO();
 
-        boolean control = l.aggiungiLaboratorioDAO(idLab,topic,indirizzo,numeroTelefonico,numAfferenti,rScientifico);
+        boolean control = l.aggiungiLaboratorioDAO(idLab,topic,indirizzo,numeroTelefonico,rScientifico);
 
         if(control){
 
@@ -424,7 +425,7 @@ public class Controller {
                 }
 
             //a questo punto posso creare il mio oggeto Laboratorio e aggiungerlo anche al model...
-            Laboratorio nuovoLab = new Laboratorio(idLab,topic,indirizzo,numeroTelefonico,numAfferenti,respScientifico);
+            Laboratorio nuovoLab = new Laboratorio(idLab,topic,indirizzo,numeroTelefonico,respScientifico);
 
             listaLaboratorio.add(nuovoLab);
 
@@ -490,6 +491,42 @@ public class Controller {
     }
 
 
+    /*
+    * La seguente funzione preso in input il laboratorio da visualizzare carica in memoria
+    * (nel model) tutti quei progetti sui cui il laboratorio lavora.
+    *
+    * Ritorna quindi la serie di CUP che gestiscono tale laboratorio.
+    * ricorda che l'associazione fra laboratori e progetti è molti a molti.
+    *
+    */
+    public ArrayList<String> leggiProgettiSuCuiLavora(String idLabScelto) throws SQLException{
+        LaboratorioDAO l = new LaboratorioPostgresDAO();
+        //come prima cosa recupero qual è il laboratorio scelto
+        Laboratorio laboratorioScelto=null;
+        for(Laboratorio lab : listaLaboratorio){
+            if(lab.getIdLab().equals(idLabScelto)){
+                laboratorioScelto=lab;
+            }
+        }
+
+        //2 step : trovo i Progetti associati
+        ArrayList<String> progettiAssociati = new ArrayList<>();
+        boolean control = l.leggiProgettiDAO(idLabScelto, progettiAssociati);
+
+        //2 step : inzializzo la lista di progetti su cui lavora il laboratorio
+        if (control) {
+            for (Progetto prog : listaProgetto)
+                for (String p : progettiAssociati)
+                    if (prog.getCup().equals(p)) {
+                        assert laboratorioScelto != null;
+                        laboratorioScelto.aggiungiProgetto(prog);
+                    }
+        }
+
+        return progettiAssociati;
+
+
+    }
 
 
 
@@ -583,6 +620,30 @@ public class Controller {
             stringCognomi.add(imp.getCognome());
 
         return stringCognomi;
+    }
+
+    /*
+    * Funzioni che ritorna la lista di responsabili scientifici disponibili
+    * nell'Azienda.
+    */
+    public List<String> getListaResponsabiliScientificiDisponibiliGUI(){
+
+        ArrayList<String> rscientificiDisponibili = new ArrayList<>();
+
+        //mi prendo tutti i senior che ho in azienda
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getTipoImpiegato().equals("senior")){
+                //se l'impiegato senior non si trova nei laboratori allora è disponibile
+                //in quanto un rscientifico è unico per ogni laboratorio.
+                for(Laboratorio lab : listaLaboratorio){
+                    if(!(imp.getMatricola().equals(lab.getRScientifico().getMatricola()))){
+                        rscientificiDisponibili.add(imp.getMatricola());
+                    }
+                }
+            }
+        }
+
+        return rscientificiDisponibili;
     }
 
 
@@ -753,6 +814,7 @@ public class Controller {
             referentelist.add(listaProgetto.get(i).getResponsabile().getMatricola());
         }
     }
+
     public void getListaLaboratorioGUI(ArrayList<String> idlablist, ArrayList<String> topiclist, ArrayList<String> rscientificolist){
 
         for (Laboratorio laboratorio : listaLaboratorio) {
