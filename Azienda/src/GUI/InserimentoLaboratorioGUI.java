@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class InserimentoLaboratorioGUI extends JDialog{
@@ -30,17 +31,13 @@ public class InserimentoLaboratorioGUI extends JDialog{
         // Aggiungiamo il campo "idLab"
         inputPanel.add(new JLabel("Id Laboratorio:"));
         idLabField = new JTextField();
-        //TODO devo fare in modo che nel campo idLab ci sia gia la prima matricola disponibile
-        //-->
-        //faccio in modo che il campo non sia modificabile
-        //matricolaField.setEditable(false);
+        idLabField.setText(nuovoId);
+        idLabField.setEditable(false);
         inputPanel.add(idLabField);
 
         // Aggiungiamo il campo "Topic"
         inputPanel.add(new JLabel("Topic Laboratorio:"));
         topicField = new JTextField();
-        topicField.setText(nuovoId);
-        topicField.setEditable(false);
         inputPanel.add(topicField);
 
         // Aggiungiamo il campo "Indirizzo"
@@ -56,7 +53,10 @@ public class InserimentoLaboratorioGUI extends JDialog{
         // Aggiungiamo il campo "rScientifici"
         inputPanel.add(new JLabel("Responsabile Scientifico:"));
         rScientificoComboBox = new JComboBox<>();
-        rScientificoComboBox.addItem("qui ci vanno le matricole che possono essere r scientifici");
+        ArrayList<String> rScientificiDisponibili= controller.getListaResponsabiliScientificiDisponibiliGUI();
+        for(String s : rScientificiDisponibili)
+            rScientificoComboBox.addItem(s);
+
         inputPanel.add(new JScrollPane(rScientificoComboBox));
 
 

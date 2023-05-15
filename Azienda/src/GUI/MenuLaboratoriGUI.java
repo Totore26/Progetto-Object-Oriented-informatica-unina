@@ -184,13 +184,13 @@ public class MenuLaboratoriGUI {
                     String idLabSelezionato = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
 
                     // Creao un'istanza della finestra di dialogo ProfiloImpiegato
-                    ProfiloImpiegatoGUI profiloImpiegato = new ProfiloImpiegatoGUI(idLabSelezionato,controller,frameMenuLaboratori);
+                    ProfiloLaboratorioGUI profiloImpiegato = new ProfiloLaboratorioGUI(idLabSelezionato,controller,frameMenuLaboratori);
                     frameMenuLaboratori.setVisible(false);
                     // Mostro la finestra di dialogo
-                    profiloImpiegato.setVisible(true);
+                   // profiloImpiegato.setVisible(true);
                 } else {
                     // L'utente non ha selezionato una cella
-                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un impiegato per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

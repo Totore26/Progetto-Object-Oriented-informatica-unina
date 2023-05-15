@@ -626,22 +626,28 @@ public class Controller {
     * Funzioni che ritorna la lista di responsabili scientifici disponibili
     * nell'Azienda.
     */
-    public List<String> getListaResponsabiliScientificiDisponibiliGUI(){
+    public ArrayList<String> getListaResponsabiliScientificiDisponibiliGUI(){
 
         ArrayList<String> rscientificiDisponibili = new ArrayList<>();
+        ArrayList<String> listaRScientifici = new ArrayList<>();
 
         //mi prendo tutti i senior che ho in azienda
         for(Impiegato imp : listaImpiegato){
-            if(imp.getTipoImpiegato().equals("senior")){
-                //se l'impiegato senior non si trova nei laboratori allora è disponibile
-                //in quanto un rscientifico è unico per ogni laboratorio.
                 for(Laboratorio lab : listaLaboratorio){
-                    if(!(imp.getMatricola().equals(lab.getRScientifico().getMatricola()))){
-                        rscientificiDisponibili.add(imp.getMatricola());
+                    if(imp.getTipoImpiegato().equals("senior")) {
+                        //se l'impiegato senior non si trova nei laboratori allora è disponibile
+                        //in quanto un rscientifico è unico per ogni laboratorio.
+                        if(!(imp.getMatricola().equals(lab.getRScientifico().getMatricola()))){
+                            rscientificiDisponibili.add(imp.getMatricola());
+                        }
                     }
                 }
-            }
         }
+        for(Impiegato imp : listaImpiegato)
+            for(Laboratorio lab : listaLaboratorio)
+                if((imp.getMatricola().equals(lab.getRScientifico().getMatricola()))) {
+                    listaRScientifici.add(imp.getMatricola());
+                }
 
         return rscientificiDisponibili;
     }
