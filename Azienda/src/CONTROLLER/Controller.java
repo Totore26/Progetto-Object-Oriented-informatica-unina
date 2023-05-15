@@ -7,7 +7,9 @@ import jdk.internal.icu.text.UnicodeSet;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Controller {
 
@@ -627,30 +629,26 @@ public class Controller {
     * nell'Azienda.
     */
     public ArrayList<String> getListaResponsabiliScientificiDisponibiliGUI(){
-
-        ArrayList<String> rscientificiDisponibili = new ArrayList<>();
-        ArrayList<String> listaRScientifici = new ArrayList<>();
-
-        //mi prendo tutti i senior che ho in azienda
+        Set<String> matricoleDisponibili = new HashSet<>();
         for(Impiegato imp : listaImpiegato){
+            if(imp.getTipoImpiegato().equals("senior")){
+                boolean disponibile = true;
                 for(Laboratorio lab : listaLaboratorio){
-                    if(imp.getTipoImpiegato().equals("senior")) {
-                        //se l'impiegato senior non si trova nei laboratori allora è disponibile
-                        //in quanto un rscientifico è unico per ogni laboratorio.
-                        if(!(imp.getMatricola().equals(lab.getRScientifico().getMatricola()))){
-                            rscientificiDisponibili.add(imp.getMatricola());
-                        }
+                    if(imp.getMatricola().equals(lab.getRScientifico().getMatricola())){
+                        disponibile = false;
+                        break;
                     }
                 }
-        }
-        for(Impiegato imp : listaImpiegato)
-            for(Laboratorio lab : listaLaboratorio)
-                if((imp.getMatricola().equals(lab.getRScientifico().getMatricola()))) {
-                    listaRScientifici.add(imp.getMatricola());
+                if(disponibile){
+                    matricoleDisponibili.add(imp.getMatricola());
                 }
+            }
+        }
 
+        ArrayList<String> rscientificiDisponibili = new ArrayList<>(matricoleDisponibili);
         return rscientificiDisponibili;
     }
+
 
 
 
