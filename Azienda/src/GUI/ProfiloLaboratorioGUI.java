@@ -263,8 +263,8 @@ public class ProfiloLaboratorioGUI extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Creazione e visualizzazione della finestra di dialogo
-                JDialog dialog = new JDialog(); // Puoi utilizzare una classe di finestra di dialogo personalizzata
-                dialog.setModal(true); // Imposta la finestra di dialogo come modale per bloccare l'interazione con la finestra principale
+                JDialog dialog = new JDialog(); // utilizzo una classe di dialogo personalizzata
+                dialog.setModal(true); // Imposto la finestra di dialogo come modale per bloccare l'interazione con la finestra principale
                 dialog.setTitle("Aggiungi afferenza:\n");
 
                 //creo la tabella
@@ -402,5 +402,13 @@ public class ProfiloLaboratorioGUI extends JDialog{
             // Aggiungi le nuove righe alla tabella
             DefaultTableModel model = (DefaultTableModel) tabellaAfferenze.getModel();
             model.setDataVector(nuoviDati,new Object[]{"MAT"});
+            //allineo il testo delle colonne al centro
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+            //applico l'allineamento
+            int columnCount = this.tabellaAfferenze.getColumnCount();
+            for (int i = 0; i < columnCount; i++) {
+                this.tabellaAfferenze.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            }
         }
 }
