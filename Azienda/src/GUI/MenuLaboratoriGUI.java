@@ -113,8 +113,7 @@ public class MenuLaboratoriGUI {
         bottoneInserisci.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*
-                InserimentoImpiegatoGUI dialog = new InserimentoLaboratorioGUI(controller,frameMenuLaboratori);
+                InserimentoLaboratorioGUI dialog = new InserimentoLaboratorioGUI(controller,frameMenuLaboratori);
                 frameMenuLaboratori.setVisible(false);
                 dialog.setVisible(true);
                 // Aggiungo un listener per la finestra di dialogo
@@ -125,8 +124,6 @@ public class MenuLaboratoriGUI {
                         updateTable(controller, colonneTabella);
                     }
                 });
-
-                 */
             }
         });
 
