@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MenuPrincipale {
+public class MenuPrincipaleGUI {
     Controller controller = new Controller();
     private JFrame frame;
     private JLabel labelBenvenuto;
@@ -15,7 +15,7 @@ public class MenuPrincipale {
     private JButton bottoneLaboratori;
     private JButton bottoneProgetti;
 
-    public MenuPrincipale() {
+    public MenuPrincipaleGUI() {
         frame = new JFrame("Menu Principale");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -62,8 +62,19 @@ public class MenuPrincipale {
             public void actionPerformed(ActionEvent e) {
                 // chiudo la finestra corrente
                 frame.setVisible(false);
-                // apro la finestra VistaImpiegati
-                FinestraImpiegati finestraImpiegati =new FinestraImpiegati(controller,frame);
+                // apro la finestra MenuImpiegati
+                MenuImpiegatiGUI menuImpiegati =new MenuImpiegatiGUI(controller,frame);
+
+            }
+        });
+
+        bottoneLaboratori.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // chiudo la finestra corrente
+                frame.setVisible(false);
+                // apro la finestra MenuLaboratori
+                MenuLaboratoriGUI menuLaboratori = new MenuLaboratoriGUI(controller,frame);
 
             }
         });
@@ -76,7 +87,7 @@ public class MenuPrincipale {
     }
 
     public static void main(String[] args) {
-        new MenuPrincipale();
+        new MenuPrincipaleGUI();
     }
 
 }

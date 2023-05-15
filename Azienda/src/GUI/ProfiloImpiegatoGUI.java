@@ -14,7 +14,7 @@ import CONTROLLER.Controller;
 import com.toedter.calendar.JDateChooser;
 import org.postgresql.util.PSQLException;
 
-public class ProfiloImpiegato extends JDialog {
+public class ProfiloImpiegatoGUI extends JDialog {
     private JTextField matricolaField;
     private JTextField nomeField;
     private JTextField cognomeField;
@@ -29,7 +29,7 @@ public class ProfiloImpiegato extends JDialog {
     private JTable tabellaStorico;
     private JTable tabellaAfferenze;
 
-    public ProfiloImpiegato(String matricolaSelezionata, Controller controller,JFrame framePadre) {
+    public ProfiloImpiegatoGUI(String matricolaSelezionata, Controller controller, JFrame framePadre) {
         setTitle("Profilo Impiegato");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -400,12 +400,12 @@ public class ProfiloImpiegato extends JDialog {
         bottoneRimuoviAfferenza.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = ProfiloImpiegato.this.tabellaAfferenze.getSelectedRow();
-                int selectedColumn = ProfiloImpiegato.this.tabellaAfferenze.getSelectedColumn();
+                int selectedRow = ProfiloImpiegatoGUI.this.tabellaAfferenze.getSelectedRow();
+                int selectedColumn = ProfiloImpiegatoGUI.this.tabellaAfferenze.getSelectedColumn();
 
                 if (selectedRow != -1 && selectedColumn != -1) {
                     // La matricola si trova nella prima colonna della tabella
-                    String codLabSelezionato = ProfiloImpiegato.this.tabellaAfferenze.getValueAt(ProfiloImpiegato.this.tabellaAfferenze.getSelectedRow(), 0).toString();
+                    String codLabSelezionato = ProfiloImpiegatoGUI.this.tabellaAfferenze.getValueAt(ProfiloImpiegatoGUI.this.tabellaAfferenze.getSelectedRow(), 0).toString();
                     int response = JOptionPane.showOptionDialog( panel, "Sei sicuro di voler eliminare l'afferenza al laboratorio " + codLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
                     if (response == JOptionPane.YES_OPTION) {

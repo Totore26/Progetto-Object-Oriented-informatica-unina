@@ -1,4 +1,4 @@
-import GUI.MenuPrincipale;
+import GUI.MenuPrincipaleGUI;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ public class Main
         FlatDarkLaf.installLafInfo();
         // Imposta il Look and Feel di FlatLaf come Look and Feel corrente per la finestra
         UIManager.setLookAndFeel(new FlatDarkLaf());
-        new MenuPrincipale();
+        new MenuPrincipaleGUI();
 
     }
 

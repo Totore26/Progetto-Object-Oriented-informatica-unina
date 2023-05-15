@@ -8,7 +8,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -16,20 +15,19 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 //LA CLASSE NON ESTENTE JDIALOG PERCHE VIENE GESTITA IN MODO DIVERSO
-    public class FinestraImpiegati
+    public class MenuImpiegatiGUI
     {
         private JTable tabella;
         private JScrollPane scrollPane;
         private JTextField barraDiRicerca;
 
-        public FinestraImpiegati(Controller controller, Frame frameMenuPrincipale) {
-            // Creiamo una finestra di esempio per testare la finestra d'inserimento impiegato
+        public MenuImpiegatiGUI(Controller controller, JFrame frameMenuPrincipale) {
+            // Creiamo una finestra
 
-
-            JFrame frameFinestraImpiegati = new JFrame("Finestra Impiegati");
-            frameFinestraImpiegati.setSize(800, 600);
-            frameFinestraImpiegati.setLocationRelativeTo(null);
-            frameFinestraImpiegati.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JFrame frameMenuImpiegati = new JFrame("Finestra Impiegati");
+            frameMenuImpiegati.setSize(800, 600);
+            frameMenuImpiegati.setLocationRelativeTo(null);
+            frameMenuImpiegati.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
@@ -68,7 +66,7 @@ import java.util.ArrayList;
 
             //barra di scorrimento
             scrollPane = new JScrollPane(tabella);
-            frameFinestraImpiegati.add(scrollPane, BorderLayout.CENTER);
+            frameMenuImpiegati.add(scrollPane, BorderLayout.CENTER);
 
 
 
@@ -101,7 +99,7 @@ import java.util.ArrayList;
             panelSearch.add(new JLabel("Cerca per cognome: "));
             panelSearch.add(barraDiRicerca);
 
-            frameFinestraImpiegati.add(panelSearch, BorderLayout.NORTH);
+            frameMenuImpiegati.add(panelSearch, BorderLayout.NORTH);
 
 
 
@@ -114,8 +112,8 @@ import java.util.ArrayList;
             bottoneInserisci.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    InserimentoImpiegato dialog = new InserimentoImpiegato(controller,frameFinestraImpiegati);
-                    frameFinestraImpiegati.setVisible(false);
+                    InserimentoImpiegatoGUI dialog = new InserimentoImpiegatoGUI(controller,frameMenuImpiegati);
+                    frameMenuImpiegati.setVisible(false);
                     dialog.setVisible(true);
                     // Aggiungo un listener per la finestra di dialogo
                     dialog.addWindowListener(new WindowAdapter() {
@@ -140,7 +138,7 @@ import java.util.ArrayList;
                     if (selectedRow != -1 && selectedColumn != -1) {
                         // La matricola si trova nella prima colonna della tabella
                         String matricolaSelezionata = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
-                        int response = JOptionPane.showOptionDialog(frameFinestraImpiegati, "Sei sicuro di voler eliminare la matricola " + matricolaSelezionata + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+                        int response = JOptionPane.showOptionDialog(frameMenuImpiegati, "Sei sicuro di voler eliminare la matricola " + matricolaSelezionata + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
                         if (response == JOptionPane.YES_OPTION) {
                             //elimino l'impiegato con la matricola selezionata
@@ -156,7 +154,7 @@ import java.util.ArrayList;
                         }
                     } else {
                         // L'utente non ha selezionato una cella
-                        JOptionPane.showMessageDialog(frameFinestraImpiegati, "Seleziona un impiegato per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(frameMenuImpiegati, "Seleziona un impiegato per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
@@ -166,7 +164,7 @@ import java.util.ArrayList;
             bottoneMenuPrincipale.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frameFinestraImpiegati.dispose();
+                    frameMenuImpiegati.dispose();
                     frameMenuPrincipale.setVisible(true);
                 }
             });
@@ -185,13 +183,13 @@ import java.util.ArrayList;
                         String matricolaSelezionata = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
 
                         // Creao un'istanza della finestra di dialogo ProfiloImpiegato
-                        ProfiloImpiegato profiloImpiegato = new ProfiloImpiegato(matricolaSelezionata,controller,frameFinestraImpiegati);
-                        frameFinestraImpiegati.setVisible(false);
+                        ProfiloImpiegatoGUI profiloImpiegato = new ProfiloImpiegatoGUI(matricolaSelezionata,controller,frameMenuImpiegati);
+                        frameMenuImpiegati.setVisible(false);
                         // Mostro la finestra di dialogo
                         profiloImpiegato.setVisible(true);
                     } else {
                         // L'utente non ha selezionato una cella
-                        JOptionPane.showMessageDialog(frameFinestraImpiegati, "Seleziona un impiegato per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(frameMenuImpiegati, "Seleziona un impiegato per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
@@ -210,11 +208,11 @@ import java.util.ArrayList;
 
             panelBottoni.add(panelBottoniLeft, BorderLayout.WEST);
             panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
-            frameFinestraImpiegati.add(panelBottoni, BorderLayout.SOUTH);
+            frameMenuImpiegati.add(panelBottoni, BorderLayout.SOUTH);
 
 
             // Mostrimo la finestra
-            frameFinestraImpiegati.setVisible(true);
+            frameMenuImpiegati.setVisible(true);
         }
 
 

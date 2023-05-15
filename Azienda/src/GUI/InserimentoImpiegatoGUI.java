@@ -12,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.regex.Pattern;
 
-public class InserimentoImpiegato extends JDialog {
+public class InserimentoImpiegatoGUI extends JDialog {
     private JTextField matricolaField;
     private JTextField nomeField;
     private JTextField cognomeField;
@@ -26,7 +26,7 @@ public class InserimentoImpiegato extends JDialog {
     private JDateChooser dataAssunzioneChooser;
     private JDateChooser dataLicenziamentoChooser;
 
-    public InserimentoImpiegato(Controller controller, JFrame framePadre) {
+    public InserimentoImpiegatoGUI(Controller controller, JFrame framePadre) {
 
         // Creiamo un pannello per contenere i campi d'input
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 5, 5));

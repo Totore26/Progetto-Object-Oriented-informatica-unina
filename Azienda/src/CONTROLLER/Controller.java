@@ -757,8 +757,8 @@ public class Controller {
 
         for (Laboratorio laboratorio : listaLaboratorio) {
             idlablist.add(laboratorio.getIdLab());
-            idlablist.add(laboratorio.getTopic());
-            idlablist.add(laboratorio.getRScientifico().getMatricola());
+            topiclist.add(laboratorio.getTopic());
+            rscientificolist.add(laboratorio.getRScientifico().getMatricola());
         }
     }
 
