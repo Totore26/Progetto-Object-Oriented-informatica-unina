@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.function.ObjLongConsumer;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -30,7 +29,7 @@ public class ProfiloImpiegato extends JDialog {
     private JTable tabellaStorico;
     private JTable tabellaAfferenze;
 
-    public ProfiloImpiegato(String matricolaSelezionata, Controller controller) {
+    public ProfiloImpiegato(String matricolaSelezionata, Controller controller,JFrame framePadre) {
         setTitle("Profilo Impiegato");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -285,7 +284,7 @@ public class ProfiloImpiegato extends JDialog {
         bottoneSalva.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                setVisible(false);
 
 
                 try {
@@ -307,6 +306,7 @@ public class ProfiloImpiegato extends JDialog {
                     JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                 } finally {
                     dispose();
+                    framePadre.setVisible(true);
                 }
 
             }
@@ -319,6 +319,7 @@ public class ProfiloImpiegato extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 //chiudo la finestra di dialogo
                 dispose();
+                framePadre.setVisible(true);
             }
         });
 
@@ -446,8 +447,20 @@ public class ProfiloImpiegato extends JDialog {
         // Imposto la dimensione della finestra e la rendo visibile
         setSize(800, 600);
         setLocationRelativeTo(null);
-        //disattivo la finestra padre
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        //listener per mostrare la fienstra padre quando viene chiusa quella figlia
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                framePadre.setVisible(true);
+            }
+        });
+
+        //QUESTO METODO SERVE A RENDERE MODALE LA FINESTRA, IN MODO DA DISATTIVARE LA FINESTRA PADRE MENTRE E ATTIVA QUELLA DI DIALOGO
+        //NON LA UTILIZZIAMO PERCHE UNA VOLTA SETTATA A TRUE RISULTANO ALCUNI COMPORTAMENTI GRAFICI ANOMALI NELL APP
+
+        //setModal(true);
+
         setVisible(true);
     }
 

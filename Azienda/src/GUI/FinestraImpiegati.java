@@ -114,7 +114,8 @@ import java.util.ArrayList;
             bottoneInserisci.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    InserimentoImpiegato dialog = new InserimentoImpiegato(controller);
+                    InserimentoImpiegato dialog = new InserimentoImpiegato(controller,frameFinestraImpiegati);
+                    frameFinestraImpiegati.setVisible(false);
                     dialog.setVisible(true);
                     // Aggiungo un listener per la finestra di dialogo
                     dialog.addWindowListener(new WindowAdapter() {
@@ -184,7 +185,8 @@ import java.util.ArrayList;
                         String matricolaSelezionata = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
 
                         // Creao un'istanza della finestra di dialogo ProfiloImpiegato
-                        ProfiloImpiegato profiloImpiegato = new ProfiloImpiegato(matricolaSelezionata,controller);
+                        ProfiloImpiegato profiloImpiegato = new ProfiloImpiegato(matricolaSelezionata,controller,frameFinestraImpiegati);
+                        frameFinestraImpiegati.setVisible(false);
                         // Mostro la finestra di dialogo
                         profiloImpiegato.setVisible(true);
                     } else {
