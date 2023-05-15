@@ -26,7 +26,7 @@ public class InserimentoImpiegatoGUI extends JDialog {
     private JDateChooser dataAssunzioneChooser;
     private JDateChooser dataLicenziamentoChooser;
 
-    public InserimentoImpiegatoGUI(Controller controller, JFrame framePadre) {
+    public InserimentoImpiegatoGUI(Controller controller,String nuovaMatricola, JFrame framePadre) {
 
         // Creiamo un pannello per contenere i campi d'input
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 5, 5));
@@ -35,10 +35,8 @@ public class InserimentoImpiegatoGUI extends JDialog {
         // Aggiungiamo il campo "Matricola"
         inputPanel.add(new JLabel("Matricola:"));
         matricolaField = new JTextField();
-        //TODO devo fare in modo che nel campo matricola ci sia gia la prima matricola disponibile
-        //-->
-        //faccio in modo che il campo non sia modificabile
-        //matricolaField.setEditable(false);
+        matricolaField.setText(nuovaMatricola);
+        matricolaField.setEditable(false);
         inputPanel.add(matricolaField);
 
         // Aggiungiamo il campo "Nome"
@@ -113,10 +111,6 @@ public class InserimentoImpiegatoGUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-
-
-                String matricolaRegExp = "^MAT-[0-9]{3}$";
-                Pattern patternMatricola = Pattern.compile(matricolaRegExp);
 
                 //controllo che non ci siano dei campi vuoti
                 if (matricolaField.getText().isEmpty() || nomeField.getText().isEmpty() ||

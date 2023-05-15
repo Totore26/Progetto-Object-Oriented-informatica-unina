@@ -112,7 +112,7 @@ import java.util.ArrayList;
             bottoneInserisci.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    InserimentoImpiegatoGUI dialog = new InserimentoImpiegatoGUI(controller,frameMenuImpiegati);
+                    InserimentoImpiegatoGUI dialog = new InserimentoImpiegatoGUI(controller,generaMatricola(),frameMenuImpiegati);
                     frameMenuImpiegati.setVisible(false);
                     dialog.setVisible(true);
                     // Aggiungo un listener per la finestra di dialogo
@@ -170,7 +170,6 @@ import java.util.ArrayList;
             });
 
 
-            //DA IMPLEMENTARE IL CODICE PER SALVARE LE MODIFICHE
             JButton bottoneProfiloImpiegato = new JButton("Profilo Impiegato");
             bottoneProfiloImpiegato.addActionListener(new ActionListener() {
                 @Override
@@ -232,6 +231,22 @@ import java.util.ArrayList;
             //CODICE PER AGGIORNARE LA TABELLA CON I NUOVI DATI
             DefaultTableModel model = (DefaultTableModel) tabella.getModel();
             model.setDataVector(nuoviDati, colonneTabella);
+        }
+
+        private String generaMatricola() {
+        // Cerca la matricola più alta nella tabella
+        int maxMatricola = 0;
+        for (int i = 0; i < tabella.getModel().getRowCount(); i++) {
+            String matricola = (String) tabella.getModel().getValueAt(i, 0);
+            String[] parts = matricola.split("-");
+            int numMatricola = Integer.parseInt(parts[1]);
+            if (numMatricola > maxMatricola) {
+                maxMatricola = numMatricola;
+            }
+        }
+        // Incrementa il numero della matricola più alta e lo utilizza per generare la nuova matricola
+        int newMatricolaNum = maxMatricola + 1;
+        return "MAT-" + String.format("%03d", newMatricolaNum);
         }
 
     }

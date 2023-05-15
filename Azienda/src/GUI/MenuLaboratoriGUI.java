@@ -42,18 +42,14 @@ public class MenuLaboratoriGUI {
 
         Object[][] data = new Object[listaIdLab.size()][3];
         for (int i = 0; i < listaIdLab.size(); i++) {
-            data[i][0] = listaIdLab.get(i);
-            data[i][1] = listaTopic.get(i);
+            data[i][0] = listaTopic.get(i);
+            data[i][1] = listaIdLab.get(i);
             data[i][2] = listaRespScientifico.get(i);
         }
         // Creiamo il modello di tabella
         DefaultTableModel modelloTabella = new DefaultTableModel(data, colonneTabella);
         // Creiamo la tabella
         tabella = new JTable(modelloTabella);
-        // Creiamo il TableRowSorter con il tipo di modello di tabella corretto
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelloTabella);
-        // Impostiamo il TableRowSorter sulla tabella
-        tabella.setRowSorter(sorter);
 
         tabella.setDefaultEditor(Object.class, null);
         tabella.setDefaultEditor(Object.class, null);
@@ -64,6 +60,11 @@ public class MenuLaboratoriGUI {
         tabella.setBackground(Color.DARK_GRAY);
         tabella.getTableHeader().setBackground(Color.BLACK);
         tabella.getTableHeader().setForeground(Color.WHITE);
+
+        // Creiamo il TableRowSorter con il tipo di modello di tabella corretto
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelloTabella);
+        // Impostiamo il TableRowSorter sulla tabella
+        tabella.setRowSorter(sorter);
 
         //barra di scorrimento
         scrollPane = new JScrollPane(tabella);
@@ -91,13 +92,13 @@ public class MenuLaboratoriGUI {
                 search(barraDiRicerca.getText());
             }
             public void search(String searchString) {
-                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchString, 2));
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchString, 1));
             }
         });
 
         // Aggiungiamo la barra di ricerca alla finestra
         JPanel panelSearch = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelSearch.add(new JLabel("Cerca per cognome: "));
+        panelSearch.add(new JLabel("Cerca per topic: "));
         panelSearch.add(barraDiRicerca);
 
         frameMenuLaboratori.add(panelSearch, BorderLayout.NORTH);
@@ -113,7 +114,7 @@ public class MenuLaboratoriGUI {
         bottoneInserisci.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InserimentoLaboratorioGUI dialog = new InserimentoLaboratorioGUI(controller,frameMenuLaboratori);
+                InserimentoLaboratorioGUI dialog = new InserimentoLaboratorioGUI(controller,generaIdLab(),frameMenuLaboratori);
                 frameMenuLaboratori.setVisible(false);
                 dialog.setVisible(true);
                 // Aggiungo un listener per la finestra di dialogo
@@ -142,11 +143,11 @@ public class MenuLaboratoriGUI {
                     int response = JOptionPane.showOptionDialog(frameMenuLaboratori, "Sei sicuro di voler eliminare il laboratorio " + idLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
                     if (response == JOptionPane.YES_OPTION) {
-                        //elimino l'impiegato con la matricola selezionata
+                        //elimino il laboratorio selezionata
                         try {
                             controller.eliminaLaboratorio(idLabSelezionato);
                         } catch (PSQLException ex) {
-                            JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione dei dati del laboratorio:\n" + ex.getMessage(), "Errore di Eliminazione", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione del laboratorio:\n" + ex.getMessage(), "Errore di Eliminazione", JOptionPane.ERROR_MESSAGE);
                         } catch (Exception ee) {
                             JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                         }
@@ -155,7 +156,7 @@ public class MenuLaboratoriGUI {
                     }
                 } else {
                     // L'utente non ha selezionato una cella
-                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un impiegato per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -171,8 +172,7 @@ public class MenuLaboratoriGUI {
         });
 
 
-        //DA IMPLEMENTARE IL CODICE PER SALVARE LE MODIFICHE
-        JButton bottoneProfiloImpiegato = new JButton("Profilo Impiegato");
+        JButton bottoneProfiloImpiegato = new JButton("Profilo Laboratorio");
         bottoneProfiloImpiegato.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -227,8 +227,8 @@ public class MenuLaboratoriGUI {
 
         Object[][] nuoviDati = new Object[listaIdLab.size()][3];
         for (int i = 0; i < listaIdLab.size(); i++) {
-            nuoviDati[i][0] = listaIdLab.get(i);
-            nuoviDati[i][1] = listaTopic.get(i);
+            nuoviDati[i][0] = listaTopic.get(i);
+            nuoviDati[i][1] = listaIdLab.get(i);
             nuoviDati[i][2] = listaRespScientifico.get(i);
         }
 
@@ -237,5 +237,20 @@ public class MenuLaboratoriGUI {
         model.setDataVector(nuoviDati, colonneTabella);
     }
 
+    private String generaIdLab() {
+        // Cerca la matricola più alta nella tabella
+        int maxIdLab = 0;
+        for (int i = 0; i < tabella.getModel().getRowCount(); i++) {
+            String matricola = (String) tabella.getModel().getValueAt(i, 0);
+            String[] parts = matricola.split("-");
+            int numIdLab = Integer.parseInt(parts[1]);
+            if (numIdLab > maxIdLab) {
+                maxIdLab = numIdLab;
+            }
+        }
+        // Incrementa il numero della matricola più alta e lo utilizza per generare la nuova matricola
+        int newMatricolaNum = maxIdLab + 1;
+        return "LAB-" + String.format("%03d", newMatricolaNum);
+    }
 
 }
