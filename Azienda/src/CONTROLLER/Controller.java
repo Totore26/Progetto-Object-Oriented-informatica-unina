@@ -16,7 +16,7 @@ public class Controller {
     private List<Storico> listaStorico = new ArrayList<>();
 
 
-    public Controller() {
+    public  Controller() {
         dumpdati();
     }
 

@@ -25,8 +25,6 @@ public class Impiegato {
 
 
     //Crea il riferimento ad un Impiegato
-
-
     public Impiegato(String matricola, String nome, String cognome, String codiceFiscale, String curriculum, boolean dirigente, String tipoImpiegato, Date dataAssunzione, Date dataLicenziamento, float stipendio, String sesso) {
         this.matricola = matricola;
         this.nome = nome;
