@@ -60,4 +60,47 @@ public class Progetto {
     public List<Laboratorio> getListaLaboratori() {
         return listaLaboratori;
     }
+
+
+
+    //i set
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setCup(String cup) {
+        this.cup = cup;
+    }
+
+    public void setBudget(float budget) {
+        this.budget = budget;
+    }
+
+    public void setDataInizio(Date dataInizio) {
+        this.dataInizio = dataInizio;
+    }
+
+    public void setDataFine(Date dataFine) {
+        this.dataFine = dataFine;
+    }
+
+    public void setResponsabile(Impiegato responsabile) {
+        this.responsabile = responsabile;
+    }
+
+    public void setReferente(Impiegato referente) {
+        this.referente = referente;
+    }
+
+
+    public void aggiungiGestione(Laboratorio pro){
+        this.listaLaboratori.add(pro);
+    }
+
+    public void removeGestioneProgetto(Laboratorio lab){
+
+        this.listaLaboratori.remove(lab);
+    }
+
 }

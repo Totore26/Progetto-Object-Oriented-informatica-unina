@@ -3,10 +3,7 @@ package ImplementazionePostgresDAO;
 import DAO.ProgettoDAO;
 import DBconnection.Connessione;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ProgettoPostgresDAO implements ProgettoDAO {
@@ -55,17 +52,63 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
 
     @Override
     public boolean modificaProgettoDAO(String cupScelto, float budget, Date dataFine, String responsabile, String referente) throws SQLException {
+        PreparedStatement modificaPro;
+        modificaPro = connection.prepareStatement("UPDATE PROGETTO SET budget = ?, data_fine = ?, responabile = ?, referente = ? WHERE cup = ?");
+        modificaPro.setFloat(1,budget);
+        modificaPro.setDate(2,dataFine);
+        modificaPro.setString(3,responsabile);
+        modificaPro.setString(4,referente);
+        modificaPro.setString(5,cupScelto);
+        int rs = modificaPro.executeUpdate();
+        if(rs == 1){
+            return true;
+        }
         return false;
     }
 
     @Override
     public boolean aggiungiGestione(String cupScelto, String idlabScelto) throws SQLException {
+        PreparedStatement insertGestione;
+        insertGestione = connection.prepareStatement("INSERT INTO GESTIONE (cup, id_lab) VALUES (?,?)");
+        insertGestione.setString(1, cupScelto);
+        insertGestione.setString(2,idlabScelto);
+        int rs = insertGestione.executeUpdate();
+        if(rs==1){
+            return true;
+        }
+
         return false;
     }
 
     @Override
-    public boolean eliminaGestione(String cupScelto,String idLabScelto) throws SQLException{return false;};
+    public boolean eliminaGestione(String cupScelto,String idLabScelto) throws SQLException{
+        PreparedStatement deleteGestione;
+        deleteGestione = connection.prepareStatement("DELETE FROM GESTIONE WHERE CUP = ? AND ID_LAB=?");
+        deleteGestione.setString(1, cupScelto);
+        deleteGestione.setString(2,idLabScelto);
+        int rs = deleteGestione.executeUpdate();
+        if(rs==1){
+            return true;
+        }
+        return false;
+    };
 
     @Override
-    public boolean leggiGestionePerProgetto(String cupScelto, ArrayList<String> labGestiti){return false;};
+    public boolean leggiGestionePerProgetto(String cupScelto, ArrayList<String> labGestiti){
+        try {
+            PreparedStatement leggiGestioni;
+            leggiGestioni = connection.prepareStatement("SELECT ID_LAB FROM GESTIONE WHERE CUP = ?");
+            leggiGestioni.setString(1,cupScelto);
+            ResultSet rs = leggiGestioni.executeQuery();
+            while(rs.next())
+            {
+                labGestiti.add(rs.getString("id_lab"));
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    };
 }

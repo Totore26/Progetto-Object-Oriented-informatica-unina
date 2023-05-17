@@ -148,12 +148,13 @@ public class Controller {
         }
     }
 
-
 //____________________________________________________________________________________________________________________//
+//____________________________________________________________________________________________________________________//
+
+
+
+
 //_______________________________________FUNZIONI PER L'IMPIEGATO_____________________________________________________//
-
-
-
 
 
 
@@ -571,6 +572,11 @@ public class Controller {
 
 
 
+    //________________________________________________________________________________________________________________//
+    //________________________________________________________________________________________________________________//
+
+
+
 
 
 //____________________________________________FUNZIONI SU PROGETTO_________________________________________________//
@@ -639,19 +645,82 @@ public class Controller {
 
 
 
-    /* TODO
+    /*
     * La seguente funzione prende in input i nuovi dati inseriti all'interno del Progetto
     * attua la modifica nel database, se essa ha successo allora cambia anche i dati all'interno
     * del MODEL[...]
     */
-    public void modificaProgetto(String cupScelto, float budget, Date dataFine, String responsabile, String referente) throws SQLException{};
+    public void modificaProgetto(String cupScelto, float budget, Date dataFine, String responsabile, String referente) throws SQLException{
+        ProgettoDAO pro = new ProgettoPostgresDAO();
+
+        boolean control = pro.modificaProgettoDAO(cupScelto,budget,dataFine,responsabile,referente);
+
+        if(control){
+
+            //trovo il mio oggetto Progetto[...]
+            Progetto progettoScelto = null;
+            for(Progetto o : listaProgetto)
+                if(o.getCup().equals(cupScelto))
+                    progettoScelto = o;
+
+            //se il controllo ha avuto successo allora trovo il responsabile e aggiorno il mio model
+            Impiegato respNuovo = null;
+            for(Impiegato i : listaImpiegato)
+                if(i.getMatricola().equals(responsabile))
+                    respNuovo = i;
+
+
+            //se il controllo ha avuto successo allora trovo il referente e aggiorno il mio model
+            Impiegato refNuovo = null;
+            for(Impiegato i : listaImpiegato)
+                if(i.getMatricola().equals(referente))
+                    refNuovo = i;
+
+            //a questo punto aggiorno il mio model con i nuovi dati avuti dalla gui
+            progettoScelto.setBudget(budget);
+            progettoScelto.setDataFine(dataFine);
+            progettoScelto.setReferente(refNuovo);
+            progettoScelto.setResponsabile(respNuovo);
+        }
+    };
 
 
     /*TODO
     * La seguente funzione dato in input il cup del progetto legge dal database i dati relativi
     * inizializzando la lista di laboratori associati ad un progetto.
     */
-    public ArrayList<String> leggiGestioniProgetto(String cupScelto){return null;};
+    public ArrayList<String> leggiGestioniProgetto(String cupScelto){
+        ProgettoDAO i = new ProgettoPostgresDAO();
+
+        //step 0: trovo l'impiegato a cui si riferisce la vista
+        Progetto prodaVisualizzare = null;
+        for (Progetto pro : listaProgetto)
+            if (pro.getCup().equals(cupScelto)) {
+                prodaVisualizzare = pro;
+                break;
+            }
+
+
+        //2 step : trovo i laboratori in gestione
+        ArrayList<String> labGestione = new ArrayList<>();
+        boolean control = i.leggiGestionePerProgetto(cupScelto,labGestione);
+
+        //2 step : inzializzo la lista di laboratori gestiti del progetto in questione.
+        if (control) {
+
+            for(Laboratorio lab : listaLaboratorio){
+                for(String l : labGestione)
+                    if(lab.getIdLab().equals(l)){
+
+                        prodaVisualizzare.aggiungiGestione(lab);
+                    }
+            }
+
+
+        }
+
+        return labGestione;
+    };
 
 
 
@@ -659,7 +728,35 @@ public class Controller {
     * La seguente funzione dato in input il cup del progetto e il laboratorio da gestire
     * aggiunge la gestione nel database e inzializza nel caso le liste di progetti/laboratori nel MODEL.
     */
-    public void aggiungiGestione(String cupScelto, String idlabScelto)throws SQLException{};
+    public void aggiungiGestione(String cupScelto, String idlabScelto)throws SQLException{
+        ProgettoDAO progettoDAO= new ProgettoPostgresDAO();
+
+        boolean control = progettoDAO.aggiungiGestione(cupScelto,idlabScelto);
+
+        if(control){
+            //trovo il progetto in questione nel model
+            Progetto proDaVisualizzare = null;
+            for(Progetto pro : listaProgetto)
+                if(pro.getCup().equals(cupScelto)){
+                    proDaVisualizzare = pro;
+                    break;
+                }
+            //trovo il laboratorio in questione nel model
+            Laboratorio daGestiore = null;
+            for(Laboratorio lab : listaLaboratorio){
+                if(lab.getIdLab().equals(idlabScelto)){
+                    daGestiore = lab;
+                    break;
+                }
+            }
+
+            //come ultimo step aggiungo la gestione al laboratorio in questione e viceversa nella lista dei lab
+            proDaVisualizzare.aggiungiGestione(daGestiore);
+            daGestiore.aggiungiProgetto(proDaVisualizzare);
+        }
+
+
+    };
 
 
 
@@ -668,8 +765,39 @@ public class Controller {
     * La seguente funzione dato in input il cup del progetto e il laboratorio in gestione
     * elimina dal database la gestione e aggiorna le liste relative nel MODEL.
     */
-    public void eliminaGestione(String cupScelto, String idlabScelto)throws SQLException{};
+    public void eliminaGestione(String cupScelto, String idlabScelto)throws SQLException{
 
+        //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
+        Progetto progettoScelto = null;
+        for(Progetto pro : listaProgetto)
+            if(pro.getCup().equals(cupScelto))
+            {
+                progettoScelto = pro;
+                break;
+            }
+
+        //come seconda cosa trovo l'oggetto laboratorio
+        Laboratorio laboratorioScelto = null;
+        for(Laboratorio lab : listaLaboratorio)
+            if(lab.getIdLab().equals(idlabScelto))
+            {
+                laboratorioScelto = lab;
+                break;
+            }
+
+
+        ProgettoDAO pro = new ProgettoPostgresDAO();
+
+        boolean control = pro.eliminaGestione(cupScelto,idlabScelto);
+
+        if (control) {
+            //se l'eliminazione ha avuto successo allora elimino anche dal model
+            assert progettoScelto != null;
+            progettoScelto.removeGestioneProgetto(laboratorioScelto);
+
+        }
+
+    };
 
 
 
@@ -677,10 +805,6 @@ public class Controller {
 
     //________________________________________________________________________________________________________________//
     //________________________________________________________________________________________________________________//
-
-
-
-
 
 
 
