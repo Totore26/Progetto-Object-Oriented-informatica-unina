@@ -176,8 +176,6 @@ public class Controller {
 
 
 
-
-
     //funzione per eliminare l'impiegato
     public void eliminaImpiegato(String matricolaSelezionata) throws SQLException {
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
@@ -274,7 +272,6 @@ public class Controller {
 
 
 
-
     /*
      *    La seguente funzione leggiAfferenzaImpiegato fa in modo tale che se richiesto dalla GUI,
      *    recupera dal database i laboratori in cui afferisce la matricolaSelezionata,
@@ -347,7 +344,6 @@ public class Controller {
         }
 
     };
-
 
 
 
@@ -577,13 +573,102 @@ public class Controller {
 
 
 
+//____________________________________________FUNZIONI SU PROGETTO_________________________________________________//
 
 
 
 
+    /*
+    * Funzione che presi in input la lista di parametri per creare un Progetto
+    * lo inserisce all'interno del database e aggiorna la lista di progetti[...]
+    */
+    public void aggiungiProgetto(String nome, String cup, float budget, Date dataInizio, Date dataFine,String responsabile, String referente) throws SQLException{
+        ProgettoDAO p = new ProgettoPostgresDAO();
+
+        boolean control = p.aggiungiProgettoDAO(nome,cup,budget,dataInizio,dataFine,responsabile,referente);
+        if(control){
+
+            //cerco il responsabile fra gli impiegati:
+            Impiegato responsabileI = null;
+            for(Impiegato i : listaImpiegato){
+                if(i.getMatricola().equals(responsabile)){
+                    responsabileI = i;
+                    break;
+                }
+            }
+
+            //cerco il referente fra i responsabili
+            Impiegato referenteI = null;
+            for(Impiegato i : listaImpiegato){
+                if(i.getMatricola().equals(referente)){
+                    referenteI = i;
+                    break;
+                }
+            }
+
+            Progetto progetto = new Progetto(nome,cup,budget,dataInizio,dataFine,responsabileI,referenteI);
+            listaProgetto.add(progetto);
+        }
+
+    }
 
 
 
+    /*
+    * La seguente funzione prende in input il cup del progetto da eliminare
+    * lo elimina nel database e se ha successo lo elimina anche nel MODEL[...]
+    */
+    public void eliminaProgetto(String cup) throws SQLException {
+        ProgettoDAO p = new ProgettoPostgresDAO();
+
+        boolean control = p.eliminaProgettoDAO(cup);
+
+        if(control){
+
+            //allora elimino anche dal model...
+            for(Progetto pro : listaProgetto){
+                if(pro.getCup().equals(cup)){
+                    listaProgetto.remove(p);
+                    break;
+                }
+            }
+        }
+
+
+    }
+
+
+
+    /* TODO
+    * La seguente funzione prende in input i nuovi dati inseriti all'interno del Progetto
+    * attua la modifica nel database, se essa ha successo allora cambia anche i dati all'interno
+    * del MODEL[...]
+    */
+    public void modificaProgetto(String cupScelto, float budget, Date dataFine, String responsabile, String referente) throws SQLException{};
+
+
+    /*TODO
+    * La seguente funzione dato in input il cup del progetto legge dal database i dati relativi
+    * inizializzando la lista di laboratori associati ad un progetto.
+    */
+    public ArrayList<String> leggiGestioniProgetto(String cupScelto){return null;};
+
+
+
+    /* TODO
+    * La seguente funzione dato in input il cup del progetto e il laboratorio da gestire
+    * aggiunge la gestione nel database e inzializza nel caso le liste di progetti/laboratori nel MODEL.
+    */
+    public void aggiungiGestione(String cupScelto, String idlabScelto)throws SQLException{};
+
+
+
+
+    /*TODO
+    * La seguente funzione dato in input il cup del progetto e il laboratorio in gestione
+    * elimina dal database la gestione e aggiorna le liste relative nel MODEL.
+    */
+    public void eliminaGestione(String cupScelto, String idlabScelto)throws SQLException{};
 
 
 
@@ -592,38 +677,6 @@ public class Controller {
 
     //________________________________________________________________________________________________________________//
     //________________________________________________________________________________________________________________//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -663,33 +716,6 @@ public class Controller {
 
         return stringCognomi;
     }
-
-    /*
-    * Funzione che ritorna la lista di responsabili scientifici disponibili
-    * nell'Azienda.
-    */
-    public ArrayList<String> getListaResponsabiliScientificiDisponibiliGUI(){
-
-        ArrayList<String> rscientificiDisponibili = new ArrayList<>();
-        for(Impiegato imp : listaImpiegato){
-            if(imp.getTipoImpiegato().equals("senior")){
-                int i=0;
-                boolean disponibile = true;
-                while(i<listaLaboratorio.size() && disponibile == true){
-                    if(listaLaboratorio.get(i).getRScientifico().equals(imp))
-                        disponibile=false;
-                    i++;
-                }
-                if(disponibile){
-                    rscientificiDisponibili.add(imp.getMatricola());
-                }
-            }
-        }
-        return rscientificiDisponibili;
-    }
-
-
-
 
     /*
     * LA SEGUENTE FUNZIONE DATA IN INPUT LA MATRICOLA SELEZIONATA RITORNA ALLA GUI
@@ -904,6 +930,39 @@ public class Controller {
         }
         return labScelto.getRScientifico().getMatricola();
     }
+
+    /*
+     * Funzione che ritorna la lista di responsabili scientifici disponibili
+     * nell'Azienda.
+     */
+    public ArrayList<String> getListaResponsabiliScientificiDisponibiliGUI(){
+
+        ArrayList<String> rscientificiDisponibili = new ArrayList<>();
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getTipoImpiegato().equals("senior")){
+                int i=0;
+                boolean disponibile = true;
+                while(i<listaLaboratorio.size() && disponibile == true){
+                    if(listaLaboratorio.get(i).getRScientifico().equals(imp))
+                        disponibile=false;
+                    i++;
+                }
+                if(disponibile){
+                    rscientificiDisponibili.add(imp.getMatricola());
+                }
+            }
+        }
+        return rscientificiDisponibili;
+    }
+
+
+
+
+
+
+
+
+
 
 
 
