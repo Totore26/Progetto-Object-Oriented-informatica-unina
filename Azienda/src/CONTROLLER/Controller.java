@@ -33,6 +33,13 @@ public class Controller {
     }
 
 
+    public void aggiornaDatabase() throws SQLException {
+        AziendaDAO aziend = new AziendaPostgresDAO();
+
+        aziend.aggiornaDatabaseDAO();
+    }
+
+
     public void dumpDatiImpiegato() {
         AziendaDAO aziendaDAO = new AziendaPostgresDAO();
 

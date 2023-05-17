@@ -91,7 +91,8 @@ public class ProfiloLaboratorioGUI extends JDialog{
         ArrayList<String> rScientificiDisponibili= controller.getListaResponsabiliScientificiDisponibiliGUI();
         for(String s : rScientificiDisponibili)
             rScientificoComboBox.addItem(s);
-        datiAnagraficiPanel.add(rScientificoComboBox, BorderLayout.WEST);
+        datiAnagraficiPanel.add(rscient);
+        datiAnagraficiPanel.add(rScientificoComboBox, BorderLayout.WEST );
 
 
 
@@ -225,14 +226,14 @@ public class ProfiloLaboratorioGUI extends JDialog{
                 setVisible(false);
 
                 try {
-                    String topicModificato = topicField.getText();
+
                     String indirizzoModificato = indirizzoField.getText();
                     String numeroTelefonicoModificato = numeroTelefonicoField.getText();
                     String rScientificoModificato = (String) rScientificoComboBox.getSelectedItem();
 
                     controller.modificaLaboratorio(idLabSelezionato,indirizzoModificato,numeroTelefonicoModificato,rScientificoModificato);
-                    JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
 
+                    JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati del laboratorio:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
@@ -317,7 +318,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
                             } finally {
                                 dialog.dispose();
                             }
-                            updateTabella(controller,idLabSelezionato);
+                            updateTabellaAfferenze(controller,idLabSelezionato);
                         }
                     }
                 });
@@ -352,7 +353,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
                             JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                         }
                         //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
-                        updateTabella(controller,idLabSelezionato);
+                        updateTabellaAfferenze(controller,idLabSelezionato);
                     }
                 } else {
                     // L'utente non ha selezionato una cella
@@ -370,6 +371,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
 
         // Rendo non modificabili alcuni campi
         idLabField.setEditable(false);
+        topicField.setEditable(false);
 
 
         // Imposto la dimensione della finestra e la rendo visibile
@@ -392,7 +394,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         setVisible(true);
     }
 
-        private void updateTabella(Controller controller, String idLabScelto) {
+        private void updateTabellaAfferenze(Controller controller, String idLabScelto) {
             //load dei nuovi dati
             ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeLaboratorio(idLabScelto);
             Object[][] nuoviDati = new Object[listaLabAfferiti.size()][listaLabAfferiti.size()];
@@ -411,4 +413,5 @@ public class ProfiloLaboratorioGUI extends JDialog{
                 this.tabellaAfferenze.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
             }
         }
+
 }

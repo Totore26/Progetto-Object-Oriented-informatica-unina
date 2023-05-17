@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -17,4 +18,11 @@ public interface AziendaDAO {
     public void getListStoricoDAO(ArrayList<String> ruoloPrecedentelist, ArrayList<String> nuovoRuololist, ArrayList<java.sql.Date> dataScattolist, ArrayList<String> impiegatoMatricolalist);
 
 
+    //todo aggiornamento database.
+    /*
+    * la seguente funzione aggiorna tutti gli storici gestiti all'interno del database
+    * in modo tale che all'avvio del programma aggiorna tutti i dati relativi agli impiegati.
+    *
+    */
+    public void aggiornaDatabaseDAO() throws SQLException;
 }

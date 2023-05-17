@@ -20,7 +20,7 @@ public class MenuPrincipaleGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Crea la JLabel di benvenuto
-        labelBenvenuto = new JLabel("Benvenuto nell'app Aziendale!");
+        labelBenvenuto = new JLabel("Benvenuto nel gestionale dell'Azienda!");
         labelBenvenuto.setFont(new Font("Arial",Font.PLAIN,18));
 
         // Crea i bottoni

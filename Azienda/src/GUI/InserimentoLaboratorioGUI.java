@@ -56,7 +56,7 @@ public class InserimentoLaboratorioGUI extends JDialog{
         ArrayList<String> rScientificiDisponibili= controller.getListaResponsabiliScientificiDisponibiliGUI();
         for(String s : rScientificiDisponibili)
             rScientificoComboBox.addItem(s);
-
+        inputPanel.add(rScientificoComboBox, BorderLayout.WEST);
         inputPanel.add(new JScrollPane(rScientificoComboBox));
 
 
@@ -137,4 +137,5 @@ public class InserimentoLaboratorioGUI extends JDialog{
         //mostriamo la finestra
         setVisible(true);
     }
+
 }
