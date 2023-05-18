@@ -10,7 +10,10 @@ public class AziendaPostgresDAO implements AziendaDAO {
 
     private Connection connection;
 
-    //il costruttore crea la connessione con il db[...]
+    /**
+     * Instantiates a new Azienda postgres dao and set a connection with Database.
+     */
+//il costruttore crea la connessione con il db[...]
     public AziendaPostgresDAO(){
         try {
             connection = Connessione.getInstance().getConnection();

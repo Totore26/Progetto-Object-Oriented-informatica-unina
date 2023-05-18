@@ -10,10 +10,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The type Laboratorio postgres dao.
+ */
 public class LaboratorioPostgresDAO implements LaboratorioDAO {
 
     private Connection connection;
 
+    /**
+     * Instantiates a new Laboratorio postgres dao and set a connection with Database.
+     */
     public LaboratorioPostgresDAO(){
         try {
             connection = Connessione.getInstance().getConnection();

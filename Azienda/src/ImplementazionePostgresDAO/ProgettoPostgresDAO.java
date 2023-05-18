@@ -10,6 +10,9 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
 
     private Connection connection;
 
+    /**
+     * Instantiates a new Progetto postgres dao and set a connection with Database.
+     */
     public ProgettoPostgresDAO(){
         try {
             connection = Connessione.getInstance().getConnection();

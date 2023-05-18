@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Controller.
+ */
 public class Controller {
 
     private List<Impiegato> listaImpiegato = new ArrayList<>();
@@ -16,6 +19,9 @@ public class Controller {
     private List<Storico> listaStorico = new ArrayList<>();
 
 
+    /**
+     * Instantiates a new Controller.
+     */
     public  Controller() {
         dumpdati();
     }
@@ -33,6 +39,11 @@ public class Controller {
     }
 
 
+    /**
+     * Aggiorna database.
+     *
+     * @throws SQLException the sql exception
+     */
     public void aggiornaDatabase() throws SQLException {
         AziendaDAO aziend = new AziendaPostgresDAO();
 
@@ -40,6 +51,9 @@ public class Controller {
     }
 
 
+    /**
+     * Dump dati impiegato.
+     */
     public void dumpDatiImpiegato() {
         AziendaDAO aziendaDAO = new AziendaPostgresDAO();
 
@@ -63,6 +77,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Dump dati laboratorio.
+     */
     public void dumpDatiLaboratorio() {
         AziendaDAO aziendaDAO = new AziendaPostgresDAO();
 
@@ -87,6 +104,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Dump dati storico.
+     */
     public void dumpDatiStorico() {
         AziendaDAO aziendaDAO = new AziendaPostgresDAO();
 
@@ -115,6 +135,9 @@ public class Controller {
 
     }
 
+    /**
+     * Dump dati progetto.
+     */
     public void dumpDatiProgetto() {
         AziendaDAO aziendaDAO = new AziendaPostgresDAO();
 
@@ -157,9 +180,23 @@ public class Controller {
 //_______________________________________FUNZIONI PER L'IMPIEGATO_____________________________________________________//
 
 
-
-
-    /*  funzione per aggiungere l'impiegato
+    /**
+     * Aggiungi impiegato al database, nel caso affermativo anche nel model
+     *
+     * @param matricola         the matricola
+     * @param nome              the nome
+     * @param cognome           the cognome
+     * @param codiceFiscale     the codice fiscale
+     * @param curriculum        the curriculum
+     * @param tipoImpiegato     the tipo impiegato
+     * @param dirigente         the dirigente
+     * @param dataAssunzione    the data assunzione
+     * @param dataLicenziamento the data licenziamento
+     * @param stipendio         the stipendio
+     * @param sesso             the sesso
+     * @throws SQLException the sql exception
+     *
+     *  funzione per aggiungere l'impiegato
      *  le eccezioni sono riportate direttamente nella GUI in modo tale che è l'utente stesso a
      *  gestire i dati sbagliati che ha inserito...
      */
@@ -176,7 +213,12 @@ public class Controller {
     }
 
 
-
+    /**
+     * Elimina impiegato e l'elimina anche dal model nel caso affermativo del database
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @throws SQLException the sql exception
+     */
     //funzione per eliminare l'impiegato
     public void eliminaImpiegato(String matricolaSelezionata) throws SQLException {
         ImpiegatoDAO i = new ImpiegatoPostgresDAO();
@@ -199,11 +241,20 @@ public class Controller {
     }
 
 
-
-    /*
-    * Funzione che modifica i campi modificabili dell'impiegato...
-    * La seguente funzione salva le modifiche fatte all'impiegato nel database
-    * nel caso affermativo aggiorna l'impiegato in questione anche nel model.
+    /**
+     * Modifica impiegato e nel caso affermativo anche nel model
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @param curriculum           the curriculum
+     * @param dirigente            the dirigente
+     * @param dataLicenziamento    the data licenziamento
+     * @param stipendio            the stipendio
+     * @throws SQLException the sql exception
+     *
+     *
+     * Funzione che modifica i campi modificabili dell'impiegato...
+     * La seguente funzione salva le modifiche fatte all'impiegato nel database
+     * nel caso affermativo aggiorna l'impiegato in questione anche nel model.
      */
     public void modificaImpiegato(String matricolaSelezionata, String curriculum, boolean dirigente, java.util.Date dataLicenziamento, float stipendio) throws SQLException {
 
@@ -227,8 +278,13 @@ public class Controller {
     }
 
 
-
-    /*
+    /**
+     * Leggi storici impiegato ritorna l'array di scatti di carriera per un impiegato.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the date [ ]
+     *
+     *
      * La seguente funzione quando l'utente nella gui richiede di vedere il profilo dell'Impiegato
      * inizializza la sua lista di storici (attributo listaStorico) e restituisce alla gui
      * le varie date di scatti di carriera, la quale mostra in che data ha fatto gli scatti
@@ -272,8 +328,13 @@ public class Controller {
     }
 
 
-
-    /*
+    /**
+     * Leggi afferenze impiegato array list.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the array list degli idLab associati all'Impiegato
+     *
+     *
      *    La seguente funzione leggiAfferenzaImpiegato fa in modo tale che se richiesto dalla GUI,
      *    recupera dal database i laboratori in cui afferisce la matricolaSelezionata,
      *    inizializza L'arraylist dell'impiegato in questione e ritorna alla gui la lista di laboratori a cui
@@ -310,7 +371,14 @@ public class Controller {
     }
 
 
-    /*
+    /**
+     * Aggiungi afferenza.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @param idlabSelezionato     the idlab selezionato
+     * @throws SQLException the sql exception
+     *
+     *
      * La seguente funzione aggiunge al database l'afferenza,
      * nel caso affermativo allora aggiunge anche alla lista di afferenze dell'impiegato.
      */
@@ -347,11 +415,17 @@ public class Controller {
     };
 
 
-
-    /*
+    /**
+     * Elimina afferenza.
+     *
+     * @param matricolaScelta  the matricola scelta
+     * @param idlabSelezionato the idlab selezionato
+     * @throws SQLException the sql exception
+     *
+     *
      * LA SEGUENTE FUNZIONE ELIMINA L'AFFERENZA SELEZIONATA PER UN IMPIEGATO
      * NEL CASO IN CUI ELIMINA NEL DATABASE ALLORA ELIMINA ANCHE NEL MODEL...
-     * NEL CASO DI ECCEZIONI ALLORA MANDA IL WARNING ALLA GUI
+     * NEL CASO DI ECCEZIONI ALLORA MANDA IL WARNING ALLA GUI.
      */
     public void eliminaAfferenza(String matricolaScelta, String idlabSelezionato) throws SQLException{
         //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
@@ -406,10 +480,20 @@ public class Controller {
 //____________________________________________FUNZIONI SU LABORATORIO_________________________________________________//
 
 
-    /*
-    * LA SEGUENTE FUNZIONE AGGIUNGE SE RICHIESTO ALL'INTERNO DELLA GUI UN NUOVO
-    * LABORATORIO, SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
-    */
+    /**
+     * Aggiungi laboratorio.
+     *
+     * @param idLab            the id lab
+     * @param topic            the topic
+     * @param indirizzo        the indirizzo
+     * @param numeroTelefonico the numero telefonico
+     * @param rScientifico     the r scientifico
+     * @throws SQLException the sql exception
+     *
+     *
+     * LA SEGUENTE FUNZIONE AGGIUNGE SE RICHIESTO ALL'INTERNO DELLA GUI UN NUOVO
+     * LABORATORIO, SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
+     */
     public void aggiungiLaboratorio(String idLab, String topic, String indirizzo,String numeroTelefonico, String rScientifico) throws SQLException{
 
         LaboratorioDAO l = new LaboratorioPostgresDAO();
@@ -434,8 +518,13 @@ public class Controller {
     }
 
 
-
-    /*
+    /**
+     * Elimina laboratorio.
+     *
+     * @param idLabScelto the id lab scelto
+     * @throws SQLException the sql exception
+     *
+     *
      * LA SEGUENTE FUNZIONE ELIMINA SE RICHIESTO ALL'INTERNO DELLA GUI UN
      * LABORATORIO DANDO UN IDLAB , SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
      */
@@ -456,8 +545,16 @@ public class Controller {
     }
 
 
-
-    /*
+    /**
+     * Modifica laboratorio.
+     *
+     * @param idLabScelto      the id lab scelto
+     * @param indirizzo        the indirizzo
+     * @param numeroTelefonico the numero telefonico
+     * @param rScientifico     the r scientifico
+     * @throws SQLException the sql exception
+     *
+     *
      * LA SEGUENTE FUNZIONE MODIFICA SE RICHIESTO ALL'INTERNO DELLA GUI UN
      * LABORATORIO DANDO UN IDLAB , SE LA QUERY VIENE ESEGUITA AGGIORNA ANCHE IL MODEL
      */
@@ -492,14 +589,21 @@ public class Controller {
     }
 
 
-    /*
-    * La seguente funzione preso in input il laboratorio da visualizzare carica in memoria
-    * (nel model) tutti quei progetti sui cui il laboratorio lavora.
-    *
-    * Ritorna quindi la serie di CUP che gestiscono tale laboratorio.
-    * ricorda che l'associazione fra laboratori e progetti è molti a molti.
-    *
-    */
+    /**
+     * Leggi progetti su cui lavora array list.
+     *
+     * @param idLabScelto the id lab scelto
+     * @return the array list
+     * @throws SQLException the sql exception
+     *
+     *
+     * La seguente funzione preso in ingresso il laboratorio da visualizzare carica in memoria
+     * (nel model) tutti quei progetti sui cui il laboratorio lavora.
+     *
+     * Ritorna quindi la serie di CUP che gestiscono tale laboratorio.
+     * ricorda che l'associazione fra laboratori e progetti è molti a molti.
+     *
+     */
     public ArrayList<String> leggiProgettiSuCuiLavora(String idLabScelto) throws SQLException{
         LaboratorioDAO l = new LaboratorioPostgresDAO();
         //come prima cosa recupero qual è il laboratorio scelto
@@ -530,7 +634,13 @@ public class Controller {
     }
 
 
-    /*
+    /**
+     * Leggi afferenze laboratorio array list.
+     *
+     * @param idLabSelezionato the id lab selezionato
+     * @return the array list
+     *
+     *
      *    La seguente funzione leggiAfferenzaLaboratorio fa in modo tale che se richiesto dalla GUI,
      *    recupera dal database le matricole afferenti al lab selezionato,
      *    inizializza L'arraylist del laboratorio in questione e ritorna alla gui la lista di matricole a cui
@@ -582,12 +692,22 @@ public class Controller {
 //____________________________________________FUNZIONI SU PROGETTO_________________________________________________//
 
 
-
-
-    /*
-    * Funzione che presi in input la lista di parametri per creare un Progetto
-    * lo inserisce all'interno del database e aggiorna la lista di progetti[...]
-    */
+    /**
+     * Aggiungi progetto.
+     *
+     * @param nome         the nome
+     * @param cup          the cup
+     * @param budget       the budget
+     * @param dataInizio   the data inizio
+     * @param dataFine     the data fine
+     * @param responsabile the responsabile
+     * @param referente    the referente
+     * @throws SQLException the sql exception nel caso in cui non viene aggiunto il progetto
+     *
+     *
+     * Funzione che presi in input la lista di parametri per creare un Progetto
+     * lo inserisce all'interno del database e aggiorna la lista di progetti[...]
+     */
     public void aggiungiProgetto(String nome, String cup, float budget, Date dataInizio, Date dataFine,String responsabile, String referente) throws SQLException{
         ProgettoDAO p = new ProgettoPostgresDAO();
 
@@ -619,11 +739,16 @@ public class Controller {
     }
 
 
-
-    /*
-    * La seguente funzione prende in input il cup del progetto da eliminare
-    * lo elimina nel database e se ha successo lo elimina anche nel MODEL[...]
-    */
+    /**
+     * Elimina progetto.
+     *
+     * @param cup the cup
+     * @throws SQLException the sql exception
+     *
+     *
+     * La seguente funzione prende in ingresso il cup del progetto da eliminare
+     * lo elimina nel database e se ha successo lo elimina anche nel MODEL[...]
+     */
     public void eliminaProgetto(String cup) throws SQLException {
         ProgettoDAO p = new ProgettoPostgresDAO();
 
@@ -644,12 +769,21 @@ public class Controller {
     }
 
 
-
-    /*
-    * La seguente funzione prende in input i nuovi dati inseriti all'interno del Progetto
-    * attua la modifica nel database, se essa ha successo allora cambia anche i dati all'interno
-    * del MODEL[...]
-    */
+    /**
+     * Modifica progetto.
+     *
+     * @param cupScelto    the cup scelto
+     * @param budget       the budget
+     * @param dataFine     the data fine
+     * @param responsabile the responsabile
+     * @param referente    the referente
+     * @throws SQLException the sql exception
+     *
+     *
+     * La seguente funzione prende in ingresso i nuovi dati inseriti all'interno del Progetto
+     * attua la modifica nel database, se essa ha successo allora cambia anche i dati all'interno
+     * del MODEL[...]
+     */
     public void modificaProgetto(String cupScelto, float budget, Date dataFine, String responsabile, String referente) throws SQLException{
         ProgettoDAO pro = new ProgettoPostgresDAO();
 
@@ -682,13 +816,19 @@ public class Controller {
             progettoScelto.setReferente(refNuovo);
             progettoScelto.setResponsabile(respNuovo);
         }
-    };
+    }
 
 
-    /*TODO
-    * La seguente funzione dato in input il cup del progetto legge dal database i dati relativi
-    * inizializzando la lista di laboratori associati ad un progetto.
-    */
+    /**
+     * Leggi gestioni progetto array list.
+     *
+     * @param cupScelto the cup scelto
+     * @return the array list
+     *
+     *
+     * La seguente funzione dato in input il cup del progetto legge dal database i dati relativi
+     * inizializzando la lista di laboratori associati ad un progetto.
+     */
     public ArrayList<String> leggiGestioniProgetto(String cupScelto){
         ProgettoDAO i = new ProgettoPostgresDAO();
 
@@ -720,14 +860,20 @@ public class Controller {
         }
 
         return labGestione;
-    };
+    }
 
 
-
-    /* TODO
-    * La seguente funzione dato in input il cup del progetto e il laboratorio da gestire
-    * aggiunge la gestione nel database e inzializza nel caso le liste di progetti/laboratori nel MODEL.
-    */
+    /**
+     * Aggiungi gestione.
+     *
+     * @param cupScelto   the cup scelto
+     * @param idlabScelto the idlab scelto
+     * @throws SQLException the sql exception
+     *
+     *
+     * La seguente funzione dato in input il cup del progetto e il laboratorio da gestire
+     * aggiunge la gestione nel database e inzializza nel caso le liste di progetti/laboratori nel MODEL.
+     */
     public void aggiungiGestione(String cupScelto, String idlabScelto)throws SQLException{
         ProgettoDAO progettoDAO= new ProgettoPostgresDAO();
 
@@ -756,15 +902,20 @@ public class Controller {
         }
 
 
-    };
+    }
 
 
-
-
-    /*TODO
-    * La seguente funzione dato in input il cup del progetto e il laboratorio in gestione
-    * elimina dal database la gestione e aggiorna le liste relative nel MODEL.
-    */
+    /**
+     * Elimina gestione.
+     *
+     * @param cupScelto   the cup scelto
+     * @param idlabScelto the idlab scelto
+     * @throws SQLException the sql exception
+     *
+     *
+     * La seguente funzione dato in input il cup del progetto e il laboratorio in gestione
+     * elimina dal database la gestione e aggiorna le liste relative nel MODEL.
+     */
     public void eliminaGestione(String cupScelto, String idlabScelto)throws SQLException{
 
         //come prima cosa trovo gli oggetti della matricolaScelta e del laboratorio...
@@ -797,7 +948,7 @@ public class Controller {
 
         }
 
-    };
+    }
 
 
 
@@ -808,14 +959,13 @@ public class Controller {
 
 
 
-
-
-
-    //___________________________________________FUNZIONI PER LA GUI__________________________________________________//
-    /*
-    * le seguenti tre funzioni hanno come compito quello di passare
-    * alla GUI le varie informazioni che servono per creare le tabelle dell'impiegato...
-    */
+//___________________________________________FUNZIONI PER LA GUI__________________________________________________//
+    /**
+     * Gets lista impiegato matricole gui.
+     *
+     * @return the lista impiegato matricole gui
+     *
+     */
     public ArrayList<String> getListaImpiegatoMatricoleGUI() {
         ArrayList<String> stringMatricole = new ArrayList<>();
 
@@ -824,6 +974,13 @@ public class Controller {
 
         return stringMatricole;
     }
+
+
+    /**
+     * Gets lista impiegato nomi gui.
+     *
+     * @return the lista impiegato nomi gui
+     */
     public List<String> getListaImpiegatoNomiGUI() {
         ArrayList<String> stringNomi = new ArrayList<>();
 
@@ -832,6 +989,14 @@ public class Controller {
 
         return stringNomi;
     }
+
+
+
+    /**
+     * Gets lista impiegato cognomi gui.
+     *
+     * @return the lista impiegato cognomi gui
+     */
     public List<String> getListaImpiegatoCognomiGUI() {
         ArrayList<String> stringCognomi = new ArrayList<>();
 
@@ -841,7 +1006,15 @@ public class Controller {
         return stringCognomi;
     }
 
-    /*
+
+
+    /**
+     * Get singolo impiegato nome profilo gui string.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the string
+     *
+    *
     * LA SEGUENTE FUNZIONE DATA IN INPUT LA MATRICOLA SELEZIONATA RITORNA ALLA GUI
     * LA LISTA DI ATTRIBUTI DELL'IMPIEGATO SELEZIONATO
     */
@@ -859,6 +1032,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato cognome profilo gui string.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the string
+     */
     public String getSingoloImpiegatoCognomeProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
@@ -873,6 +1054,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato curriculum profilo gui string.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the string
+     */
     public String getSingoloImpiegatoCurriculumProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
@@ -887,6 +1076,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato codice fiscale profilo gui string.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the string
+     */
     public String getSingoloImpiegatoCodiceFiscaleProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
@@ -901,6 +1098,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato dirigente profilo gui boolean.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the boolean
+     */
     public boolean getSingoloImpiegatoDirigenteProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
@@ -915,6 +1120,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato tipo profilo gui string.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the string
+     */
     public String getSingoloImpiegatoTipoProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
@@ -929,6 +1142,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato data ass profilo gui java . util . date.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the java . util . date
+     */
     public java.util.Date getSingoloImpiegatoDataAssProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
@@ -943,6 +1164,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato data lic profilo gui java . util . date.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the java . util . date
+     */
     public java.util.Date getSingoloImpiegatoDataLicProfiloGUI(String matricolaSelezionata){
 
         Impiegato matScelta = null;
@@ -957,6 +1186,14 @@ public class Controller {
 
     }
 
+
+
+    /**
+     * Get singolo impiegato stipendio profilo gui float.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the float
+     */
     public float getSingoloImpiegatoStipendioProfiloGUI(String matricolaSelezionata){
         Impiegato matScelta = null;
         for(Impiegato imp : listaImpiegato){
@@ -969,6 +1206,14 @@ public class Controller {
         return matScelta.getStipendio();
     }
 
+
+
+    /**
+     * Get singolo impiegato sessoo profilo gui string.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @return the string
+     */
     public String getSingoloImpiegatoSessooProfiloGUI(String matricolaSelezionata){
         Impiegato matScelta = null;
         for(Impiegato imp : listaImpiegato){
@@ -983,11 +1228,17 @@ public class Controller {
 
 
 
+
     /*
     *   Funzioni che servono per il Profilo laboratorio
     *   esse restituiscono tutti gli attributi singolarmente dato un idlab scelto nella gui.
     */
 
+    /**
+     * Get lista codici laboratori gui array list.
+     *
+     * @return the array list
+     */
     //funzione che ritorna codici dei laboratori
     public ArrayList<String> getListaCodiciLaboratoriGUI(){
         ArrayList<String> idlablist = new ArrayList<String>();
@@ -997,6 +1248,15 @@ public class Controller {
         return idlablist;
     }
 
+
+
+    /**
+     * Get lista laboratorio gui.
+     *
+     * @param idlablist        the idlablist
+     * @param topiclist        the topiclist
+     * @param rscientificolist the rscientificolist
+     */
     //funzione che serve per fare le tabelle
     public void getListaLaboratorioGUI(ArrayList<String> idlablist, ArrayList<String> topiclist, ArrayList<String> rscientificolist){
 
@@ -1007,6 +1267,14 @@ public class Controller {
         }
     }
 
+
+
+    /**
+     * Get singolo laboratorio topic gui string.
+     *
+     * @param idLabSelezionato the id lab selezionato
+     * @return the string
+     */
     public String getSingoloLaboratorioTopicGUI(String idLabSelezionato){
 
         Laboratorio labScelto = null;
@@ -1019,6 +1287,14 @@ public class Controller {
         return labScelto.getTopic();
     }
 
+
+
+    /**
+     * Get singolo indirizzo gui string.
+     *
+     * @param idLabSelezionato the id lab selezionato
+     * @return the string
+     */
     public String getSingoloIndirizzoGUI(String idLabSelezionato){
 
         Laboratorio labScelto = null;
@@ -1031,6 +1307,14 @@ public class Controller {
         return labScelto.getIndirizzo();
     }
 
+
+
+    /**
+     * Get singolo numero telefonico gui string.
+     *
+     * @param idLabSelezionato the id lab selezionato
+     * @return the string
+     */
     public String getSingoloNumeroTelefonicoGUI(String idLabSelezionato){
 
         Laboratorio labScelto = null;
@@ -1043,6 +1327,14 @@ public class Controller {
         return labScelto.getNumeroTelefonico();
     }
 
+
+
+    /**
+     * Get singolo ref scientifico gui string.
+     *
+     * @param idLabSelezionato the id lab selezionato
+     * @return the string
+     */
     public String getSingoloRefScientificoGUI(String idLabSelezionato){
 
         Laboratorio labScelto = null;
@@ -1055,7 +1347,14 @@ public class Controller {
         return labScelto.getRScientifico().getMatricola();
     }
 
-    /*
+
+
+    /**
+     * Get lista responsabili scientifici disponibili gui array list.
+     *
+     * @return the array list
+     *
+     *
      * Funzione che ritorna la lista di responsabili scientifici disponibili
      * nell'Azienda.
      */
@@ -1082,16 +1381,14 @@ public class Controller {
 
 
 
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Gets lista progetto gui.
+     *
+     * @param nomelist         the nomelist
+     * @param cuplist          the cuplist
+     * @param responsabilelist the responsabilelist
+     * @param referentelist    the referentelist
+     */
     public void getListaProgettoGUI(ArrayList<String> nomelist, ArrayList<String> cuplist, ArrayList<String> responsabilelist, ArrayList<String> referentelist) {
 
         for (int i = 0; i < listaProgetto.size(); i++) {

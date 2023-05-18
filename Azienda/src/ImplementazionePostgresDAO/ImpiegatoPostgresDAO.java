@@ -10,11 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The type Impiegato postgres dao.
+ */
 public class ImpiegatoPostgresDAO implements ImpiegatoDAO {
 
     private Connection connection;
 
 
+    /**
+     * Instantiates a new Impiegato postgres dao and set a connection with Database.
+     */
     public ImpiegatoPostgresDAO(){
         try {
             connection = Connessione.getInstance().getConnection();
