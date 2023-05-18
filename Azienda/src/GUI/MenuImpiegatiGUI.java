@@ -112,7 +112,7 @@ import java.util.ArrayList;
             bottoneInserisci.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    InserimentoImpiegatoGUI dialog = new InserimentoImpiegatoGUI(controller,generaMatricola(),frameMenuImpiegati);
+                    InserimentoProgettoGUI dialog = new InserimentoProgettoGUI(controller,generaMatricola(),frameMenuImpiegati);
                     frameMenuImpiegati.setVisible(false);
                     dialog.setVisible(true);
                     // Aggiungo un listener per la finestra di dialogo

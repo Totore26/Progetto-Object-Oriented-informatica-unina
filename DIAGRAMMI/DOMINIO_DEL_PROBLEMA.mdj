@@ -225,23 +225,6 @@
 										},
 										{
 											"_type": "UMLAttributeView",
-											"_id": "AAAAAAGG/47mUfERpW4=",
-											"_parent": {
-												"$ref": "AAAAAAGG/45j7PDIO1c="
-											},
-											"model": {
-												"$ref": "AAAAAAGG/47mSfEObf8="
-											},
-											"font": "Arial;13;0",
-											"left": 501,
-											"top": 576,
-											"width": 154.29248046875,
-											"height": 13,
-											"text": "+Foto: bytea",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGHCg0W3SlvZ+0=",
 											"_parent": {
 												"$ref": "AAAAAAGG/45j7PDIO1c="
@@ -251,7 +234,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 501,
-											"top": 591,
+											"top": 576,
 											"width": 154.29248046875,
 											"height": 13,
 											"text": "+TipoImpiegato: String",
@@ -268,7 +251,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 501,
-											"top": 606,
+											"top": 591,
 											"width": 154.29248046875,
 											"height": 13,
 											"text": "+Matricola{PK}: Varchar",
@@ -285,7 +268,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 501,
-											"top": 621,
+											"top": 606,
 											"width": 154.29248046875,
 											"height": 13,
 											"text": "+Dirigente: boolean",
@@ -302,10 +285,27 @@
 											},
 											"font": "Arial;13;0",
 											"left": 501,
-											"top": 636,
+											"top": 621,
 											"width": 154.29248046875,
 											"height": 13,
 											"text": "+DataLicenziamento: date",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGILeCQ3XwgZqE=",
+											"_parent": {
+												"$ref": "AAAAAAGG/45j7PDIO1c="
+											},
+											"model": {
+												"$ref": "AAAAAAGILeCQy3wdQ4k="
+											},
+											"font": "Arial;13;0",
+											"left": 501,
+											"top": 636,
+											"width": 154.29248046875,
+											"height": 13,
+											"text": "+DataAssunzione: date",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2979,15 +2979,6 @@
 						},
 						{
 							"_type": "UMLAttribute",
-							"_id": "AAAAAAGG/47mSfEObf8=",
-							"_parent": {
-								"$ref": "AAAAAAGG/45j6/DAL1M="
-							},
-							"name": "Foto",
-							"type": "bytea"
-						},
-						{
-							"_type": "UMLAttribute",
 							"_id": "AAAAAAGHCg0WzClsCK8=",
 							"_parent": {
 								"$ref": "AAAAAAGG/45j6/DAL1M="
@@ -3020,6 +3011,15 @@
 								"$ref": "AAAAAAGG/45j6/DAL1M="
 							},
 							"name": "DataLicenziamento",
+							"type": "date"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGILeCQy3wdQ4k=",
+							"_parent": {
+								"$ref": "AAAAAAGG/45j6/DAL1M="
+							},
+							"name": "DataAssunzione",
 							"type": "date"
 						}
 					]
