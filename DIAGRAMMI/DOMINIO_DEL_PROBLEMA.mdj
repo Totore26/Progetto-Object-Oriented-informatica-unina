@@ -1890,7 +1890,7 @@
 									"hostEdge": {
 										"$ref": "AAAAAAGG/5wmJyiXhyY="
 									},
-									"text": "+0...*"
+									"text": "+0...1"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -2652,16 +2652,16 @@
 										"$ref": "AAAAAAGHJ6213lfCBvQ="
 									},
 									"font": "Arial;13;0",
-									"left": 943,
+									"left": 942,
 									"top": 231,
-									"width": 30.71630859375,
+									"width": 32.88720703125,
 									"height": 13,
 									"alpha": -0.4868993534329187,
 									"distance": 38.47076812334269,
 									"hostEdge": {
 										"$ref": "AAAAAAGHJ62131fEeoE="
 									},
-									"text": "+0...*"
+									"text": "+0...1"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -2785,8 +2785,8 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;13;0",
-							"left": 1312,
-							"top": 328,
+							"left": 1264,
+							"top": 304,
 							"width": 74.1962890625,
 							"height": 103,
 							"text": "sono massimo tre laboratori per un progetto"
@@ -2885,7 +2885,7 @@
 								"_parent": {
 									"$ref": "AAAAAAGG/5wmJyiTUDs="
 								},
-								"name": "0...*",
+								"name": "0...1",
 								"reference": {
 									"$ref": "AAAAAAGG/5WdCPfSDJE="
 								}
@@ -2915,7 +2915,7 @@
 								"_parent": {
 									"$ref": "AAAAAAGHJ6213lfAk/U="
 								},
-								"name": "0...*",
+								"name": "0...1",
 								"reference": {
 									"$ref": "AAAAAAGG/5WdCPfSDJE="
 								}
