@@ -16,36 +16,36 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class MenuLaboratoriGUI {
+public class MenuProgettiGUI {
     private JTable tabella;
     private JScrollPane scrollPane;
     private JTextField barraDiRicerca;
-    public MenuLaboratoriGUI(Controller controller, JFrame frameMenuPrincipale) {
+    public MenuProgettiGUI(Controller controller, JFrame frameMenuPrincipale) {
         // Creiamo una finestra
 
-        JFrame frameMenuLaboratori = new JFrame("Finestra Laboratori");
-        frameMenuLaboratori.setSize(800, 600);
-        frameMenuLaboratori.setLocationRelativeTo(null);
-        frameMenuLaboratori.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame frameMenuProgetti = new JFrame("Finestra Progetti");
+        frameMenuProgetti.setSize(800, 600);
+        frameMenuProgetti.setLocationRelativeTo(null);
+        frameMenuProgetti.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
-        // TABELLA LABORATORI
+        // TABELLA PROGETTI
 
+        String[] colonneTabella = {"CUP", "Nome", "Responsabile","referente"};
+        ArrayList<String> listaCup = new ArrayList<String>();
+        ArrayList<String> listaNomi = new ArrayList<String>();
+        ArrayList<String> listaResponsabili = new ArrayList<String>();
+        ArrayList<String> listaReferenti = new ArrayList<String>();
 
+        controller.getListaProgettoGUI(listaNomi,listaCup,listaResponsabili,listaReferenti);
 
-        String[] colonneTabella = {"Id Laboratorio", "Topic", "Responsabile Scientifico"};
-        ArrayList<String> listaTopic = new ArrayList<String>();
-        ArrayList<String> listaIdLab = new ArrayList<String>();
-        ArrayList<String> listaRespScientifico = new ArrayList<String>();
-
-        controller.getListaLaboratorioGUI(listaTopic,listaIdLab,listaRespScientifico);
-
-        Object[][] data = new Object[listaIdLab.size()][3];
-        for (int i = 0; i < listaIdLab.size(); i++) {
-            data[i][0] = listaTopic.get(i);
-            data[i][1] = listaIdLab.get(i);
-            data[i][2] = listaRespScientifico.get(i);
+        Object[][] data = new Object[listaNomi.size()][4];
+        for (int i = 0; i < listaNomi.size(); i++) {
+            data[i][0] = listaCup.get(i);
+            data[i][1] = listaNomi.get(i);
+            data[i][2] = listaResponsabili.get(i);
+            data[i][3] = listaReferenti.get(i);
         }
         // Creiamo il modello di tabella
         DefaultTableModel modelloTabella = new DefaultTableModel(data, colonneTabella);
@@ -69,11 +69,12 @@ public class MenuLaboratoriGUI {
 
         //barra di scorrimento
         scrollPane = new JScrollPane(tabella);
-        frameMenuLaboratori.add(scrollPane, BorderLayout.CENTER);
+        frameMenuProgetti.add(scrollPane, BorderLayout.CENTER);
 
 
 
         //BARRA DI RICERCA
+
 
 
         // Creiamo la barra di ricerca
@@ -98,10 +99,10 @@ public class MenuLaboratoriGUI {
 
         // Aggiungiamo la barra di ricerca alla finestra
         JPanel panelSearch = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelSearch.add(new JLabel("Cerca per topic: "));
+        panelSearch.add(new JLabel("Cerca per nome: "));
         panelSearch.add(barraDiRicerca);
 
-        frameMenuLaboratori.add(panelSearch, BorderLayout.NORTH);
+        frameMenuProgetti.add(panelSearch, BorderLayout.NORTH);
 
 
 
@@ -109,13 +110,13 @@ public class MenuLaboratoriGUI {
 
 
 
-        // Creiamo il pulsante per aprire la finestra d'inserimento laboratorio
+        // Creiamo il pulsante per aprire la finestra d'inserimento del Progetto.
         JButton bottoneInserisci = new JButton("Inserisci");
         bottoneInserisci.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                InserimentoProgettoGUI dialog = new InserimentoProgettoGUI(controller,generaIdLab(),frameMenuLaboratori);
-                frameMenuLaboratori.setVisible(false);
+                InserimentoProgettoGUI dialog = new InserimentoProgettoGUI(controller,generaCup(),frameMenuProgetti);
+                frameMenuProgetti.setVisible(false);
                 dialog.setVisible(true);
                 // Aggiungo un listener per la finestra di dialogo
                 dialog.addWindowListener(new WindowAdapter() {
@@ -140,7 +141,7 @@ public class MenuLaboratoriGUI {
                 if (selectedRow != -1 && selectedColumn != -1) {
                     // La matricola si trova nella prima colonna della tabella
                     String idLabSelezionato = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
-                    int response = JOptionPane.showOptionDialog(frameMenuLaboratori, "Sei sicuro di voler eliminare il laboratorio " + idLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+                    int response = JOptionPane.showOptionDialog(frameMenuProgetti, "Sei sicuro di voler eliminare il laboratorio " + idLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
                     if (response == JOptionPane.YES_OPTION) {
                         //elimino il laboratorio selezionata
@@ -156,7 +157,7 @@ public class MenuLaboratoriGUI {
                     }
                 } else {
                     // L'utente non ha selezionato una cella
-                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frameMenuProgetti, "Seleziona un laboratorio per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -166,13 +167,13 @@ public class MenuLaboratoriGUI {
         bottoneMenuPrincipale.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frameMenuLaboratori.dispose();
+                frameMenuProgetti.dispose();
                 frameMenuPrincipale.setVisible(true);
             }
         });
 
 
-        JButton bottoneProfiloImpiegato = new JButton("Profilo Laboratorio");
+        JButton bottoneProfiloImpiegato = new JButton("Profilo Progetto");
         bottoneProfiloImpiegato.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -186,16 +187,16 @@ public class MenuLaboratoriGUI {
                     // Creao un'istanza della finestra di dialogo ProfiloImpiegato
                     ProfiloLaboratorioGUI profiloLaboratorio;
                     try {
-                        profiloLaboratorio = new ProfiloLaboratorioGUI(idLabSelezionato, controller, frameMenuLaboratori);
+                        profiloLaboratorio = new ProfiloLaboratorioGUI(idLabSelezionato, controller, frameMenuProgetti);
                     } catch (SQLException ex) {
                         throw new RuntimeException(ex);
                     }
-                    frameMenuLaboratori.setVisible(false);
+                    frameMenuProgetti.setVisible(false);
                     // Mostro la finestra di dialogo
                     profiloLaboratorio.setVisible(true);
                 } else {
                     // L'utente non ha selezionato una cella
-                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(frameMenuProgetti, "Seleziona un laboratorio per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -214,48 +215,50 @@ public class MenuLaboratoriGUI {
 
         panelBottoni.add(panelBottoniLeft, BorderLayout.WEST);
         panelBottoni.add(panelBottoniRight, BorderLayout.EAST);
-        frameMenuLaboratori.add(panelBottoni, BorderLayout.SOUTH);
+        frameMenuProgetti.add(panelBottoni, BorderLayout.SOUTH);
 
 
         // Mostrimo la finestra
-        frameMenuLaboratori.setVisible(true);
+        frameMenuProgetti.setVisible(true);
     }
 
     private void updateTable(Controller controller,String[] colonneTabella) {
 
         //LOAD DEI NUOVI DATI
-        ArrayList<String> listaTopic = new ArrayList<String>();
-        ArrayList<String> listaIdLab = new ArrayList<String>();
-        ArrayList<String> listaRespScientifico = new ArrayList<String>();
+        ArrayList<String> listaCup = new ArrayList<String>();
+        ArrayList<String> listaNomi = new ArrayList<String>();
+        ArrayList<String> listaResponsabili = new ArrayList<String>();
+        ArrayList<String> listaReferenti = new ArrayList<String>();
 
-        controller.getListaLaboratorioGUI(listaTopic,listaIdLab,listaRespScientifico);
+        controller.getListaProgettoGUI(listaNomi,listaCup,listaResponsabili,listaReferenti);
 
-        Object[][] nuoviDati = new Object[listaIdLab.size()][3];
-        for (int i = 0; i < listaIdLab.size(); i++) {
-            nuoviDati[i][0] = listaTopic.get(i);
-            nuoviDati[i][1] = listaIdLab.get(i);
-            nuoviDati[i][2] = listaRespScientifico.get(i);
+        Object[][] data = new Object[listaNomi.size()][4];
+        for (int i = 0; i < listaNomi.size(); i++) {
+            data[i][0] = listaCup.get(i);
+            data[i][1] = listaNomi.get(i);
+            data[i][2] = listaResponsabili.get(i);
+            data[i][3] = listaReferenti.get(i);
         }
 
         //CODICE PER AGGIORNARE LA TABELLA CON I NUOVI DATI
         DefaultTableModel model = (DefaultTableModel) tabella.getModel();
-        model.setDataVector(nuoviDati, colonneTabella);
+        model.setDataVector(data, colonneTabella);
     }
 
-    private String generaIdLab() {
-        // Cerca la matricola più alta nella tabella
-        int maxIdLab = 0;
+    private String generaCup() {
+        // Cerca il cup più alto nella tabella
+        int maxCup = 0;
         for (int i = 0; i < tabella.getModel().getRowCount(); i++) {
             String matricola = (String) tabella.getModel().getValueAt(i, 0);
             String[] parts = matricola.split("-");
-            int numIdLab = Integer.parseInt(parts[1]);
-            if (numIdLab > maxIdLab) {
-                maxIdLab = numIdLab;
+            int numCup = Integer.parseInt(parts[1]);
+            if (numCup > maxCup) {
+                maxCup = numCup;
             }
         }
         // Incrementa il numero della matricola più alta e lo utilizza per generare la nuova matricola
-        int newMatricolaNum = maxIdLab + 1;
-        return "LAB-" + String.format("%03d", newMatricolaNum);
+        int newMaxCup = maxCup + 1;
+        return "CUP-" + String.format("%03d", newMaxCup);
     }
 
 }

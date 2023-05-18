@@ -1098,7 +1098,7 @@ public class Controller {
             nomelist.add(listaProgetto.get(i).getNome());
             cuplist.add(listaProgetto.get(i).getCup());
             responsabilelist.add(listaProgetto.get(i).getResponsabile().getMatricola());
-            referentelist.add(listaProgetto.get(i).getResponsabile().getMatricola());
+            referentelist.add(listaProgetto.get(i).getReferente().getMatricola());
         }
     }
 

@@ -80,6 +80,17 @@ public class MenuPrincipaleGUI {
         });
 
 
+        bottoneProgetti.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // chiudo la finestra corrente
+                frame.setVisible(false);
+                // apro la finestra MenuImpiegati
+                MenuProgettiGUI menuProgetti = new MenuProgettiGUI(controller,frame);
+
+            }
+        });
+
         // Imposta le dimensioni del frame, la posizione al centro e rendilo visibile
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
