@@ -123,8 +123,8 @@ public class MenuLaboratoriGUI {
         });
 
 
-        //DA IMPLEMENTARE IL CODICE DI ELIMINAZIONE IMPIEGATO NELL ACTION LISTENER
-        JButton bottoneElimina = new JButton("Elimina");
+        //DA IMPLEMENTARE IL CODICE DI ELIMINAZIONE
+        JButton bottoneElimina = new JButton("Elimina Laboratorio");
         bottoneElimina.addActionListener(e -> {
             int selectedRow = tabella.getSelectedRow();
             int selectedColumn = tabella.getSelectedColumn();
@@ -177,6 +177,14 @@ public class MenuLaboratoriGUI {
                     throw new RuntimeException(ex);
                 }
                 frameMenuLaboratori.setVisible(false);
+
+                // Imposto l'azione da eseguire alla chiusura della finestra
+                profiloLaboratorio.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e) {
+                        updateTable(controller,colonneTabella);
+                    }
+                });
+
                 // Mostro la finestra di dialogo
                 profiloLaboratorio.setVisible(true);
             } else {

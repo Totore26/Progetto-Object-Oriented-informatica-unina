@@ -352,6 +352,7 @@ public class ProfiloImpiegatoGUI extends JDialog {
                     //aggiungo l'afferenza al codLabSelezionato
                     try {
                         controller.aggiungiAfferenza(matricolaSelezionata,codLabSelezionato);
+                        dialog.setVisible(false);
                         JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
                     } catch (PSQLException ex) {
                         JOptionPane.showMessageDialog(null, "Errore durante l'aggiunta dell'afferenza al laboratorio:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
