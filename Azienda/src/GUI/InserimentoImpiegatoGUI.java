@@ -6,29 +6,26 @@ import org.postgresql.util.PSQLException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.regex.Pattern;
 
 public class InserimentoImpiegatoGUI extends JDialog {
-    private JTextField matricolaField;
-    private JTextField nomeField;
-    private JTextField cognomeField;
-    private JTextField codiceFiscaleField;
-    private JRadioButton maschioRadioButton;
-    private JRadioButton femminaRadioButton;
-    private JTextArea curriculumTextArea;
-    private JCheckBox dirigenteCheckBox;
-    private JComboBox<String> tipoImpiegatoComboBox;
-    private JSpinner stipendioSpinner;
-    private JDateChooser dataAssunzioneChooser;
-    private JDateChooser dataLicenziamentoChooser;
+    private final JTextField matricolaField;
+    private final JTextField nomeField;
+    private final JTextField cognomeField;
+    private final JTextField codiceFiscaleField;
+    private final JRadioButton maschioRadioButton;
+    private final JRadioButton femminaRadioButton;
+    private final JTextArea curriculumTextArea;
+    private final JCheckBox dirigenteCheckBox;
+    private final JComboBox<String> tipoImpiegatoComboBox;
+    private final JSpinner stipendioSpinner;
+    private final JDateChooser dataAssunzioneChooser;
+    private final JDateChooser dataLicenziamentoChooser;
 
     public InserimentoImpiegatoGUI(Controller controller,String nuovaMatricola, JFrame framePadre) {
 
-        // Creiamo un pannello per contenere i campi d'input
+        // Creiamo un pannello per contenere i campi d'ingresso
         JPanel inputPanel = new JPanel(new GridLayout(0, 2, 5, 5));
         inputPanel.setBorder(BorderFactory.createEmptyBorder(30, 100, 10, 100));
         setTitle("Inserimento Impiegato");
@@ -107,59 +104,57 @@ public class InserimentoImpiegatoGUI extends JDialog {
 
         // Implementazione bottone Salva
         JButton bottoneSalva = new JButton("Salva");
-        bottoneSalva.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+        bottoneSalva.addActionListener(e -> {
+            setVisible(false);
 
-                //controllo che non ci siano dei campi vuoti
-                if (matricolaField.getText().isEmpty() || nomeField.getText().isEmpty() ||
-                        cognomeField.getText().isEmpty() || codiceFiscaleField.getText().isEmpty() ||
-                        curriculumTextArea.getText().isEmpty() || tipoImpiegatoComboBox.getSelectedItem() == null ||
-                        dataAssunzioneChooser.getDate() == null || (Double) stipendioSpinner.getValue() == 0.0 ||
-                        sessoGroup.getSelection() == null) {
-                    JOptionPane.showMessageDialog(null, "La data di licenziamento è opzionale, inserisci il resto dei dati per continuare", "Attenzione", JOptionPane.WARNING_MESSAGE);
-                    setVisible(true);
+            //controllo che non ci siano dei campi vuoti
+            if (matricolaField.getText().isEmpty() || nomeField.getText().isEmpty() ||
+                    cognomeField.getText().isEmpty() || codiceFiscaleField.getText().isEmpty() ||
+                    curriculumTextArea.getText().isEmpty() || tipoImpiegatoComboBox.getSelectedItem() == null ||
+                    dataAssunzioneChooser.getDate() == null || (Double) stipendioSpinner.getValue() == 0.0 ||
+                    sessoGroup.getSelection() == null) {
+                JOptionPane.showMessageDialog(null, "La data di licenziamento è opzionale, inserisci il resto dei dati per continuare", "Attenzione", JOptionPane.WARNING_MESSAGE);
+                setVisible(true);
+            } else {
+                //Tutti i campi sono stati inseriti
+                String matricola = matricolaField.getText();
+                String nome = nomeField.getText();
+                String cognome = cognomeField.getText();
+                String codiceFiscale = codiceFiscaleField.getText();
+                String curriculum = curriculumTextArea.getText();
+                String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
+                boolean dirigente = dirigenteCheckBox.isSelected();
+                float stipendio = ((Number) stipendioSpinner.getValue()).floatValue();
+                //prendo la data in formato Date
+                java.util.Date dataAssunzione = dataAssunzioneChooser.getDate();
+                java.util.Date dataLicenziamento = dataLicenziamentoChooser.getDate();
+                //converto la data in formato sql e aggiorno la variabile nel caso sia != null
+                java.sql.Date sqlDataAssunzione = new java.sql.Date(dataAssunzione.getTime());
+                java.sql.Date sqlDataLicenziamento = null;
+                if(dataLicenziamentoChooser.getDate() != null) {
+                    sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
+                }
+                // Recupero il sesso selezionato
+                String sesso;
+                ButtonModel selectedSesso = sessoGroup.getSelection();
+                if (selectedSesso == maschioRadioButton.getModel()) {
+                    sesso = "M";
+                } else if (selectedSesso == femminaRadioButton.getModel()) {
+                    sesso = "F";
                 } else {
-                    //Tutti i campi sono stati inseriti
-                    String matricola = matricolaField.getText();
-                    String nome = nomeField.getText();
-                    String cognome = cognomeField.getText();
-                    String codiceFiscale = codiceFiscaleField.getText();
-                    String curriculum = curriculumTextArea.getText();
-                    String tipoImpiegato = (String) tipoImpiegatoComboBox.getSelectedItem();
-                    boolean dirigente = dirigenteCheckBox.isSelected();
-                    float stipendio = ((Number) stipendioSpinner.getValue()).floatValue();
-                    //prendo la data in formato Date
-                    java.util.Date dataAssunzione = dataAssunzioneChooser.getDate();
-                    java.util.Date dataLicenziamento = dataLicenziamentoChooser.getDate();
-                    //converto la data in formato sql e aggiorno la variabile nel caso sia != null
-                    java.sql.Date sqlDataAssunzione = new java.sql.Date(dataAssunzione.getTime());
-                    java.sql.Date sqlDataLicenziamento = null;
-                    if(dataLicenziamentoChooser.getDate() != null) {
-                        sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
-                    }
-                    // Recupero il sesso selezionato
-                    String sesso;
-                    ButtonModel selectedSesso = sessoGroup.getSelection();
-                    if (selectedSesso == maschioRadioButton.getModel()) {
-                        sesso = "M";
-                    } else if (selectedSesso == femminaRadioButton.getModel()) {
-                        sesso = "F";
-                    } else {
-                        sesso = null; // Nessun sesso selezionato
-                    }
+                    sesso = null; // Nessun sesso selezionato
+                }
 
-                    try {
-                        controller.aggiungiImpiegato(matricola, nome, cognome, codiceFiscale, curriculum, tipoImpiegato, dirigente, sqlDataAssunzione, sqlDataLicenziamento, stipendio, sesso);
-                    } catch (PSQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Errore durante il salvataggio dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
-                    } catch (Exception ee) {
-                        JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                    } finally {
-                        dispose();
-                        framePadre.setVisible(true);
-                    }
+                try {
+                    controller.aggiungiImpiegato(matricola, nome, cognome, codiceFiscale, curriculum, tipoImpiegato, dirigente, sqlDataAssunzione, sqlDataLicenziamento, stipendio, sesso);
+                    JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
+                } catch (PSQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Errore durante il salvataggio dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ee) {
+                    JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    dispose();
+                    framePadre.setVisible(true);
                 }
             }
         });
@@ -167,12 +162,9 @@ public class InserimentoImpiegatoGUI extends JDialog {
 
         // Implementazione bottone Annulla
         JButton bottoneAnnulla = new JButton("Annulla");
-        bottoneAnnulla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                framePadre.setVisible(true);
-            }
+        bottoneAnnulla.addActionListener(e -> {
+            dispose();
+            framePadre.setVisible(true);
         });
 
 

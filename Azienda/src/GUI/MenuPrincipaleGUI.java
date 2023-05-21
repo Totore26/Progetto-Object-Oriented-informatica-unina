@@ -4,29 +4,23 @@ import CONTROLLER.Controller;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MenuPrincipaleGUI {
     Controller controller = new Controller();
-    private JFrame frame;
-    private JLabel labelBenvenuto;
-    private JButton bottoneImpiegati;
-    private JButton bottoneLaboratori;
-    private JButton bottoneProgetti;
+    private final JFrame frame;
 
     public MenuPrincipaleGUI() {
         frame = new JFrame("Menu Principale");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Crea la JLabel di benvenuto
-        labelBenvenuto = new JLabel("Benvenuto nel gestionale dell'Azienda!");
+        JLabel labelBenvenuto = new JLabel("Benvenuto nel gestionale dell'Azienda!");
         labelBenvenuto.setFont(new Font("Arial",Font.PLAIN,18));
 
         // Crea i bottoni
-        bottoneImpiegati = new JButton("Impiegati");
-        bottoneLaboratori = new JButton("Laboratori");
-        bottoneProgetti = new JButton("Progetti");
+        JButton bottoneImpiegati = new JButton("Impiegati");
+        JButton bottoneLaboratori = new JButton("Laboratori");
+        JButton bottoneProgetti = new JButton("Progetti");
 
         // Imposta il font dei bottoni
         bottoneImpiegati.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -57,38 +51,29 @@ public class MenuPrincipaleGUI {
         bottoneLaboratori.setMaximumSize(buttonSize);
         bottoneProgetti.setMaximumSize(buttonSize);
 
-        bottoneImpiegati.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // chiudo la finestra corrente
-                frame.setVisible(false);
-                // apro la finestra MenuImpiegati
-                MenuImpiegatiGUI menuImpiegati =new MenuImpiegatiGUI(controller,frame);
+        bottoneImpiegati.addActionListener(e -> {
+            // chiudo la finestra corrente
+            frame.setVisible(false);
+            // apro la finestra MenuImpiegati
+            MenuImpiegatiGUI menuImpiegati =new MenuImpiegatiGUI(controller,frame);
 
-            }
         });
 
-        bottoneLaboratori.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // chiudo la finestra corrente
-                frame.setVisible(false);
-                // apro la finestra MenuLaboratori
-                MenuLaboratoriGUI menuLaboratori = new MenuLaboratoriGUI(controller,frame);
+        bottoneLaboratori.addActionListener(e -> {
+            // chiudo la finestra corrente
+            frame.setVisible(false);
+            // apro la finestra MenuLaboratori
+            MenuLaboratoriGUI menuLaboratori = new MenuLaboratoriGUI(controller,frame);
 
-            }
         });
 
 
-        bottoneProgetti.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // chiudo la finestra corrente
-                frame.setVisible(false);
-                // apro la finestra MenuImpiegati
-                MenuProgettiGUI menuProgetti = new MenuProgettiGUI(controller,frame);
+        bottoneProgetti.addActionListener(e -> {
+            // chiudo la finestra corrente
+            frame.setVisible(false);
+            // apro la finestra MenuImpiegati
+            MenuProgettiGUI menuProgetti = new MenuProgettiGUI(controller,frame);
 
-            }
         });
 
         // Imposta le dimensioni del frame, la posizione al centro e rendilo visibile

@@ -9,17 +9,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MenuLaboratoriGUI {
-    private JTable tabella;
-    private JScrollPane scrollPane;
-    private JTextField barraDiRicerca;
+    private final JTable tabella;
+    private final JTextField barraDiRicerca;
     public MenuLaboratoriGUI(Controller controller, JFrame frameMenuPrincipale) {
         // Creiamo una finestra
 
@@ -35,9 +32,9 @@ public class MenuLaboratoriGUI {
 
 
         String[] colonneTabella = {"Id Laboratorio", "Topic", "Responsabile Scientifico"};
-        ArrayList<String> listaTopic = new ArrayList<String>();
-        ArrayList<String> listaIdLab = new ArrayList<String>();
-        ArrayList<String> listaRespScientifico = new ArrayList<String>();
+        ArrayList<String> listaTopic = new ArrayList<>();
+        ArrayList<String> listaIdLab = new ArrayList<>();
+        ArrayList<String> listaRespScientifico = new ArrayList<>();
 
         controller.getListaLaboratorioGUI(listaTopic,listaIdLab,listaRespScientifico);
 
@@ -68,7 +65,7 @@ public class MenuLaboratoriGUI {
         tabella.setRowSorter(sorter);
 
         //barra di scorrimento
-        scrollPane = new JScrollPane(tabella);
+        JScrollPane scrollPane = new JScrollPane(tabella);
         frameMenuLaboratori.add(scrollPane, BorderLayout.CENTER);
 
 
@@ -110,93 +107,81 @@ public class MenuLaboratoriGUI {
 
 
         // Creiamo il pulsante per aprire la finestra d'inserimento laboratorio
-        JButton bottoneInserisci = new JButton("Inserisci");
-        bottoneInserisci.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                InserimentoProgettoGUI dialog = new InserimentoProgettoGUI(controller,generaIdLab(),frameMenuLaboratori);
-                frameMenuLaboratori.setVisible(false);
-                dialog.setVisible(true);
-                // Aggiungo un listener per la finestra di dialogo
-                dialog.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        // Chiamo il metodo updateTable() dopo la chiusura della finestra di dialogo
-                        updateTable(controller, colonneTabella);
-                    }
-                });
-            }
+        JButton bottoneInserisci = new JButton("Inserisci Laboratorio");
+        bottoneInserisci.addActionListener(e -> {
+            InserimentoLaboratorioGUI dialog = new InserimentoLaboratorioGUI(controller,generaIdLab(),frameMenuLaboratori);
+            frameMenuLaboratori.setVisible(false);
+            dialog.setVisible(true);
+            // Aggiungo un listener per la finestra di dialogo
+            dialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    // Chiamo il metodo updateTable() dopo la chiusura della finestra di dialogo
+                    updateTable(controller, colonneTabella);
+                }
+            });
         });
 
 
         //DA IMPLEMENTARE IL CODICE DI ELIMINAZIONE IMPIEGATO NELL ACTION LISTENER
         JButton bottoneElimina = new JButton("Elimina");
-        bottoneElimina.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = tabella.getSelectedRow();
-                int selectedColumn = tabella.getSelectedColumn();
+        bottoneElimina.addActionListener(e -> {
+            int selectedRow = tabella.getSelectedRow();
+            int selectedColumn = tabella.getSelectedColumn();
 
-                if (selectedRow != -1 && selectedColumn != -1) {
-                    // La matricola si trova nella prima colonna della tabella
-                    String idLabSelezionato = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
-                    int response = JOptionPane.showOptionDialog(frameMenuLaboratori, "Sei sicuro di voler eliminare il laboratorio " + idLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+            if (selectedRow != -1 && selectedColumn != -1) {
+                // La matricola si trova nella prima colonna della tabella
+                String idLabSelezionato = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
+                int response = JOptionPane.showOptionDialog(frameMenuLaboratori, "Sei sicuro di voler eliminare il laboratorio " + idLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
-                    if (response == JOptionPane.YES_OPTION) {
-                        //elimino il laboratorio selezionata
-                        try {
-                            controller.eliminaLaboratorio(idLabSelezionato);
-                        } catch (PSQLException ex) {
-                            JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione del laboratorio:\n" + ex.getMessage(), "Errore di Eliminazione", JOptionPane.ERROR_MESSAGE);
-                        } catch (Exception ee) {
-                            JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                        }
-                        //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
-                        updateTable(controller,colonneTabella);
+                if (response == JOptionPane.YES_OPTION) {
+                    //elimino il laboratorio selezionata
+                    try {
+                        controller.eliminaLaboratorio(idLabSelezionato);
+                    } catch (PSQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione del laboratorio:\n" + ex.getMessage(), "Errore di Eliminazione", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ee) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    // L'utente non ha selezionato una cella
-                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
+                    //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
+                    updateTable(controller,colonneTabella);
                 }
+            } else {
+                // L'utente non ha selezionato una cella
+                JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per eliminarlo.", "Errore", JOptionPane.ERROR_MESSAGE);
             }
         });
 
 
         JButton bottoneMenuPrincipale = new JButton("Menù Pricipale");
-        bottoneMenuPrincipale.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frameMenuLaboratori.dispose();
-                frameMenuPrincipale.setVisible(true);
-            }
+        bottoneMenuPrincipale.addActionListener(e -> {
+            frameMenuLaboratori.dispose();
+            frameMenuPrincipale.setVisible(true);
         });
 
 
-        JButton bottoneProfiloImpiegato = new JButton("Profilo Laboratorio");
-        bottoneProfiloImpiegato.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = tabella.getSelectedRow();
-                int selectedColumn = tabella.getSelectedColumn();
-                // L'utente ha selezionato una cella
-                if (selectedRow != -1 && selectedColumn != -1) {
-                    // la matricola è nella prima colonna della tabella
-                    String idLabSelezionato = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
+        JButton bottoneProfiloLaboratorio = new JButton("Profilo Laboratorio");
+        bottoneProfiloLaboratorio.addActionListener(e -> {
+            int selectedRow = tabella.getSelectedRow();
+            int selectedColumn = tabella.getSelectedColumn();
+            // L'utente ha selezionato una cella
+            if (selectedRow != -1 && selectedColumn != -1) {
+                // la matricola è nella prima colonna della tabella
+                String idLabSelezionato = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
 
-                    // Creao un'istanza della finestra di dialogo ProfiloImpiegato
-                    ProfiloLaboratorioGUI profiloLaboratorio;
-                    try {
-                        profiloLaboratorio = new ProfiloLaboratorioGUI(idLabSelezionato, controller, frameMenuLaboratori);
-                    } catch (SQLException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    frameMenuLaboratori.setVisible(false);
-                    // Mostro la finestra di dialogo
-                    profiloLaboratorio.setVisible(true);
-                } else {
-                    // L'utente non ha selezionato una cella
-                    JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
+                // Creao un'istanza della finestra di dialogo ProfiloImpiegato
+                ProfiloLaboratorioGUI profiloLaboratorio;
+                try {
+                    profiloLaboratorio = new ProfiloLaboratorioGUI(idLabSelezionato, controller, frameMenuLaboratori);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
                 }
+                frameMenuLaboratori.setVisible(false);
+                // Mostro la finestra di dialogo
+                profiloLaboratorio.setVisible(true);
+            } else {
+                // L'utente non ha selezionato una cella
+                JOptionPane.showMessageDialog(frameMenuLaboratori, "Seleziona un laboratorio per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -208,7 +193,7 @@ public class MenuLaboratoriGUI {
         JPanel panelBottoniRight = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         panelBottoniLeft.add(bottoneMenuPrincipale);
-        panelBottoniRight.add(bottoneProfiloImpiegato);
+        panelBottoniRight.add(bottoneProfiloLaboratorio);
         panelBottoniRight.add(bottoneInserisci);
         panelBottoniRight.add(bottoneElimina);
 
@@ -224,9 +209,9 @@ public class MenuLaboratoriGUI {
     private void updateTable(Controller controller,String[] colonneTabella) {
 
         //LOAD DEI NUOVI DATI
-        ArrayList<String> listaTopic = new ArrayList<String>();
-        ArrayList<String> listaIdLab = new ArrayList<String>();
-        ArrayList<String> listaRespScientifico = new ArrayList<String>();
+        ArrayList<String> listaTopic = new ArrayList<>();
+        ArrayList<String> listaIdLab = new ArrayList<>();
+        ArrayList<String> listaRespScientifico = new ArrayList<>();
 
         controller.getListaLaboratorioGUI(listaTopic,listaIdLab,listaRespScientifico);
 

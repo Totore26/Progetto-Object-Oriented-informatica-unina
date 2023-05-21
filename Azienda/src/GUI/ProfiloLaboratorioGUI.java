@@ -4,29 +4,20 @@ import CONTROLLER.Controller;
 import org.postgresql.util.PSQLException;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ProfiloLaboratorioGUI extends JDialog{
-    private JTable tabellaGestione;
-    private JTable tabellaAfferenze;
-    private JTextField idLabField;
-    private JTextField topicField;
-    private JTextField indirizzoField;
-    private JTextField numeroTelefonicoField;
-    private JComboBox<String> rScientificoComboBox;
-    private JScrollPane scrollPane;
-    private JScrollPane scrollPane2;
+    private final JTable tabellaAfferenze;
+    private final JTextField indirizzoField;
+    private final JTextField numeroTelefonicoField;
+    private final JComboBox<String> rScientificoComboBox;
 
     public ProfiloLaboratorioGUI(String idLabSelezionato, Controller controller, JFrame framePadre) throws SQLException {
         setTitle("Profilo Laboratorio");
@@ -45,7 +36,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
 
         // Creiamo il pannello per i dati anagrafici
         JPanel datiAnagraficiPanel = new JPanel(new GridLayout(0, 2,5,5));
-        datiAnagraficiPanel.setBorder(BorderFactory.createEmptyBorder(30, 100, 10, 100));
+        datiAnagraficiPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 10, 20));
 
         // Creiamo il pannello sinistro per i dati anagrafici
         JPanel leftPanel = new JPanel();
@@ -54,7 +45,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         // IdLab
         JLabel idLabLabel = new JLabel("Id Laboratorio:", SwingConstants.LEFT);
         idLabLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        idLabField = new JTextField();
+        JTextField idLabField = new JTextField();
         idLabField.setText(idLabSelezionato);
         datiAnagraficiPanel.add(idLabLabel);
         datiAnagraficiPanel.add(idLabField);
@@ -62,7 +53,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         //Topic
         JLabel topicLabel = new JLabel("Topic:", SwingConstants.LEFT);
         topicLabel.setHorizontalAlignment(SwingConstants.LEFT);
-        topicField = new JTextField();
+        JTextField topicField = new JTextField();
         topicField.setText(topicSelezionato);
         datiAnagraficiPanel.add(topicLabel);
         datiAnagraficiPanel.add(topicField);
@@ -163,18 +154,18 @@ public class ProfiloLaboratorioGUI extends JDialog{
             data[i][0] = listaCupGestiti.get(i);
         }
         tabellaGestioneModel.setDataVector(data, new Object[]{"CUP"});
-        this.tabellaGestione = new JTable(tabellaGestioneModel);
-        this.tabellaGestione.setShowGrid(true);
+        JTable tabellaGestione = new JTable(tabellaGestioneModel);
+        tabellaGestione.setShowGrid(true);
 
         // Applicazione del renderizzatore personalizzato a tutte le colonne
-        columnCount = this.tabellaGestione.getColumnCount();
+        columnCount = tabellaGestione.getColumnCount();
         for (int i = 0; i < columnCount; i++) {
-            this.tabellaGestione.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            tabellaGestione.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
 
         sorter = new TableRowSorter<>(tabellaGestioneModel);
         // Impostiamo il TableRowSorter sulla tabella
-        this.tabellaGestione.setRowSorter(sorter);
+        tabellaGestione.setRowSorter(sorter);
 
         tabellaGestione.setDefaultEditor(Object.class, null);
         tabellaGestione.setDefaultEditor(Object.class, null);
@@ -186,7 +177,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         tabellaGestione.getTableHeader().setBackground(Color.DARK_GRAY);
         tabellaGestione.getTableHeader().setForeground(Color.WHITE);
         //barra di scorrimento
-        rightPanel2.add(new JScrollPane(this.tabellaGestione), BorderLayout.CENTER);
+        rightPanel2.add(new JScrollPane(tabellaGestione), BorderLayout.CENTER);
 
 
 
@@ -220,145 +211,131 @@ public class ProfiloLaboratorioGUI extends JDialog{
 
 
         // Logica per salvare le modifiche
-        bottoneSalva.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+        bottoneSalva.addActionListener(e -> {
+            setVisible(false);
 
-                try {
+            try {
 
-                    String indirizzoModificato = indirizzoField.getText();
-                    String numeroTelefonicoModificato = numeroTelefonicoField.getText();
-                    String rScientificoModificato = (String) rScientificoComboBox.getSelectedItem();
+                String indirizzoModificato = indirizzoField.getText();
+                String numeroTelefonicoModificato = numeroTelefonicoField.getText();
+                String rScientificoModificato = (String) rScientificoComboBox.getSelectedItem();
 
-                    controller.modificaLaboratorio(idLabSelezionato,indirizzoModificato,numeroTelefonicoModificato,rScientificoModificato);
+                controller.modificaLaboratorio(idLabSelezionato,indirizzoModificato,numeroTelefonicoModificato,rScientificoModificato);
 
-                    JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati del laboratorio:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
-                } catch (Exception ee) {
-                    JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                } finally {
-                    dispose();
-                    framePadre.setVisible(true);
-                }
-
+                JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati del laboratorio:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ee) {
+                JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                dispose();
+                framePadre.setVisible(true);
             }
+
         });
 
 
         //bottone che torna alla vista impiegati
-        bottoneAnnulla.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //chiudo la finestra di dialogo
-                dispose();
-                framePadre.setVisible(true);
-            }
+        bottoneAnnulla.addActionListener(e -> {
+            //chiudo la finestra di dialogo
+            dispose();
+            framePadre.setVisible(true);
         });
 
 
         // Logica per aggiungere afferenza
-        bottoneAggiungiAfferenza.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Creazione e visualizzazione della finestra di dialogo
-                JDialog dialog = new JDialog(); // utilizzo una classe di dialogo personalizzata
-                dialog.setModal(true); // Imposto la finestra di dialogo come modale per bloccare l'interazione con la finestra principale
-                dialog.setTitle("Aggiungi afferenza:\n");
+        bottoneAggiungiAfferenza.addActionListener(e -> {
+            // Creazione e visualizzazione della finestra di dialogo
+            JDialog dialog = new JDialog(); // utilizzo una classe di dialogo personalizzata
+           // dialog.setModal(true); // Imposto la finestra di dialogo come modale per bloccare l'interazione con la finestra principale
+            dialog.setTitle("Aggiungi afferenza:\n");
 
-                //creo la tabella
-                DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
-                tabellaAfferenzaModel.addColumn("MAT");
-                ArrayList<String> listaMat = controller.getListaImpiegatoMatricoleGUI();
-                //rimuovo dalla lista dei laboratori quelli a cui l'impiegato afferisce gia
-                listaMat.removeAll(listaMatAfferenti);
-                //riempio la tabella
-                Object[][] data = new Object[listaMat.size()][1];
-                for (int i = 0; i < listaMat.size(); i++) {
-                    data[i][0] = listaMat.get(i);
-                }
-                tabellaAfferenzaModel.setDataVector(data, new Object[]{"ID"});
-                JTable tabellaMatricole = new JTable(tabellaAfferenzaModel);
-                tabellaMatricole.setShowGrid(true);
-
-                //allineo il testo delle colonne al centro
-                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-                centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-                // Applicazione del renderizzatore personalizzato a tutte le colonne
-                int columnCount = tabellaMatricole.getColumnCount();
-                for (int i = 0; i < columnCount; i++) {
-                    tabellaMatricole.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-                }
-
-                // Aggiungi la tabella a un componente di scorrimento
-                JScrollPane scrollPane = new JScrollPane(tabellaMatricole);
-                // Aggiungi il componente di scorrimento alla finestra di dialogo
-                dialog.add(scrollPane);
-
-                // Quando l'utente tocca un codice, parte questo Listener
-                tabellaMatricole.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-                    @Override
-                    public void valueChanged(ListSelectionEvent e) {
-                        // Ottieni il codice selezionato
-                        int selectedRow = tabellaMatricole.getSelectedRow();
-                        String matricolaSelezionata = (String) tabellaMatricole.getValueAt(selectedRow, 0);
-
-                        // L utente ha selezionato una colonna
-                        int response = JOptionPane.showOptionDialog(dialog, "Aggiungo l'afferenza dell'impiegato " + matricolaSelezionata + " al laboratorio " + idLabSelezionato  + "?", "Conferma Salvataggio", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
-                        if (response == JOptionPane.YES_OPTION) {
-                            //aggiungo l'afferenza al codLabSelezionato
-                            try {
-                                controller.aggiungiAfferenza(matricolaSelezionata,idLabSelezionato);
-                            } catch (PSQLException ex) {
-                                JOptionPane.showMessageDialog(null, "Errore durante l'aggiunta dell'afferenza al laboratorio:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
-                            } catch (Exception ee) {
-                                JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                            } finally {
-                                dialog.dispose();
-                            }
-                            updateTabellaAfferenze(controller,idLabSelezionato);
-                        }
-                    }
-                });
-
-                // Imposta le dimensioni e la posizione della finestra di dialogo
-                dialog.setSize(250, 400);
-                dialog.setLocationRelativeTo(null); // Posiziona la finestra di dialogo al centro dello schermo
-                dialog.setVisible(true);
+            //creo la tabella
+            DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
+            tabellaAfferenzaModel.addColumn("MAT");
+            ArrayList<String> listaMat = controller.getListaImpiegatoMatricoleGUI();
+            //rimuovo dalla lista dei laboratori quelli a cui l'impiegato afferisce gia
+            listaMat.removeAll(listaMatAfferenti);
+            //riempio la tabella
+            Object[][] data1 = new Object[listaMat.size()][1];
+            for (int i = 0; i < listaMat.size(); i++) {
+                data1[i][0] = listaMat.get(i);
             }
+            tabellaAfferenzaModel.setDataVector(data1, new Object[]{"ID"});
+            JTable tabellaMatricole = new JTable(tabellaAfferenzaModel);
+            tabellaMatricole.setShowGrid(true);
+
+            //allineo il testo delle colonne al centro
+            DefaultTableCellRenderer centerRenderer1 = new DefaultTableCellRenderer();
+            centerRenderer1.setHorizontalAlignment(SwingConstants.CENTER);
+            // Applicazione del renderizzatore personalizzato a tutte le colonne
+            int columnCount1 = tabellaMatricole.getColumnCount();
+            for (int i = 0; i < columnCount1; i++) {
+                tabellaMatricole.getColumnModel().getColumn(i).setCellRenderer(centerRenderer1);
+            }
+
+            // Aggiungi la tabella a un componente di scorrimento
+            JScrollPane scrollPane = new JScrollPane(tabellaMatricole);
+            // Aggiungi il componente di scorrimento alla finestra di dialogo
+            dialog.add(scrollPane);
+
+            // Quando l'utente tocca un codice, parte questo ActionListener
+            tabellaMatricole.getSelectionModel().addListSelectionListener(e1 -> {
+                // Ottieni il codice selezionato
+                int selectedRow = tabellaMatricole.getSelectedRow();
+                String matricolaSelezionata = (String) tabellaMatricole.getValueAt(selectedRow, 0);
+
+                // L utente ha selezionato una colonna
+                int response = JOptionPane.showOptionDialog(dialog, "Aggiungo l'afferenza dell'impiegato " + matricolaSelezionata + " al laboratorio " + idLabSelezionato  + "?", "Conferma Salvataggio", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+                if (response == JOptionPane.YES_OPTION) {
+                    //aggiungo l'afferenza al codLabSelezionato
+                    try {
+                        controller.aggiungiAfferenza(matricolaSelezionata,idLabSelezionato);
+                        JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
+                    } catch (PSQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'aggiunta dell'afferenza al laboratorio:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ee) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    } finally {
+                        dialog.dispose();
+                        updateTabellaAfferenze(controller,idLabSelezionato);
+                    }
+                }
+            });
+
+            // Imposta le dimensioni e la posizione della finestra di dialogo
+            dialog.setSize(250, 400);
+            dialog.setLocationRelativeTo(null); // Posiziona la finestra di dialogo al centro dello schermo
+            dialog.setVisible(true);
         });
 
 
         // Logica per rimuovere afferenza
-        bottoneRimuoviAfferenza.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = ProfiloLaboratorioGUI.this.tabellaAfferenze.getSelectedRow();
-                int selectedColumn = ProfiloLaboratorioGUI.this.tabellaAfferenze.getSelectedColumn();
+        bottoneRimuoviAfferenza.addActionListener(e -> {
+            int selectedRow = ProfiloLaboratorioGUI.this.tabellaAfferenze.getSelectedRow();
+            int selectedColumn = ProfiloLaboratorioGUI.this.tabellaAfferenze.getSelectedColumn();
 
-                if (selectedRow != -1 && selectedColumn != -1) {
-                    // La matricola si trova nella prima colonna della tabella
-                    String matricolaSelezionata = ProfiloLaboratorioGUI.this.tabellaAfferenze.getValueAt(ProfiloLaboratorioGUI.this.tabellaAfferenze.getSelectedRow(), 0).toString();
-                    int response = JOptionPane.showOptionDialog( panel, "Sei sicuro di voler eliminare l'afferenza della matricola " + matricolaSelezionata + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
+            if (selectedRow != -1 && selectedColumn != -1) {
+                // La matricola si trova nella prima colonna della tabella
+                String matricolaSelezionata = ProfiloLaboratorioGUI.this.tabellaAfferenze.getValueAt(ProfiloLaboratorioGUI.this.tabellaAfferenze.getSelectedRow(), 0).toString();
+                int response = JOptionPane.showOptionDialog( panel, "Sei sicuro di voler eliminare l'afferenza della matricola " + matricolaSelezionata + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
-                    if (response == JOptionPane.YES_OPTION) {
-                        //elimino l'impiegato con la matricola selezionata
-                        try {
-                            controller.eliminaAfferenza(matricolaSelezionata,idLabSelezionato);
-                        } catch (PSQLException ex) {
-                            JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione dell'afferenza:\n" + ex.getMessage(), "Errore di eliminazione", JOptionPane.ERROR_MESSAGE);
-                        } catch (Exception ee) {
-                            JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                        }
-                        //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
-                        updateTabellaAfferenze(controller,idLabSelezionato);
+                if (response == JOptionPane.YES_OPTION) {
+                    //elimino l'impiegato con la matricola selezionata
+                    try {
+                        controller.eliminaAfferenza(matricolaSelezionata,idLabSelezionato);
+                    } catch (PSQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione dell'afferenza:\n" + ex.getMessage(), "Errore di eliminazione", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception ee) {
+                        JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                     }
-                } else {
-                    // L'utente non ha selezionato una cella
-                    JOptionPane.showMessageDialog(panel, "Seleziona una matricola per eliminare la sua afferenza.", "Errore", JOptionPane.ERROR_MESSAGE);
+                    //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
+                    updateTabellaAfferenze(controller,idLabSelezionato);
                 }
+            } else {
+                // L'utente non ha selezionato una cella
+                JOptionPane.showMessageDialog(panel, "Seleziona una matricola per eliminare la sua afferenza.", "Errore", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -378,7 +355,7 @@ public class ProfiloLaboratorioGUI extends JDialog{
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        //listener per mostrare la fienstra padre quando viene chiusa quella figlia
+        //listener per mostrare la finestra padre quando viene chiusa quella figlia
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
