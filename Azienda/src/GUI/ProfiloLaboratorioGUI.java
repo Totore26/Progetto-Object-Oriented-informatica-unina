@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ProfiloLaboratorioGUI extends JDialog{
+public class ProfiloLaboratorioGUI extends JDialog {
     private final JTable tabellaAfferenze;
     private final JTextField indirizzoField;
     private final JTextField numeroTelefonicoField;
@@ -248,15 +248,17 @@ public class ProfiloLaboratorioGUI extends JDialog{
         bottoneAggiungiAfferenza.addActionListener(e -> {
             // Creazione e visualizzazione della finestra di dialogo
             JDialog dialog = new JDialog(); // utilizzo una classe di dialogo personalizzata
-           // dialog.setModal(true); // Imposto la finestra di dialogo come modale per bloccare l'interazione con la finestra principale
+            dialog.setModal(true); // Imposto la finestra di dialogo come modale per bloccare l'interazione con la finestra principale
             dialog.setTitle("Aggiungi afferenza:\n");
 
             //creo la tabella
             DefaultTableModel tabellaAfferenzaModel = new DefaultTableModel();
             tabellaAfferenzaModel.addColumn("MAT");
             ArrayList<String> listaMat = controller.getListaImpiegatoMatricoleGUI();
+
             //rimuovo dalla lista dei laboratori quelli a cui l'impiegato afferisce gia
             listaMat.removeAll(listaMatAfferenti);
+
             //riempio la tabella
             Object[][] data1 = new Object[listaMat.size()][1];
             for (int i = 0; i < listaMat.size(); i++) {
@@ -375,21 +377,21 @@ public class ProfiloLaboratorioGUI extends JDialog{
         private void updateTabellaAfferenze(Controller controller, String idLabScelto) {
             //load dei nuovi dati
             ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeLaboratorio(idLabScelto);
-            Object[][] nuoviDati = new Object[listaLabAfferiti.size()][listaLabAfferiti.size()];
+            Object[][] nuoviDati = new Object[listaLabAfferiti.size()][1];
             for (int i = 0; i < listaLabAfferiti.size(); i++) {
                 nuoviDati[i][0] = listaLabAfferiti.get(i);
             }
             // Aggiungi le nuove righe alla tabella
             DefaultTableModel model = (DefaultTableModel) tabellaAfferenze.getModel();
-            model.setDataVector(nuoviDati,new Object[]{"MAT"});
+            Object[] columnNames = new Object[] { "MAT" };
+            model.setDataVector(nuoviDati, columnNames);
             //allineo il testo delle colonne al centro
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
             centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
             //applico l'allineamento
             int columnCount = this.tabellaAfferenze.getColumnCount();
             for (int i = 0; i < columnCount; i++) {
-                this.tabellaAfferenze.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+                tabellaAfferenze.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
             }
         }
-
 }

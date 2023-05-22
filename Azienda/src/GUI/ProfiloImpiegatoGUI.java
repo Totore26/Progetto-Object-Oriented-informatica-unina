@@ -270,28 +270,40 @@ public class ProfiloImpiegatoGUI extends JDialog {
         bottoneSalva.addActionListener(e -> {
             setVisible(false);
 
+            float stipendioModificato = ((Number) stipendioSpinner.getValue()).floatValue();
+            boolean dirigenteModificato = dirigenteCheckBox.isSelected();
+            String curriculumModificato = curriculumTextArea.getText();
+            Date dataLicenziamentoModificata = dataLicenziamentoChooser.getDate();
+            java.sql.Date sqlDataLicenziamento = null;
+            if(dataLicenziamentoChooser.getDate() != null) {
+                sqlDataLicenziamento = new java.sql.Date(dataLicenziamentoModificata.getTime());
+            }
 
-            try {
-                float stipendioModificato = ((Number) stipendioSpinner.getValue()).floatValue();
-                boolean dirigenteModificato = dirigenteCheckBox.isSelected();
-                String curriculumModificato = curriculumTextArea.getText();
-                Date dataLicenziamento = dataLicenziamentoChooser.getDate();
-                java.sql.Date sqlDataLicenziamento = null;
-                if(dataLicenziamentoChooser.getDate() != null) {
-                    sqlDataLicenziamento = new java.sql.Date(dataLicenziamento.getTime());
-                }
-                controller.modificaImpiegato(matricolaSelezionata,curriculumModificato,dirigenteModificato,sqlDataLicenziamento,stipendioModificato);
-                JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
-
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
-            } catch (Exception ee) {
-                JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-            } finally {
+            /*
+            //TODO salvo i dati solo se sono state effettuate modifiche (questo metodo non funziona)
+            if(stipendioSelezionato == stipendioModificato || dirigenteSelezionato == dirigenteModificato || curriculumSelezionato.equals(curriculumModificato) || dataLicenziamentoSelezionata == dataLicenziamentoModificata) {
+                JOptionPane.showMessageDialog(null, "i dati non sono stati modificati!\n", "Nessuna modifica da eseguire", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
                 framePadre.setVisible(true);
-            }
+            } else {
+
+             */
+
+                try {
+
+                    controller.modificaImpiegato(matricolaSelezionata, curriculumModificato, dirigenteModificato, sqlDataLicenziamento, stipendioModificato);
+                    JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Errore durante la modifica dei dati dell'impiegato:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ee) {
+                    JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    dispose();
+                    framePadre.setVisible(true);
+                }
+            //}
 
         });
 
