@@ -386,16 +386,16 @@ public class ProfiloImpiegatoGUI extends JDialog {
 
         // Logica per rimuovere afferenza
         bottoneRimuoviAfferenza.addActionListener(e -> {
-            int selectedRow = ProfiloImpiegatoGUI.this.tabellaAfferenze.getSelectedRow();
-            int selectedColumn = ProfiloImpiegatoGUI.this.tabellaAfferenze.getSelectedColumn();
+            int selectedRow = tabellaAfferenze.getSelectedRow();
+            int selectedColumn = tabellaAfferenze.getSelectedColumn();
 
             if (selectedRow != -1 && selectedColumn != -1) {
                 // La matricola si trova nella prima colonna della tabella
-                String codLabSelezionato = ProfiloImpiegatoGUI.this.tabellaAfferenze.getValueAt(ProfiloImpiegatoGUI.this.tabellaAfferenze.getSelectedRow(), 0).toString();
+                String codLabSelezionato = tabellaAfferenze.getValueAt(tabellaAfferenze.getSelectedRow(), 0).toString();
                 int response = JOptionPane.showOptionDialog( panel, "Sei sicuro di voler eliminare l'afferenza al laboratorio " + codLabSelezionato + "?", "Conferma eliminazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "Si");
 
                 if (response == JOptionPane.YES_OPTION) {
-                    //elimino l'impiegato con la matricola selezionata
+                    //elimino l'afferenza
                     try {
                         controller.eliminaAfferenza(matricolaSelezionata,codLabSelezionato);
                     } catch (PSQLException ex) {

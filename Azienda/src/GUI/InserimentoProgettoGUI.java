@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class InserimentoProgettoGUI extends JDialog {
     private final JTextField cupField;
@@ -45,17 +46,17 @@ public class InserimentoProgettoGUI extends JDialog {
         // Aggiungiamo il campo "Responsabile"
         inputPanel.add(new JLabel("Responsabile:"));
         responsabileComboBox = new JComboBox<>();
-
-        responsabileComboBox.addItem("junior");
-
+        ArrayList<String> respScientList= controller.getListaResponsabiliScientificiDisponibiliGUI();
+        for(String i : respScientList)
+            responsabileComboBox.addItem(i);
         inputPanel.add(responsabileComboBox);
 
-        // Aggiungiamo il campo "Responsabile"
+        // Aggiungiamo il campo "Referente"
         inputPanel.add(new JLabel("Referente:"));
         referenteComboBox = new JComboBox<>();
-
-        referenteComboBox.addItem("junior");
-
+        ArrayList<String> refList = null; //TODO RIEMPIRE QUESTO ARRAYLIST CON I REFERENTI DISPONIBILI
+        for(String i : refList)
+            referenteComboBox.addItem(i);
         inputPanel.add(referenteComboBox);
 
         // Aggiungiamo il campo "Data Inizio"
