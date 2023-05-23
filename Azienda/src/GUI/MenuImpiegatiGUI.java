@@ -48,6 +48,7 @@ import java.util.ArrayList;
             tabella = new JTable(modelloTabella);
             // Creiamo il TableRowSorter con il tipo di modello di tabella corretto
             TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelloTabella);
+            sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
             // Impostiamo il TableRowSorter sulla tabella
             tabella.setRowSorter(sorter);
 

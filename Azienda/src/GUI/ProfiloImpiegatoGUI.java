@@ -121,7 +121,7 @@ public class ProfiloImpiegatoGUI extends JDialog {
         JLabel dataLicenziamentoLabel = new JLabel("Data licenziamento:", SwingConstants.LEFT);
         dataLicenziamentoLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dataLicenziamentoChooser = new JDateChooser();
-        dataLicenziamentoChooser.setDateFormatString("yyyy-mm-dd");
+        dataLicenziamentoChooser.setDateFormatString("yyyy-MM-dd");
         if(dataLicenziamentoSelezionata != null){
             dataLicenziamentoChooser.setDate(dataLicenziamentoSelezionata);
         }

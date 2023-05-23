@@ -46,15 +46,15 @@ public class InserimentoProgettoGUI extends JDialog {
         // Aggiungiamo il campo "Responsabile"
         inputPanel.add(new JLabel("Responsabile:"));
         responsabileComboBox = new JComboBox<>();
-        ArrayList<String> respScientList= controller.getListaResponsabiliScientificiDisponibiliGUI();
-        for(String i : respScientList)
+        ArrayList<String> responsabiliList= controller.getListaDirigentiDisponibiliGUI();
+        for(String i : responsabiliList)
             responsabileComboBox.addItem(i);
         inputPanel.add(responsabileComboBox);
 
         // Aggiungiamo il campo "Referente"
         inputPanel.add(new JLabel("Referente:"));
         referenteComboBox = new JComboBox<>();
-        ArrayList<String> refList = null; //TODO RIEMPIRE QUESTO ARRAYLIST CON I REFERENTI DISPONIBILI
+        ArrayList<String> refList = controller.getListaDipendentiSeniorDisponibiliGUI();
         for(String i : refList)
             referenteComboBox.addItem(i);
         inputPanel.add(referenteComboBox);

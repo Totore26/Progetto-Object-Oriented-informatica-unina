@@ -465,10 +465,6 @@ public class Controller {
 
 
 
-
-
-
-
 //____________________________________________________________________________________________________________________//
 //____________________________________________________________________________________________________________________//
 
@@ -826,13 +822,13 @@ public class Controller {
      * @return the array list
      *
      *
-     * La seguente funzione dato in input il cup del progetto legge dal database i dati relativi
-     * inizializzando la lista di laboratori associati ad un progetto.
+     * La seguente funzione dato in ingresso il cup del progetto legge dal database i dati relativi
+     * inizializzando la lista di laboratori associati a un progetto.
      */
     public ArrayList<String> leggiGestioniProgetto(String cupScelto){
         ProgettoDAO i = new ProgettoPostgresDAO();
 
-        //step 0: trovo l'impiegato a cui si riferisce la vista
+        //step 1°: trovo l'impiegato a cui si riferisce la vista
         Progetto prodaVisualizzare = null;
         for (Progetto pro : listaProgetto)
             if (pro.getCup().equals(cupScelto)) {
@@ -840,18 +836,18 @@ public class Controller {
                 break;
             }
 
-
         //2 step : trovo i laboratori in gestione
         ArrayList<String> labGestione = new ArrayList<>();
         boolean control = i.leggiGestionePerProgetto(cupScelto,labGestione);
 
-        //2 step : inzializzo la lista di laboratori gestiti del progetto in questione.
+        //2° step: inizializzo la lista di laboratori gestiti del progetto in questione.
         if (control) {
 
             for(Laboratorio lab : listaLaboratorio){
                 for(String l : labGestione)
                     if(lab.getIdLab().equals(l)){
 
+                        assert prodaVisualizzare != null;
                         prodaVisualizzare.aggiungiGestione(lab);
                     }
             }
@@ -1350,13 +1346,13 @@ public class Controller {
 
 
     /**
-     * Get lista responsabili scientifici disponibili gui array list.
+     * Get lista dipendenti responsabili scientifici gui array list.
      *
      * @return the array list
      *
      *
-     * Funzione che ritorna la lista di responsabili scientifici disponibili
-     * nell'Azienda.
+     * Funzione che ritorna la lista dei responsabili scientifici disponibili per i laboratori
+     * nell' Azienda.
      */
     public ArrayList<String> getListaResponsabiliScientificiDisponibiliGUI(){
 
@@ -1365,7 +1361,7 @@ public class Controller {
             if(imp.getTipoImpiegato().equals("senior")){
                 int i=0;
                 boolean disponibile = true;
-                while(i<listaLaboratorio.size() && disponibile == true){
+                while(i < listaLaboratorio.size() && disponibile){
                     if(listaLaboratorio.get(i).getRScientifico().equals(imp))
                         disponibile=false;
                     i++;
@@ -1380,6 +1376,47 @@ public class Controller {
 
 
 
+    /**
+     * Get lista dipendenti senior disponibili gui array list.
+     *
+     * @return the array list
+     *
+     *
+     * Funzione che ritorna la lista di tutti i dipendenti senior
+     * nell' Azienda.
+     */
+    public ArrayList<String> getListaDipendentiSeniorDisponibiliGUI(){
+
+        ArrayList<String> DipendentiSeniorDisponibili = new ArrayList<>();
+        for(Impiegato imp : listaImpiegato){
+            if(imp.getTipoImpiegato().equals("senior"))
+                DipendentiSeniorDisponibili.add(imp.getMatricola());
+        }
+        return DipendentiSeniorDisponibili;
+    }
+
+
+
+    /**
+     * Get lista dirigenti disponibili gui array list.
+     *
+     * @return the array list
+     *
+     *
+     * Funzione che ritorna la lista di tutti i dirigenti
+     * nell'Azienda.
+     */
+    public ArrayList<String> getListaDirigentiDisponibiliGUI() {
+
+        ArrayList<String> referentiDisponibili = new ArrayList<>();
+        for(Impiegato imp : listaImpiegato){
+            if(imp.isDirigente())
+                referentiDisponibili.add(imp.getMatricola());
+        }
+        return referentiDisponibili;
+    }
+
+
 
     /**
      * Gets lista progetto gui.
@@ -1391,14 +1428,79 @@ public class Controller {
      */
     public void getListaProgettoGUI(ArrayList<String> nomelist, ArrayList<String> cuplist, ArrayList<String> responsabilelist, ArrayList<String> referentelist) {
 
-        for (int i = 0; i < listaProgetto.size(); i++) {
-            nomelist.add(listaProgetto.get(i).getNome());
-            cuplist.add(listaProgetto.get(i).getCup());
-            responsabilelist.add(listaProgetto.get(i).getResponsabile().getMatricola());
-            referentelist.add(listaProgetto.get(i).getReferente().getMatricola());
+        for (Progetto progetto : listaProgetto) {
+            nomelist.add(progetto.getNome());
+            cuplist.add(progetto.getCup());
+            responsabilelist.add(progetto.getResponsabile().getMatricola());
+            referentelist.add(progetto.getReferente().getMatricola());
         }
     }
 
+    public String getSingoloProgettoNomeProfiloGUI(String cupSelezionato) {
+        Progetto progettoScelto = null;
+        for(Progetto prog : listaProgetto) {
+            if(prog.getCup().equals(cupSelezionato)) {
+                progettoScelto = prog;
+                break;
+            }
+        }
+        return progettoScelto.getNome();
+    }
+
+    public float getSingoloProgettoBudgetProfiloGUI(String cupSelezionato) {
+        Progetto progettoScelto = null;
+        for(Progetto prog : listaProgetto) {
+            if(prog.getCup().equals(cupSelezionato)) {
+                progettoScelto = prog;
+                break;
+            }
+        }
+        return progettoScelto.getBudget();
+    }
+
+    public Object getSingoloProgettoDataInizioProfiloGUI(String cupSelezionato) {
+        Progetto progettoScelto = null;
+        for(Progetto prog : listaProgetto) {
+            if(prog.getCup().equals(cupSelezionato)) {
+                progettoScelto = prog;
+                break;
+            }
+        }
+        return progettoScelto.getDataInizio();
+    }
+
+    public Object getSingoloProgettoDataFineProfiloGUI(String cupSelezionato) {
+        Progetto progettoScelto = null;
+        for(Progetto prog : listaProgetto) {
+            if(prog.getCup().equals(cupSelezionato)) {
+                progettoScelto = prog;
+                break;
+            }
+        }
+        return progettoScelto.getDataFine();
+    }
+
+    public String getSingoloProgettoResponsabileProfiloGUI(String cupSelezionato) {
+        Progetto progettoScelto = null;
+        for(Progetto prog : listaProgetto) {
+            if(prog.getCup().equals(cupSelezionato)) {
+                progettoScelto = prog;
+                break;
+            }
+        }
+        return progettoScelto.getResponsabile().getMatricola();
+    }
+
+    public String getSingoloProgettoReferenteProfiloGUI(String cupSelezionato) {
+        Progetto progettoScelto = null;
+        for(Progetto prog : listaProgetto) {
+            if(prog.getCup().equals(cupSelezionato)) {
+                progettoScelto = prog;
+                break;
+            }
+        }
+        return progettoScelto.getReferente().getMatricola();
+    }
 
 
 

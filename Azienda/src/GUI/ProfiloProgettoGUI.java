@@ -16,10 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ProfiloProgettoGUI extends JDialog{
-    private final JComboBox responsabileComboBox;
-    private final JComboBox referenteComboBox;
+    private final JComboBox<Object> responsabileComboBox;
+    private final JComboBox<Object> referenteComboBox;
     private final JSpinner budgetSpinner;
-    private final JTextField dataInizio;
     private final JDateChooser dataFineChooser;
     private final JTable tabellaGestione;
 
@@ -52,7 +51,6 @@ public class ProfiloProgettoGUI extends JDialog{
         JLabel cupLabel = new JLabel("Cup:", SwingConstants.CENTER);
         cupLabel.setHorizontalAlignment(SwingConstants.LEFT);
         JTextField cupField = new JTextField();
-
         cupField.setText(cupSelezionato);
         datiAnagraficiPanel.add(cupLabel);
         datiAnagraficiPanel.add(cupField);
@@ -80,7 +78,7 @@ public class ProfiloProgettoGUI extends JDialog{
         JLabel dataInizioLabel = new JLabel("Data Inizio:", SwingConstants.CENTER);
         dataInizioLabel.setHorizontalAlignment(SwingConstants.LEFT);
         JTextField dataInizioField = new JFormattedTextField();
-        dataInizioField.setText(dataFineSelezionata.toString());
+        dataInizioField.setText(dataInizioSelezionata.toString());
         datiAnagraficiPanel.add(dataInizioLabel);
         datiAnagraficiPanel.add(dataInizioField);
 
@@ -88,7 +86,7 @@ public class ProfiloProgettoGUI extends JDialog{
         JLabel dataFineLabel = new JLabel("Data Fine:", SwingConstants.LEFT);
         dataFineLabel.setHorizontalAlignment(SwingConstants.LEFT);
         dataFineChooser = new JDateChooser();
-        dataFineChooser.setDateFormatString("yyyy-mm-dd");
+        dataFineChooser.setDateFormatString("yyyy-MM-dd");
         if(dataFineSelezionata != null){
             dataFineChooser.setDate(dataFineSelezionata);
         }
@@ -96,12 +94,11 @@ public class ProfiloProgettoGUI extends JDialog{
         datiAnagraficiPanel.add(dataFineChooser);
 
         // Responsabile
-        //RScientifico
         JLabel responsabile = new JLabel("Responsabile:",SwingConstants.LEFT);
         responsabile.setHorizontalAlignment(SwingConstants.LEFT);
         responsabileComboBox = new JComboBox<>();
         responsabileComboBox.addItem(responsabileSelezionato);
-        ArrayList<String> responsabiliDisponibili= controller.getListaResponsabiliScientificiDisponibiliGUI();
+        ArrayList<String> responsabiliDisponibili= controller.getListaDirigentiDisponibiliGUI();
         for(String s : responsabiliDisponibili)
             responsabileComboBox.addItem(s);
         datiAnagraficiPanel.add(responsabile);
@@ -112,7 +109,8 @@ public class ProfiloProgettoGUI extends JDialog{
         referente.setHorizontalAlignment(SwingConstants.LEFT);
         referenteComboBox = new JComboBox<>();
         referenteComboBox.addItem(referenteSelezionato);
-        ArrayList<String> referentiDisponibili= controller.getListaReferentiDisponibiliGUI();
+        //utilizzo il metodo che mi ritorna tutti gli impiegati senior
+        ArrayList<String> referentiDisponibili= controller.getListaDipendentiSeniorDisponibiliGUI();
         for(String s : referentiDisponibili)
             referenteComboBox.addItem(s);
         datiAnagraficiPanel.add(referente);
@@ -386,10 +384,10 @@ public class ProfiloProgettoGUI extends JDialog{
 
     private void updateTabella(Controller controller, String cupSelezionato) {
         //load dei nuovi dati
-        ArrayList<String> listaLabAfferiti = controller.leggiAfferenzeImpiegato(cupSelezionato);
-        Object[][] nuoviDati = new Object[listaLabAfferiti.size()][listaLabAfferiti.size()];
-        for (int i = 0; i < listaLabAfferiti.size(); i++) {
-            nuoviDati[i][0] = listaLabAfferiti.get(i);
+        ArrayList<String> listaLabGestiti = controller.leggiGestioniProgetto(cupSelezionato);
+        Object[][] nuoviDati = new Object[listaLabGestiti.size()][listaLabGestiti.size()];
+        for (int i = 0; i < listaLabGestiti.size(); i++) {
+            nuoviDati[i][0] = listaLabGestiti.get(i);
         }
         // Aggiungi le nuove righe alla tabella
         DefaultTableModel model = (DefaultTableModel) tabellaGestione.getModel();

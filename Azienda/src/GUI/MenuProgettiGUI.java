@@ -11,7 +11,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class MenuProgettiGUI {
@@ -29,7 +28,7 @@ public class MenuProgettiGUI {
 
         // TABELLA PROGETTI
 
-        String[] colonneTabella = {"CUP", "Nome", "Responsabile","referente"};
+        String[] colonneTabella = {"Cup", "Nome", "Responsabile","Referente"};
         ArrayList<String> listaCup = new ArrayList<>();
         ArrayList<String> listaNomi = new ArrayList<>();
         ArrayList<String> listaResponsabili = new ArrayList<>();
@@ -48,6 +47,11 @@ public class MenuProgettiGUI {
         DefaultTableModel modelloTabella = new DefaultTableModel(data, colonneTabella);
         // Creiamo la tabella
         tabella = new JTable(modelloTabella);
+        // Creiamo il TableRowSorter con il tipo di modello di tabella corretto
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelloTabella);
+        sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
+        // Impostiamo il TableRowSorter sulla tabella
+        tabella.setRowSorter(sorter);
 
         tabella.setDefaultEditor(Object.class, null);
         tabella.setDefaultEditor(Object.class, null);
@@ -59,10 +63,6 @@ public class MenuProgettiGUI {
         tabella.getTableHeader().setBackground(Color.BLACK);
         tabella.getTableHeader().setForeground(Color.WHITE);
 
-        // Creiamo il TableRowSorter con il tipo di modello di tabella corretto
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelloTabella);
-        // Impostiamo il TableRowSorter sulla tabella
-        tabella.setRowSorter(sorter);
 
         //barra di scorrimento
         JScrollPane scrollPane = new JScrollPane(tabella);
@@ -144,7 +144,7 @@ public class MenuProgettiGUI {
                     } catch (Exception ee) {
                         JOptionPane.showMessageDialog(null, "Errore durante l'esecuzione del programma: " + ee.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                     }
-                    //aggiorno la tabella appena dopo l'eliminazione dell'impiegato
+                    //aggiorno la tabella appena dopo l'eliminazione del progetto
                     updateTable(controller,colonneTabella);
                 }
             } else {
@@ -170,16 +170,21 @@ public class MenuProgettiGUI {
                 // la matricola è nella prima colonna della tabella
                 String cupSelezionato = tabella.getValueAt(tabella.getSelectedRow(), 0).toString();
 
-                // Creo un'istanza della finestra di dialogo ProfiloImpiegato
-                ProfiloLaboratorioGUI profiloLaboratorio;
-                try {
-                    profiloLaboratorio = new ProfiloLaboratorioGUI(cupSelezionato, controller, frameMenuProgetti);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+                // Creo un'istanza della finestra di dialogo ProfiloProgetto
+                ProfiloProgettoGUI profiloProgettoGUI;
+                profiloProgettoGUI = new ProfiloProgettoGUI(cupSelezionato, controller, frameMenuProgetti);
                 frameMenuProgetti.setVisible(false);
+
+                // Imposto l'azione da eseguire alla chiusura della finestra
+                profiloProgettoGUI.addWindowListener(new WindowAdapter() {
+                    public void windowClosed(WindowEvent e) {
+                        updateTable(controller,colonneTabella);
+                    }
+                });
+
                 // Mostro la finestra di dialogo
-                profiloLaboratorio.setVisible(true);
+                profiloProgettoGUI.setVisible(true);
+
             } else {
                 // L'utente non ha selezionato una cella
                 JOptionPane.showMessageDialog(frameMenuProgetti, "Seleziona un progetto per continuare", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -217,17 +222,17 @@ public class MenuProgettiGUI {
 
         controller.getListaProgettoGUI(listaNomi,listaCup,listaResponsabili,listaReferenti);
 
-        Object[][] data = new Object[listaNomi.size()][4];
+        Object[][] nuoviDati = new Object[listaCup.size()][4];
         for (int i = 0; i < listaNomi.size(); i++) {
-            data[i][0] = listaCup.get(i);
-            data[i][1] = listaNomi.get(i);
-            data[i][2] = listaResponsabili.get(i);
-            data[i][3] = listaReferenti.get(i);
+            nuoviDati[i][0] = listaCup.get(i);
+            nuoviDati[i][1] = listaNomi.get(i);
+            nuoviDati[i][2] = listaResponsabili.get(i);
+            nuoviDati[i][3] = listaReferenti.get(i);
         }
 
         //CODICE PER AGGIORNARE LA TABELLA CON I NUOVI DATI
         DefaultTableModel model = (DefaultTableModel) tabella.getModel();
-        model.setDataVector(data, colonneTabella);
+        model.setDataVector(nuoviDati, colonneTabella);
     }
 
     private String generaCup() {

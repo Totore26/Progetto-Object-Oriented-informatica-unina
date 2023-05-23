@@ -56,7 +56,7 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
     @Override
     public boolean modificaProgettoDAO(String cupScelto, float budget, Date dataFine, String responsabile, String referente) throws SQLException {
         PreparedStatement modificaPro;
-        modificaPro = connection.prepareStatement("UPDATE PROGETTO SET budget = ?, data_fine = ?, responabile = ?, referente = ? WHERE cup = ?");
+        modificaPro = connection.prepareStatement("UPDATE PROGETTO SET budget = ?, data_fine = ?, responsabile = ?, referente = ? WHERE cup = ?");
         modificaPro.setFloat(1,budget);
         modificaPro.setDate(2,dataFine);
         modificaPro.setString(3,responsabile);
