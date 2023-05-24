@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * The type Profilo progetto gui.
+ */
 public class ProfiloProgettoGUI extends JDialog{
     private final JComboBox<Object> responsabileComboBox;
     private final JComboBox<Object> referenteComboBox;
@@ -22,6 +25,13 @@ public class ProfiloProgettoGUI extends JDialog{
     private final JDateChooser dataFineChooser;
     private final JTable tabellaGestione;
 
+    /**
+     * Instantiates a new Profilo progetto gui.
+     *
+     * @param cupSelezionato the cup selezionato
+     * @param controller     the controller
+     * @param framePadre     the frame padre
+     */
     public ProfiloProgettoGUI(String cupSelezionato, Controller controller, JFrame framePadre) {
         setTitle("Profilo Progetto");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -300,9 +310,13 @@ public class ProfiloProgettoGUI extends JDialog{
                 if (response == JOptionPane.YES_OPTION) {
                     //aggiungo l'afferenza al codLabSelezionato
                     try {
-                        controller.aggiungiGestione(cupSelezionato,codLabSelezionato);
-                        dialog.setVisible(false);
-                        JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
+                        if(listaLabGestiti.size() < 3) {
+                            controller.aggiungiGestione(cupSelezionato, codLabSelezionato);
+                            dialog.setVisible(false);
+                            JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Non puoi aggiungere piu di 3 laboratori gestiti\n" , "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
+                        }
                     } catch (PSQLException ex) {
                         JOptionPane.showMessageDialog(null, "Errore durante l'aggiunta della gestione al progetto:\n" + ex.getMessage(), "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception ee) {

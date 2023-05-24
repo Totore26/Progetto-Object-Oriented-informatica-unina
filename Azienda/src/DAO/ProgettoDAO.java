@@ -71,7 +71,7 @@ public interface ProgettoDAO {
      * @return the boolean
      * @throws SQLException the sql exception
      */
-    public boolean aggiungiGestione(String cupScelto, String idlabScelto) throws SQLException;
+    public boolean aggiungiGestioneDAO(String cupScelto, String idlabScelto) throws SQLException;
 
 
 

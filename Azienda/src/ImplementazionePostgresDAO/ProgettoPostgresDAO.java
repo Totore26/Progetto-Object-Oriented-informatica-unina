@@ -34,10 +34,7 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
         insertPro.setString(6, responsabile);
         insertPro.setString(7, referente);
         int result = insertPro.executeUpdate();
-        if (result == 1) {
-            return true;
-        }
-        return false;
+        return result == 1;
     }
 
     @Override
@@ -46,11 +43,7 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
         deletePro = connection.prepareStatement("DELETE FROM PROGETTO WHERE CUP = ?");
         deletePro.setString(1, cup);
         int rs = deletePro.executeUpdate();
-        if(rs==1){
-            return true;
-        }
-
-        return false;
+        return rs == 1;
     }
 
     @Override
@@ -63,24 +56,17 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
         modificaPro.setString(4,referente);
         modificaPro.setString(5,cupScelto);
         int rs = modificaPro.executeUpdate();
-        if(rs == 1){
-            return true;
-        }
-        return false;
+        return rs == 1;
     }
 
     @Override
-    public boolean aggiungiGestione(String cupScelto, String idlabScelto) throws SQLException {
+    public boolean aggiungiGestioneDAO(String cupScelto, String idlabScelto) throws SQLException {
         PreparedStatement insertGestione;
         insertGestione = connection.prepareStatement("INSERT INTO GESTIONE (cup, id_lab) VALUES (?,?)");
         insertGestione.setString(1, cupScelto);
         insertGestione.setString(2,idlabScelto);
         int rs = insertGestione.executeUpdate();
-        if(rs==1){
-            return true;
-        }
-
-        return false;
+        return rs == 1;
     }
 
     @Override
@@ -90,10 +76,7 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
         deleteGestione.setString(1, cupScelto);
         deleteGestione.setString(2,idLabScelto);
         int rs = deleteGestione.executeUpdate();
-        if(rs==1){
-            return true;
-        }
-        return false;
+        return rs == 1;
     };
 
     @Override

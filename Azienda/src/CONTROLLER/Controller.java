@@ -32,10 +32,12 @@ public class Controller {
 
     //il dumpDati non inizializza le relazioni di afferenza e la gestione...
     private void dumpdati() {
+        aggiornaDatabase();
         dumpDatiImpiegato();
         dumpDatiLaboratorio();
         dumpDatiStorico();
         dumpDatiProgetto();
+
     }
 
 
@@ -44,10 +46,13 @@ public class Controller {
      *
      * @throws SQLException the sql exception
      */
-    public void aggiornaDatabase() throws SQLException {
+    public void aggiornaDatabase(){
         AziendaDAO aziend = new AziendaPostgresDAO();
-
-        aziend.aggiornaDatabaseDAO();
+        try {
+            aziend.aggiornaDatabaseDAO();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -755,7 +760,7 @@ public class Controller {
             //allora elimino anche dal model...
             for(Progetto pro : listaProgetto){
                 if(pro.getCup().equals(cup)){
-                    listaProgetto.remove(p);
+                    listaProgetto.remove(pro);
                     break;
                 }
             }
@@ -873,7 +878,7 @@ public class Controller {
     public void aggiungiGestione(String cupScelto, String idlabScelto)throws SQLException{
         ProgettoDAO progettoDAO= new ProgettoPostgresDAO();
 
-        boolean control = progettoDAO.aggiungiGestione(cupScelto,idlabScelto);
+        boolean control = progettoDAO.aggiungiGestioneDAO(cupScelto,idlabScelto);
 
         if(control){
             //trovo il progetto in questione nel model
