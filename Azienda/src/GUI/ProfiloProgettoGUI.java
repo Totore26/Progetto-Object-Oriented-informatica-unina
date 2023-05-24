@@ -227,15 +227,6 @@ public class ProfiloProgettoGUI extends JDialog{
                 sqlDataFine = new java.sql.Date(dataFineModificata.getTime());
             }
 
-            /*
-            //TODO salvo i dati solo se sono state effettuate modifiche (questo metodo non funziona)
-            if(stipendioSelezionato == stipendioModificato || dirigenteSelezionato == dirigenteModificato || curriculumSelezionato.equals(curriculumModificato) || dataLicenziamentoSelezionata == dataLicenziamentoModificata) {
-                JOptionPane.showMessageDialog(null, "i dati non sono stati modificati!\n", "Nessuna modifica da eseguire", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-                framePadre.setVisible(true);
-            } else {
-
-             */
 
             try {
                 controller.modificaProgetto(cupSelezionato,budgetModificato,sqlDataFine,responsabileModificato,referenteModificato);
@@ -311,10 +302,11 @@ public class ProfiloProgettoGUI extends JDialog{
                     //aggiungo l'afferenza al codLabSelezionato
                     try {
                         if(listaLabGestiti.size() < 3) {
-                            controller.aggiungiGestione(cupSelezionato, codLabSelezionato);
                             dialog.setVisible(false);
+                            controller.aggiungiGestione(cupSelezionato, codLabSelezionato);
                             JOptionPane.showMessageDialog(null, "Modifica eseguita correttamente!\n", "Salvataggio Completato", JOptionPane.INFORMATION_MESSAGE);
                         } else {
+                            dialog.setVisible(false);
                             JOptionPane.showMessageDialog(null, "Non puoi aggiungere piu di 3 laboratori gestiti\n" , "Errore di Salvataggio", JOptionPane.ERROR_MESSAGE);
                         }
                     } catch (PSQLException ex) {

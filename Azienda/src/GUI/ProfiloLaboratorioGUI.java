@@ -13,12 +13,23 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The type Profilo laboratorio gui.
+ */
 public class ProfiloLaboratorioGUI extends JDialog {
     private final JTable tabellaAfferenze;
     private final JTextField indirizzoField;
     private final JTextField numeroTelefonicoField;
     private final JComboBox<String> rScientificoComboBox;
 
+    /**
+     * Instantiates a new Profilo laboratorio gui.
+     *
+     * @param idLabSelezionato the id lab selezionato
+     * @param controller       the controller
+     * @param framePadre       the frame padre
+     * @throws SQLException the sql exception
+     */
     public ProfiloLaboratorioGUI(String idLabSelezionato, Controller controller, JFrame framePadre) throws SQLException {
         setTitle("Profilo Laboratorio");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

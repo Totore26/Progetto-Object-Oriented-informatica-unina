@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * The type Inserimento impiegato gui.
+ */
 public class InserimentoImpiegatoGUI extends JDialog {
     private final JTextField matricolaField;
     private final JTextField nomeField;
@@ -23,6 +26,13 @@ public class InserimentoImpiegatoGUI extends JDialog {
     private final JDateChooser dataAssunzioneChooser;
     private final JDateChooser dataLicenziamentoChooser;
 
+    /**
+     * Instantiates a new Inserimento impiegato gui.
+     *
+     * @param controller     the controller
+     * @param nuovaMatricola the nuova matricola
+     * @param framePadre     the frame padre
+     */
     public InserimentoImpiegatoGUI(Controller controller,String nuovaMatricola, JFrame framePadre) {
 
         // Creiamo un pannello per contenere i campi d'ingresso

@@ -279,15 +279,6 @@ public class ProfiloImpiegatoGUI extends JDialog {
                 sqlDataLicenziamento = new java.sql.Date(dataLicenziamentoModificata.getTime());
             }
 
-            /*
-            //TODO salvo i dati solo se sono state effettuate modifiche (questo metodo non funziona)
-            if(stipendioSelezionato == stipendioModificato || dirigenteSelezionato == dirigenteModificato || curriculumSelezionato.equals(curriculumModificato) || dataLicenziamentoSelezionata == dataLicenziamentoModificata) {
-                JOptionPane.showMessageDialog(null, "i dati non sono stati modificati!\n", "Nessuna modifica da eseguire", JOptionPane.INFORMATION_MESSAGE);
-                dispose();
-                framePadre.setVisible(true);
-            } else {
-
-             */
 
                 try {
 
