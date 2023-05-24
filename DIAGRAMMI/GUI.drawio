@@ -1,0 +1,115 @@
+<mxfile host="Electron" modified="2023-05-24T09:30:18.293Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.2.8 Chrome/112.0.5615.165 Electron/24.2.0 Safari/537.36" version="21.2.8" etag="dZVrBgZgQnywDm2YAJhU" type="device">
+  <diagram id="FXYtmQJZwa2YRJv37c7n" name="Pagina-1">
+    <mxGraphModel dx="2958" dy="2218" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1600" pageHeight="900" background="none" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-2" value="" style="shape=folder;fontStyle=1;spacingTop=10;tabWidth=40;tabHeight=14;tabPosition=left;html=1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="-140" y="-30" width="2340" height="960" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-3" value="&lt;font style=&quot;font-size: 20px;&quot;&gt;GRAFIC USER INTERFACE (GUI)&lt;/font&gt;" style="text;align=center;fontStyle=1;verticalAlign=middle;spacingLeft=3;spacingRight=3;strokeColor=none;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-46" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-4" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;InserimentoImpiegatoGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ InserimentoImpiegatoGUI(Controller, String, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- tipoImpiegatoComboBox: JComboBox&amp;lt;String&amp;gt;&lt;br/&gt;- matricolaField: JTextField&lt;br/&gt;- dirigenteCheckBox: JCheckBox&lt;br/&gt;- nomeField: JTextField&lt;br/&gt;- curriculumTextArea: JTextArea&lt;br/&gt;- dataLicenziamentoChooser: JDateChooser&lt;br/&gt;- dataAssunzioneChooser: JDateChooser&lt;br/&gt;- femminaRadioButton: JRadioButton&lt;br/&gt;- cognomeField: JTextField&lt;br/&gt;- codiceFiscaleField: JTextField&lt;br/&gt;- maschioRadioButton: JRadioButton&lt;br/&gt;- stipendioSpinner: JSpinner&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="259" y="70" width="371" height="344" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-5" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;InserimentoLaboratorioGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ InserimentoLaboratorioGUI(Controller, String, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- indirizzoField: JTextField&lt;br/&gt;- numeroTelefonicoField: JTextField&lt;br/&gt;- idLabField: JTextField&lt;br/&gt;- topicField: JTextField&lt;br/&gt;- rScientificoComboBox: JComboBox&amp;lt;String&amp;gt;&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="207" width="382" height="197" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-6" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;InserimentoProgettoGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ InserimentoProgettoGUI(Controller, String, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- cupField: JTextField&lt;br/&gt;- dataInizioChooser: JDateChooser&lt;br/&gt;- nomeField: JTextField&lt;br/&gt;- referenteComboBox: JComboBox&amp;lt;String&amp;gt;&lt;br/&gt;- responsabileComboBox: JComboBox&amp;lt;String&amp;gt;&lt;br/&gt;- budgetSpinner: JSpinner&lt;br/&gt;- dataFineChooser: JDateChooser&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1422" y="185" width="365" height="239" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-7" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MenuImpiegatiGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ MenuImpiegatiGUI(Controller, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- barraDiRicerca: JTextField&lt;br/&gt;- tabella: JTable&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- updateTable(Controller, String[]): void&lt;br/&gt;- generaMatricola(): String&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="114" y="481.5" width="285" height="176" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-8" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MenuLaboratoriGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ MenuLaboratoriGUI(Controller, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- barraDiRicerca: JTextField&lt;br/&gt;- tabella: JTable&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- generaIdLab(): String&lt;br/&gt;- updateTable(Controller, String[]): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="481.5" width="275" height="176" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-9" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MenuPrincipaleGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ MenuPrincipaleGUI(): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;~ controller: Controller&lt;br/&gt;- frame: JFrame&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ main(String[]): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="920" y="744" width="195" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-10" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;MenuProgettiGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ MenuProgettiGUI(Controller, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- tabella: JTable&lt;br/&gt;- barraDiRicerca: JTextField&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- updateTable(Controller, String[]): void&lt;br/&gt;- generaCup(): String&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1649" y="498" width="279" height="176" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-11" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ProfiloImpiegatoGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ProfiloImpiegatoGUI(String, Controller, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- curriculumTextArea: JTextArea&lt;br/&gt;- stipendioSpinner: JSpinner&lt;br/&gt;- dirigenteCheckBox: JCheckBox&lt;br/&gt;- dataLicenziamentoChooser: JDateChooser&lt;br/&gt;- tabellaAfferenze: JTable&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- updateTabella(Controller, String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="-100" y="185" width="339" height="228" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-12" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ProfiloLaboratorioGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ProfiloLaboratorioGUI(String, Controller, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- numeroTelefonicoField: JTextField&lt;br/&gt;- indirizzoField: JTextField&lt;br/&gt;- tabellaAfferenze: JTable&lt;br/&gt;- rScientificoComboBox: JComboBox&amp;lt;String&amp;gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- updateTabellaAfferenze(Controller, String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="207" width="350" height="207" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-13" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;b&gt;ProfiloProgettoGUI&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;+ ProfiloProgettoGUI(String, Controller, JFrame): &lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- budgetSpinner: JSpinner&lt;br/&gt;- responsabileComboBox: JComboBox&amp;lt;Object&amp;gt;&lt;br/&gt;- dataFineChooser: JDateChooser&lt;br/&gt;- referenteComboBox: JComboBox&amp;lt;Object&amp;gt;&lt;br/&gt;- tabellaGestione: JTable&lt;/p&gt;&lt;hr size=&quot;1&quot;/&gt;&lt;p style=&quot;margin:0 0 0 4px;line-height:1.6;&quot;&gt;- updateTabella(Controller, String): void&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=14;fontFamily=Helvetica;html=1;rounded=0;shadow=0;comic=0;labelBackgroundColor=none;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="1807" y="196" width="333" height="228" as="geometry" />
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-14" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-7" target="PdtWUAkGNELu4pZuzn8N-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="257" y="473" />
+              <mxPoint x="445" y="473" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-15" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-7" target="PdtWUAkGNELu4pZuzn8N-11">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="257" y="473" />
+              <mxPoint x="70" y="473" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-16" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-8" target="PdtWUAkGNELu4pZuzn8N-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1018" y="473" />
+              <mxPoint x="1211" y="473" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-17" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-8" target="PdtWUAkGNELu4pZuzn8N-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1018" y="473" />
+              <mxPoint x="825" y="473" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-18" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-9" target="PdtWUAkGNELu4pZuzn8N-7">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1018" y="704" />
+              <mxPoint x="257" y="704" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-19" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-9" target="PdtWUAkGNELu4pZuzn8N-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-20" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-9" target="PdtWUAkGNELu4pZuzn8N-10">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1018" y="704" />
+              <mxPoint x="1788" y="704" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-21" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-10" target="PdtWUAkGNELu4pZuzn8N-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1789" y="473" />
+              <mxPoint x="1605" y="473" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PdtWUAkGNELu4pZuzn8N-22" value="" style="html=1;rounded=1;edgeStyle=orthogonalEdgeStyle;dashed=1;startArrow=none;endArrow=openThin;endSize=12;strokeColor=#595959;exitX=0.500;exitY=0.000;exitDx=0;exitDy=0;entryX=0.500;entryY=1.000;entryDx=0;entryDy=0;" edge="1" parent="1" source="PdtWUAkGNELu4pZuzn8N-10" target="PdtWUAkGNELu4pZuzn8N-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1789" y="473" />
+              <mxPoint x="1974" y="473" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
