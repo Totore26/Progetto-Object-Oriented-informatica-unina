@@ -843,7 +843,7 @@ public class Controller {
 
         //2 step : trovo i laboratori in gestione
         ArrayList<String> labGestione = new ArrayList<>();
-        boolean control = i.leggiGestionePerProgetto(cupScelto,labGestione);
+        boolean control = i.leggiGestionePerProgettoDAO(cupScelto,labGestione);
 
         //2° step: inizializzo la lista di laboratori gestiti del progetto in questione.
         if (control) {
@@ -940,7 +940,7 @@ public class Controller {
 
         ProgettoDAO pro = new ProgettoPostgresDAO();
 
-        boolean control = pro.eliminaGestione(cupScelto,idlabScelto);
+        boolean control = pro.eliminaGestioneDAO(cupScelto,idlabScelto);
 
         if (control) {
             //se l'eliminazione ha avuto successo allora elimino anche dal model

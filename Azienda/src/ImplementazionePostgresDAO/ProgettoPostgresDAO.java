@@ -70,7 +70,7 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
     }
 
     @Override
-    public boolean eliminaGestione(String cupScelto,String idLabScelto) throws SQLException{
+    public boolean eliminaGestioneDAO(String cupScelto, String idLabScelto) throws SQLException{
         PreparedStatement deleteGestione;
         deleteGestione = connection.prepareStatement("DELETE FROM GESTIONE WHERE CUP = ? AND ID_LAB=?");
         deleteGestione.setString(1, cupScelto);
@@ -80,7 +80,7 @@ public class ProgettoPostgresDAO implements ProgettoDAO {
     };
 
     @Override
-    public boolean leggiGestionePerProgetto(String cupScelto, ArrayList<String> labGestiti){
+    public boolean leggiGestionePerProgettoDAO(String cupScelto, ArrayList<String> labGestiti){
         try {
             PreparedStatement leggiGestioni;
             leggiGestioni = connection.prepareStatement("SELECT ID_LAB FROM GESTIONE WHERE CUP = ?");

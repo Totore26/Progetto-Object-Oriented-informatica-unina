@@ -59,7 +59,7 @@ public interface ProgettoDAO {
      * @param labGestiti the lab gestiti è la lista che viene riempita dei laboratori gestiti dal progetto. (Al max 3)
      * @return the boolean
      */
-    public boolean leggiGestionePerProgetto(String cupScelto, ArrayList<String> labGestiti);
+    public boolean leggiGestionePerProgettoDAO(String cupScelto, ArrayList<String> labGestiti);
 
 
 
@@ -83,5 +83,5 @@ public interface ProgettoDAO {
      * @return the boolean
      * @throws SQLException the sql exception
      */
-    public boolean eliminaGestione(String cupScelto,String idLabScelto) throws SQLException;
+    public boolean eliminaGestioneDAO(String cupScelto, String idLabScelto) throws SQLException;
 }
