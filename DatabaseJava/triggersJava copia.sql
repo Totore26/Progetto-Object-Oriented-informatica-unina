@@ -14,6 +14,8 @@
 	GESTIONE(cup, id_lab)
 */
 
+
+--FUNZIONE INSERITA NEL DATABASE!
 CREATE OR REPLACE PROCEDURE update_database() AS
 $$
 	DECLARE
@@ -74,6 +76,7 @@ $$
 $$ LANGUAGE plpgsql;
 
 
+--Funzione inserita nel database!!
 CREATE OR REPLACE PROCEDURE avviso_su_impiegati_licenziati() AS
 $$
 	DECLARE
@@ -202,6 +205,8 @@ EXECUTE FUNCTION f_avviso_su_impiegati_licenziati();
     CALCOLANDOLI GRAZIE ALLA DATA DI ASSUNZIONE.
 */
 
+
+--FUNZIONE INSERITA NEL DATABASE!!
 CREATE OR REPLACE FUNCTION f_insert_storico() RETURNS TRIGGER AS
 $$
 BEGIN
@@ -277,6 +282,7 @@ CREATE OR REPLACE TRIGGER  not_update_tipo_impiegato
 	Questo giustificato dal fatto che un progetto non può esserci senza responsabile e referente.
 */
 
+--AGGIUNTA AL DATABASE
 create or replace function f_eliminazione_impiegati_speciali() RETURNS TRIGGER AS
 $$
 	BEGIN
@@ -324,6 +330,7 @@ EXECUTE function f_eliminazione_impiegati_speciali();
 	fare inserimento all'interno dello storico della data_scatto 'nonDirigente'->'dirigente'.
 */
 
+--AGGIUNTA AL DATABASE
 create or replace function f_update_dirigente() returns trigger
 as
 $$
