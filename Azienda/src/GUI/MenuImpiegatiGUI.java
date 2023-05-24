@@ -12,12 +12,21 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+/**
+ * The type Menu impiegati gui.
+ */
 //LA CLASSE NON ESTENTE JDIALOG PERCHE VIENE GESTITA IN MODO DIVERSO
     public class MenuImpiegatiGUI
     {
         private final JTable tabella;
         private final JTextField barraDiRicerca;
 
+        /**
+         * Instantiates a new Menu impiegati gui.
+         *
+         * @param controller          the controller
+         * @param frameMenuPrincipale the frame menu principale
+         */
         public MenuImpiegatiGUI(Controller controller, JFrame frameMenuPrincipale) {
             // Creiamo una finestra
 

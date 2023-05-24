@@ -10,6 +10,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+/**
+ * The type Inserimento progetto gui.
+ */
 public class InserimentoProgettoGUI extends JDialog {
     private final JTextField cupField;
     private final JTextField nomeField;
@@ -19,6 +22,13 @@ public class InserimentoProgettoGUI extends JDialog {
     private final JDateChooser dataInizioChooser;
     private final JDateChooser dataFineChooser;
 
+    /**
+     * Instantiates a new Inserimento progetto gui.
+     *
+     * @param controller  the controller
+     * @param cupGenerato the cup generato
+     * @param framePadre  the frame padre
+     */
     public InserimentoProgettoGUI(Controller controller, String cupGenerato, JFrame framePadre){
 
         // Creiamo un pannello per contenere i campi d'ingresso

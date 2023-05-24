@@ -14,9 +14,19 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The type Menu laboratori gui.
+ */
 public class MenuLaboratoriGUI {
     private final JTable tabella;
     private final JTextField barraDiRicerca;
+
+    /**
+     * Instantiates a new Menu laboratori gui.
+     *
+     * @param controller          the controller
+     * @param frameMenuPrincipale the frame menu principale
+     */
     public MenuLaboratoriGUI(Controller controller, JFrame frameMenuPrincipale) {
         // Creiamo una finestra
 

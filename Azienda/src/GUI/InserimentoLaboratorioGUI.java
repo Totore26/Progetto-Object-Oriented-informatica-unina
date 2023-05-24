@@ -9,6 +9,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+/**
+ * The type Inserimento laboratorio gui.
+ */
 public class InserimentoLaboratorioGUI extends JDialog{
 
     private final JTextField idLabField;
@@ -16,6 +19,14 @@ public class InserimentoLaboratorioGUI extends JDialog{
     private final JTextField indirizzoField;
     private final JTextField numeroTelefonicoField;
     private final JComboBox<String> rScientificoComboBox;
+
+    /**
+     * Instantiates a new Inserimento laboratorio gui.
+     *
+     * @param controller the controller
+     * @param nuovoId    the nuovo id
+     * @param framePadre the frame padre
+     */
     public InserimentoLaboratorioGUI(Controller controller,String nuovoId, JFrame framePadre) {
 
         // Creiamo un pannello per contenere i campi d'ingresso

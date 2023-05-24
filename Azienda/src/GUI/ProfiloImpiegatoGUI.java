@@ -12,6 +12,9 @@ import CONTROLLER.Controller;
 import com.toedter.calendar.JDateChooser;
 import org.postgresql.util.PSQLException;
 
+/**
+ * The type Profilo impiegato gui.
+ */
 public class ProfiloImpiegatoGUI extends JDialog {
     private final JTextArea curriculumTextArea;
     private final JCheckBox dirigenteCheckBox;
@@ -19,6 +22,14 @@ public class ProfiloImpiegatoGUI extends JDialog {
     private final JDateChooser dataLicenziamentoChooser;
     private final JTable tabellaAfferenze;
 
+
+    /**
+     * Instantiates a new Profilo impiegato gui.
+     *
+     * @param matricolaSelezionata the matricola selezionata
+     * @param controller           the controller
+     * @param framePadre           the frame padre
+     */
     public ProfiloImpiegatoGUI(String matricolaSelezionata, Controller controller, JFrame framePadre) {
         setTitle("Profilo Impiegato");
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

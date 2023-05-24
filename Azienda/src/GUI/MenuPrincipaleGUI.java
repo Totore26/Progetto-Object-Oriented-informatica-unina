@@ -5,10 +5,19 @@ import CONTROLLER.Controller;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Menu principale gui.
+ */
 public class MenuPrincipaleGUI {
+    /**
+     * The Controller.
+     */
     Controller controller = new Controller();
     private final JFrame frame;
 
+    /**
+     * Instantiates a new Menu principale gui.
+     */
     public MenuPrincipaleGUI() {
         frame = new JFrame("Menu Principale");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,6 +91,11 @@ public class MenuPrincipaleGUI {
         frame.setVisible(true);
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         new MenuPrincipaleGUI();
     }
