@@ -1387,12 +1387,22 @@ public class Controller {
      */
     public ArrayList<String> getListaDipendentiSeniorDisponibiliGUI(){
 
-        ArrayList<String> DipendentiSeniorDisponibili = new ArrayList<>();
+        ArrayList<String> referentiDisponibili = new ArrayList<>();
         for(Impiegato imp : listaImpiegato){
-            if(imp.getTipoImpiegato().equals("senior"))
-                DipendentiSeniorDisponibili.add(imp.getMatricola());
+            if(imp.getTipoImpiegato().equals("senior") ){
+                int i=0;
+                boolean disponibile = true;
+                while(i < listaProgetto.size() && disponibile){
+                    if(listaProgetto.get(i).getReferente().equals(imp))
+                        disponibile=false;
+                    i++;
+                }
+                if(disponibile){
+                    referentiDisponibili.add(imp.getMatricola());
+                }
+            }
         }
-        return DipendentiSeniorDisponibili;
+        return referentiDisponibili;
     }
 
 
@@ -1404,16 +1414,26 @@ public class Controller {
      *
      *
      * Funzione che ritorna la lista di tutti i dirigenti
-     * nell'Azienda.
+     * nell'Azienda che non sono associati a nessun progetto.
      */
     public ArrayList<String> getListaDirigentiDisponibiliGUI() {
 
-        ArrayList<String> referentiDisponibili = new ArrayList<>();
+        ArrayList<String> dirigentiDisponibili = new ArrayList<>();
         for(Impiegato imp : listaImpiegato){
-            if(imp.isDirigente())
-                referentiDisponibili.add(imp.getMatricola());
+            if(imp.isDirigente() == true){
+                int i=0;
+                boolean disponibile = true;
+                while(i < listaProgetto.size() && disponibile){
+                    if(listaProgetto.get(i).getResponsabile().equals(imp))
+                        disponibile=false;
+                    i++;
+                }
+                if(disponibile){
+                    dirigentiDisponibili.add(imp.getMatricola());
+                }
+            }
         }
-        return referentiDisponibili;
+        return dirigentiDisponibili;
     }
 
 

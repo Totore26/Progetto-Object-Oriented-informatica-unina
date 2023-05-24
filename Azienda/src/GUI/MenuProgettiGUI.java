@@ -138,7 +138,7 @@ public class MenuProgettiGUI {
                 if (response == JOptionPane.YES_OPTION) {
                     //elimino il laboratorio selezionata
                     try {
-                        controller.eliminaLaboratorio(cupSelezionato);
+                        controller.eliminaProgetto(cupSelezionato);
                     } catch (PSQLException ex) {
                         JOptionPane.showMessageDialog(null, "Errore durante l'eliminazione del progetto:\n" + ex.getMessage(), "Errore di Eliminazione", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception ee) {

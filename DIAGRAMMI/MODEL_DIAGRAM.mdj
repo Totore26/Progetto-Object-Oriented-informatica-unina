@@ -3602,7 +3602,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGILdcpxKLPRcU="
 									},
-									"name": "ruoloPrecedente"
+									"name": "ruoloPrecedente",
+									"type": ""
 								}
 							],
 							"operations": [

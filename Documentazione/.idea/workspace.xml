@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="54971d80-55b2-489b-8164-be40b894c25a" name="Changes" comment="" />
+    <list default="true" id="54971d80-55b2-489b-8164-be40b894c25a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Azienda/src/ImplementazionePostgresDAO/AziendaPostgresDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Azienda/src/ImplementazionePostgresDAO/AziendaPostgresDAO.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +19,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "vue.rearranger.settings.migration": "true"
@@ -31,6 +34,7 @@
       <option name="presentableId" value="Default" />
       <updated>1683986320766</updated>
       <workItem from="1683986322259" duration="11000" />
+      <workItem from="1684506396353" duration="1000" />
     </task>
     <servers />
   </component>

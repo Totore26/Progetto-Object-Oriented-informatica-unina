@@ -155,12 +155,12 @@ public class AziendaPostgresDAO implements AziendaDAO {
         }
     }
 
-
+    @Override
     public void aggiornaDatabaseDAO() throws SQLException {
 
         try {
             PreparedStatement aggData;
-            connection.prepareStatement("CALL update_database();");
+            connection.prepareStatement("SELECT update_database();");
 
         }catch (SQLException e){
             e.printStackTrace();
